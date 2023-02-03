@@ -187,7 +187,8 @@ def search_giveaway():
         print(tweets_full_comment)
         print(tweets_account_to_follow)
         print("Nb of doublon " + str(doublon))
-    print("Number of giveaway done = " + str(nb_of_giveaway_found))
+    print("Number of giveaway found = " + str(nb_of_giveaway_found))
+    print("Ending giveaway search")
     return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow)
     
 #search_giveaway()

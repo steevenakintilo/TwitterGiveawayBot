@@ -1,3 +1,8 @@
+#Account info write username then password
+account_info:
+  - "norman_norman_t"
+  - "steeven1"
+
 # Words to search for giveaway
 words_to_search:
   - "#concours"

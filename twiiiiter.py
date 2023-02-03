@@ -210,15 +210,17 @@ def follow_an_account(S,account):
     print("You've followed another account")
 
 def main():
+
+    with open("configuration.yml", "r") as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+    
     print("Starting the program")
-    time.sleep(1)
     print("Searching for Giveaway")
+    username_password = data["account_info"]
     tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow = search_giveaway()
     time.sleep(1)
     S = Scraper()
-    u = "a"
-    p = "b"
-    login(S,u,p)
+    login(S,username_password[0],username_password[1])
     time.sleep(3)   
     accept_coockie(S)
     time.sleep(S.wait_time)    
@@ -248,9 +250,6 @@ def main():
     #make_tweet()
     #else:
     #    print("caca boudin")
-
-
-
 
 try:
     main()
