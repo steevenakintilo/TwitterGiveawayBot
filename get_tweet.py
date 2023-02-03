@@ -21,7 +21,7 @@ def remove_non_alphanumeric(string):
     return s[0]
 
 def write_into_file(path,x):  
-    f = open(path, "w")
+    f = open(path, "a")
     f.write(str(x))    
     f.close            
 
@@ -124,7 +124,20 @@ def what_to_comment(sentences):
             return(str(c.replace('"',"").replace("“","").replace("«","").replace("»","")))
         
     return ("")
-                
+
+def get_a_better_list(l):
+    account_you_follow_from_file = print_file_info("account.txt").split("\n")
+    new_l = []
+    account = []
+    for i in range(len(l)):
+        line_f = l[i].split(" ")
+        for j in range(len(line_f)):
+            new_l.append(line_f[j])
+            if line_f[j].replace(",","").replace(";","") not in account_you_follow_from_file and line_f[j].replace(",","").replace(";","") not in account:
+                account.append(line_f[j].replace(",","").replace(";",""))
+                write_into_file("account.txt",line_f[j].replace(",","").replace(";","")+"\n")
+    return (new_l)
+
 def search_giveaway():
     d = Data()
     tweets_text = []
@@ -136,11 +149,13 @@ def search_giveaway():
     char = '#'
     full_phrase = ""
     doublon = 0
+    url_from_file = print_file_info("url.txt").split("\n")
+    print_data = False
     for search_word in d.word_to_search:
         text = search_word + ' lang:fr'
         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
-            if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.content) == False and tweet.username not in d.accounts_to_blacklist:
-                url =  f"https://twitter.com/user/status/{tweet.id}"
+            url =  f"https://twitter.com/user/status/{tweet.id}"
+            if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.content) == False and tweet.username not in d.accounts_to_blacklist and url not in url_from_file:
                 words = text.split()
                 result = [word for word in words if word.startswith(char)]
                 hashtag = delete_hashtag_we_dont_want(result)
@@ -150,6 +165,7 @@ def search_giveaway():
                 tweets_url.append(url)
                 tweets_account_to_follow.append(list_of_account_to_follow(tweet.username ,tweet.content))
                 tweets_full_comment.append(full_phrase)
+                write_into_file("url.txt",url+"\n")
                 nb_of_giveaway_found+=1
                 #print(tweet.content,url)
                 #print(full_phrase)
@@ -157,12 +173,14 @@ def search_giveaway():
                 doublon +=1
             if i>d.max_giveaway:
                 break
-    #print(tweets_text)
-    #print(tweets_url)
-    #print(tweets_full_comment)
-    #print(tweets_account_to_follow)
-    #print(" Nb of doublon " + str(doublon))
-    print("Nb of giveaway found = " + str(nb_of_giveaway_found))
+    tweets_account_to_follow = get_a_better_list(tweets_account_to_follow)
+    if print_data == True:
+        print(tweets_text)
+        print(tweets_url)
+        print(tweets_full_comment)
+        print(tweets_account_to_follow)
+        print("Nb of doublon " + str(doublon))
+    print("Number of giveaway done = " + str(nb_of_giveaway_found))
     return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow)
     
-search_giveaway()
+#search_giveaway()
