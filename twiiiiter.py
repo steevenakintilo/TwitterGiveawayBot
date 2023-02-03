@@ -5,15 +5,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from os import system
 import time
-import tweepy
 import pickle
 
 from selenium.webdriver.common.by import By
 from get_tweet import *
 import traceback
 
+
 class Scraper:
-    wait_time = 10
+    wait_time = 5
     options = webdriver.ChromeOptions()
     #options.add_argument('headless')
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
@@ -91,6 +91,8 @@ def accept_coockie(S):
     except:
         print("error")
         pass    
+    
+    
     print("coockie done")
 
 
@@ -105,27 +107,42 @@ def accept_notification(S):
         cookie_button.click()
     except:
         pass    
+    try:
+        S.driver.get(S.test_tweet)
+
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.cookie_button_xpath)))
+        
+        cookie_button = S.driver.find_element(By.XPATH,S.cookie_button_xpath)
+        cookie_button.click()
+
+    except:
+        print("error")
+        pass    
+    
     print("notification done")
     
     
-def like_a_tweet(S):
-    S.driver.get(S.test_tweet)
+def like_a_tweet(S,url):
+    S.driver.get(url)
     element = WebDriverWait(S.driver, 30).until(
     EC.presence_of_element_located((By.XPATH, S.like_button_xpath)))
     
     like_button = S.driver.find_element(By.XPATH,S.like_button_xpath)
     #time.sleep(3000)
     # check the "aria-pressed" attribute
-    if like_button.get_attribute("aria-label") != "Aimer":
-        print("You have liked the tweet.")
-        return False
-    else:
-        like_button.click()
-        print("You have not liked the tweet yet.")
-        return True
+    like_button.click()
+    
+    #if like_button.get_attribute("aria-label") != "Aimer":
+    #    print("You have liked the tweet.")
+    #    return False
+    #else:
+    #    like_button.click()
+    #    print("You have not liked the tweet yet.")
+    #    return True
 
-def reetweet_a_tweet(S):
-    S.driver.get(S.test_tweet)
+def reetweet_a_tweet(S,url):
+    S.driver.get(url)
     element = WebDriverWait(S.driver, 30).until(
     EC.presence_of_element_located((By.XPATH, S.reetweet_button_xpath)))
     
@@ -142,11 +159,11 @@ def reetweet_a_tweet(S):
 
 
 
-def comment_a_tweet(S,text):
+def comment_a_tweet(S,url,text):
 
     print("coment part zero")
 
-    S.driver.get(S.test_tweet)
+    S.driver.get(url)
     element = WebDriverWait(S.driver, 30).until(
     EC.presence_of_element_located((By.XPATH, S.comment_button_xpath)))
     
@@ -163,16 +180,21 @@ def comment_a_tweet(S,text):
     time.sleep(S.wait_time)
     textbox.send_keys(text)
     
-    time.sleep(S.wait_time)
-
     print("coment part two")
-    #time.sleep(1234567)
+    time.sleep(5)
     
     element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, 'data-testid="tweetButton"')))
+    EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
 
-    send_tweet = S.driver.find_element(By.CSS_SELECTOR,'data-testid="tweetButton"')
-    send_tweet.click()
+    wait = WebDriverWait(S.driver, 10)
+    target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
+
+    S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
+
+    target_element.click()
+
+#    send_tweet = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="tweetButton"]')
+#    send_tweet.click()
     print("comment part three")
     
 
@@ -189,37 +211,45 @@ def follow_an_account(S,account):
 
 def main():
     print("Starting the program")
-    time.sleep(15)
+    time.sleep(1)
     print("Searching for Giveaway")
-    #tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow = search_giveaway()
-    #time.sleep(20)
+    tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow = search_giveaway()
+    time.sleep(1)
     S = Scraper()
-    u = ""
-    p = ""
+    u = "a"
+    p = "b"
     login(S,u,p)
-    time.sleep(S.wait_time)   
+    time.sleep(3)   
     accept_coockie(S)
     time.sleep(S.wait_time)    
     accept_notification(S)
     time.sleep(S.wait_time)
-    
-    comment_a_tweet(S,"cacaboudin")
+    accept_coockie(S)
     time.sleep(S.wait_time)
     
-    #follow_an_account(S,"mizak0")
-    #quit()
-    like = like_a_tweet(S)
-    time.sleep(S.wait_time)    
-    #if like == True or like == False:
+    for i in range(len(tweets_url)):
+        like = like_a_tweet(S,tweets_url[i])
+        time.sleep(S.wait_time)    
+        
+        #if like == True or like == False:
+        reetweet_a_tweet(S,tweets_url[i])
+        time.sleep(S.wait_time)        
+        
+        comment_a_tweet(S,tweets_url[i],"ça_ne_marche_pas_quand_je_tag_des_comptes_jsp_pk")
+        time.sleep(S.wait_time)
+        
+    for account_to_follow in tweets_account_to_follow:
+        follow_an_account(S,account_to_follow)
+        time.sleep(S.wait_time)
     
-    reetweet_a_tweet(S)
-    time.sleep(S.wait_time)        
-    
+    print("End of the program")
     #comment_a_tweet(S,"cacaboudin")
     #time.sleep(S.wait_time)
     #make_tweet()
     #else:
     #    print("caca boudin")
+
+
 
 
 try:

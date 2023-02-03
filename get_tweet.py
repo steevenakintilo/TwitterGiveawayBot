@@ -1,7 +1,8 @@
 import snscrape.modules.twitter as sntwitter
 import yaml
 from random import randint
-
+import re
+import emoji
 
 class Data:
     with open("configuration.yml", "r") as file:
@@ -31,6 +32,9 @@ def print_file_info(path):
     return(content)
     f.close()
 
+def remove_emojie(text):
+    return emoji.replace_emoji(text, replace='')
+    #return emoji.get_emoji_regexp().sub(r'',text)
 
 def delete_hashtag_we_dont_want(l):
     d = Data()
@@ -160,11 +164,14 @@ def search_giveaway():
                 result = [word for word in words if word.startswith(char)]
                 hashtag = delete_hashtag_we_dont_want(result)
                 full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + what_to_comment(tweet.content) + " ".join(d.accounts_to_tag) + hashtag
+                #full_phrase = hashtag + " " + what_to_comment(tweet.content) + " " + " ".join(d.accounts_to_tag). + " " + d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)]
+                full_phrase = re.sub(' +', ' ', full_phrase).strip()
+
                 tweets_id.append(tweet.id)
                 tweets_text.append(tweet.content)
                 tweets_url.append(url)
                 tweets_account_to_follow.append(list_of_account_to_follow(tweet.username ,tweet.content))
-                tweets_full_comment.append(full_phrase)
+                tweets_full_comment.append(remove_emojie(full_phrase))
                 write_into_file("url.txt",url+"\n")
                 nb_of_giveaway_found+=1
                 #print(tweet.content,url)

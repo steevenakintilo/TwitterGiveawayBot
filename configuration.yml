@@ -24,7 +24,8 @@ words_to_search:
 accounts_to_tag:
   - "@mediavenir"
   - "@netflix"
-  - "@actufoot_"
+  - "@actufoot_"  
+  - "@jesuisqqndegentil"
 
 # Accounts that we don't want to follow
 accounts_to_blacklist:

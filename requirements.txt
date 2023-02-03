@@ -1,0 +1,4 @@
+emoji==2.2.0
+PyYAML==6.0
+selenium==4.8.0
+snscrape==0.4.3.20220106
