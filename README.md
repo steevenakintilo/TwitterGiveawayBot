@@ -1,6 +1,10 @@
 # TwitterGivewayBot
 A bot that make you participate to any twitter giveaway
 
+You need to install chromedriver from there https://chromedriver.chromium.org/downloads
+Install the version linked to your chrome version then store it into the folder of the bot
+
+Then install requirement module with the "pip install -r requirement.txt" command
 What the bot can do:
 
 -Search Giveaway
@@ -16,3 +20,5 @@ What the bot can't do:
 -Check if a tweet has already been liked
 
 All the configuration for the bot can be found on the configuration.yml file
+
+Feel free to change the bot or even upgrade it
