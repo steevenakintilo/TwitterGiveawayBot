@@ -11,11 +11,13 @@ import pickle
 from selenium.webdriver.common.by import By
 
 class Scraper:
+    wait_time = 3
     options = webdriver.ChromeOptions()
     options.add_argument(r"remote-debugging-port=9222");
     #options.add_argument('headless')
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
     username_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input'
+    
     button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[6]/div'
     password_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input'
     login_button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div'
@@ -25,17 +27,10 @@ class Scraper:
     notification_button_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/span/span'
     reetweet_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[2]/div'
     reetweet_confirm_button_xpath = '/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/div/div/div/div/div[2]/div/span'
+    comment_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[1]/div'
+    textbox_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[2]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div/label/div[1]/div/div/div/div/div/div[2]/div/div/div/div'
+    send_tweet_xpath = '//*[@id="react-root"]/div/div/div[2]/main/div/div/div[2]/div/div/div/div/div[3]/div/div/div'
 
-def write_into_file(path,x):  
-    f = open(path, "w")
-    f.write(str(x))    
-    f.close            
-
-def print_file_info(path):
-    f = open(path, 'r')
-    content = f.read()
-    return(content)
-    f.close()
 
 def login(S,_username,_password):
 
@@ -93,6 +88,7 @@ def accept_coockie(S):
         cookie_button.click()
 
     except:
+        print("error")
         pass    
     print("coockie done")
 
@@ -143,18 +139,65 @@ def reetweet_a_tweet(S):
     
     print("reetweet done")
 
-    time.sleep(100)
+
+
+def comment_a_tweet(S,text):
+
+    print("coment part zero")
+
+    S.driver.get(S.test_tweet)
+    element = WebDriverWait(S.driver, 10).until(
+    EC.presence_of_element_located((By.XPATH, S.comment_button_xpath)))
+    
+    comment_button = S.driver.find_element(By.XPATH,S.comment_button_xpath)
+    comment_button.click()
+
+    print("coment part one")
+    
+    element = WebDriverWait(S.driver, 10).until(
+    EC.presence_of_element_located((By.XPATH, S.textbox_xpath)))
+    
+    textbox = S.driver.find_element(By.XPATH,S.textbox_xpath)
+    textbox.click()
+    time.sleep(S.wait_time)
+    textbox.send_keys(text)
+    
+    time.sleep(S.wait_time)
+
+    print("coment part two")
+    #time.sleep(1234567)
+    element = WebDriverWait(S.driver, 10).until(
+    EC.presence_of_element_located((By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div[2]/div/div/div/div/div[3]/div/div[2]/div/span/span')))
+
+    send_tweet = S.driver.find_element(By.XPATH,'//*[@id="react-root"]/div/div/div[2]/main/div/div/div[2]/div/div/div/div/div[3]/div/div[2]/div/span/span')
+    send_tweet.click()
+    print("comment part three")
+    
+
+
 
 def main():
+    time.sleep(3)
     S = Scraper()
-    login(S,"un_twittos_bleu","steeven1")
-    time.sleep(3)
+    u = ""
+    p = ""
+    login(S,u,p)
+    time.sleep(S.wait_time)    
     accept_coockie(S)
-    time.sleep(3)
+    time.sleep(S.wait_time)    
     accept_notification(S)
-    time.sleep(3)
-    like_a_tweet(S)
-    time.sleep(3)
+    time.sleep(S.wait_time)    
+    like = like_a_tweet(S)
+    time.sleep(S.wait_time)    
+    #if like == True or like == False:
+    
     reetweet_a_tweet(S)
+    time.sleep(S.wait_time)        
+    comment_a_tweet(S,"cacaboudin")
+    time.sleep(S.wait_time)
+    #make_tweet()
+    #else:
+    #    print("caca boudin")
+
 
 main()
