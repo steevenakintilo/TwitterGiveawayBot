@@ -28,7 +28,7 @@ class Scraper:
     notification_button_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/span/span'
     reetweet_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[2]/div'
     reetweet_confirm_button_xpath = '/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/div/div/div/div/div[2]/div/span'
-   n comment_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[1]/div'
+    comment_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[1]/div'
     textbox_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[2]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div/label/div[1]/div/div/div/div/div/div[2]/div/div/div/div'
     follow_button_xpath = "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div"
     
@@ -256,8 +256,6 @@ def main():
     time.sleep(S.wait_time)
     accept_coockie(S)
     time.sleep(S.wait_time)
-    
-
     for i in range(len(tweets_url)):
         like = like_a_tweet(S,tweets_url[i])
         time.sleep(S.wait_time)    
@@ -266,7 +264,7 @@ def main():
             reetweet_a_tweet(S,tweets_url[i])
             time.sleep(S.wait_time)        
         
-            comment_a_tweet(S,tweets_url[i],"ça_ne_marche_pas_quand_je_tag_des_comptes_jsp_pk")
+            comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
             time.sleep(S.wait_time)
         else:
             print("You have already like the tweet")

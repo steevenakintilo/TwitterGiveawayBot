@@ -42,7 +42,7 @@ def delete_hashtag_we_dont_want(l):
 
     for elem in l:
         if elem.lower().replace("#","") not in d.hashtag_to_blacklist:
-            new_l.append(elem)
+            new_l.append(elem + " ")
     
     return (" ".join(new_l))
 
@@ -165,8 +165,7 @@ def search_giveaway():
                 hashtag = delete_hashtag_we_dont_want(result)
                 full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + what_to_comment(tweet.content) + " ".join(d.accounts_to_tag) + hashtag
                 #full_phrase = hashtag + " " + what_to_comment(tweet.content) + " " + " ".join(d.accounts_to_tag). + " " + d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)]
-                full_phrase = re.sub(' +', ' ', full_phrase).strip()
-
+                #full_phrase = re.sub(' +', ' ', full_phrase).strip()
                 tweets_id.append(tweet.id)
                 tweets_text.append(tweet.content)
                 tweets_url.append(url)
