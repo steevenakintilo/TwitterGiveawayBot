@@ -16,7 +16,8 @@ class Data:
     giveaway_to_blacklist = data["giveaway_to_blacklist"]
     max_giveaway = data["max_giveaway"]
     minimum_like = data["minimum_like"]
-
+    minimum_rt = data["minimum_rt"]
+    
 def is_date_older_than_month(date):
     today = datetime.datetime.now().date()
     delta = today - date
@@ -172,7 +173,7 @@ def search_giveaway():
             date_ = date_[0:10]
             date = datetime.datetime.strptime(date_, date_format).date()
             url =  f"https://twitter.com/user/status/{tweet.id}"
-            if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.content) == False and tweet.username not in d.accounts_to_blacklist and url not in url_from_file and is_date_older_than_month(date) == False:
+            if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.content) == False and tweet.username not in d.accounts_to_blacklist and url not in url_from_file and is_date_older_than_month(date) == False and tweet.retweetCount >= d.minimum_rt:
                 words = text.split()
                 result = [word for word in words if word.startswith(char)]
                 hashtag = delete_hashtag_we_dont_want(result)

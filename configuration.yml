@@ -1,7 +1,7 @@
 #Account info write username then password
 account_info:
-  - "ABCDE"
-  - "FGHIJ"
+  - "J'aime bien coder et surtout"
+  - "j'aime bien le python et je deteste le java"
 
 # Words to search for giveaway
 words_to_search:
@@ -120,8 +120,12 @@ giveaway_to_blacklist:
   - "nude"
 
 # Maximum number of giveaway retrieve for each word
-max_giveaway : 20
+max_giveaway : 100
 
 
 # Minimum of like the tweet must have
-minimum_like : 5
+minimum_like : 10
+
+# Minimum of reetweet the tweet must have
+minimum_rt : 20
+
