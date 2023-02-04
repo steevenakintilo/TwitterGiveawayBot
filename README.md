@@ -10,6 +10,8 @@ Install the version linked to your chrome version then store it into the folder 
 Then install requirement module with the "pip install -r requirement.txt" command
 
 Then just do python main.py
+
+
 What the bot can do:
 
 -Search Giveaway
@@ -35,6 +37,7 @@ Installez la version liée à votre version de chrome puis stockez-la dans le do
 Ensuite, installez le module d'exigence avec la commande "pip install -r requirements.txt"
 
 Puis juste faire python main.py
+
 
 Ce que le bot peut faire :
 
