@@ -123,41 +123,48 @@ def accept_notification(S):
     
     
 def like_a_tweet(S,url):
-    S.driver.get(url)
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.like_button_xpath)))
-    
-    like_button = S.driver.find_element(By.XPATH,S.like_button_xpath)
-    #time.sleep(3000)
-    # check the "aria-pressed" attribute
-    
-    liked_or_not = like_button.get_attribute("aria-label")
 
-    time.sleep(1)
+    try:
+        S.driver.get(url)
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.like_button_xpath)))
+        
+        like_button = S.driver.find_element(By.XPATH,S.like_button_xpath)
+        #time.sleep(3000)
+        # check the "aria-pressed" attribute
+        
+        liked_or_not = like_button.get_attribute("aria-label")
 
-    if liked_or_not.lower() == "like" or liked_or_not.lower() == "aimer":
-        like_button.click()
+        time.sleep(1)
+
+        if liked_or_not.lower() == "like" or liked_or_not.lower() == "aimer":
+            like_button.click()
+            return True
+        if liked_or_not.lower() == "liked" or liked_or_not.lower() == "aimé":
+            return False
+    except:
+        print("Bref like")
         return True
-    if liked_or_not.lower() == "liked" or liked_or_not.lower() == "aimé":
-        return False
-    
 
 def reetweet_a_tweet(S,url):
-    S.driver.get(url)
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.reetweet_button_xpath)))
-    
-    reetweet_button = S.driver.find_element(By.XPATH,S.reetweet_button_xpath)
-    reetweet_button.click()
 
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.reetweet_confirm_button_xpath)))
-    
-    reetweet_button = S.driver.find_element(By.XPATH,S.reetweet_confirm_button_xpath)
-    reetweet_button.click()
-    
-    print("reetweet done")
+    try:
+        S.driver.get(url)
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.reetweet_button_xpath)))
+        
+        reetweet_button = S.driver.find_element(By.XPATH,S.reetweet_button_xpath)
+        reetweet_button.click()
 
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.reetweet_confirm_button_xpath)))
+        
+        reetweet_button = S.driver.find_element(By.XPATH,S.reetweet_confirm_button_xpath)
+        reetweet_button.click()
+        
+        print("reetweet done")
+    except:
+        print("Bref rt")
 
 
 def comment_a_tweet(S,url,text):
