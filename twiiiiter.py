@@ -162,40 +162,42 @@ def reetweet_a_tweet(S,url):
 
 def comment_a_tweet(S,url,text):
 
-    print("coment part zero")
+    try:
+        print("coment part zero")
 
-    S.driver.get(url)
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.comment_button_xpath)))
-    
-    comment_button = S.driver.find_element(By.XPATH,S.comment_button_xpath)
-    comment_button.click()
+        S.driver.get(url)
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.comment_button_xpath)))
+        
+        comment_button = S.driver.find_element(By.XPATH,S.comment_button_xpath)
+        comment_button.click()
 
-    print("coment part one")
-    
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.textbox_xpath)))
-    
-    textbox = S.driver.find_element(By.XPATH,S.textbox_xpath)
-    textbox.click()
-    time.sleep(S.wait_time)
-    textbox.send_keys(text)
-    
-    print("coment part two")
-    time.sleep(5)
-    
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
+        print("coment part one")
+        
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.textbox_xpath)))
+        
+        textbox = S.driver.find_element(By.XPATH,S.textbox_xpath)
+        textbox.click()
+        time.sleep(S.wait_time)
+        textbox.send_keys(text)
+        
+        print("coment part two")
+        time.sleep(5)
+        
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
 
-    wait = WebDriverWait(S.driver, 10)
-    target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
+        wait = WebDriverWait(S.driver, 10)
+        target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
 
-    S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
+        S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
 
-    target_element.click()
+        target_element.click()
 
-    print("comment part three")
-    
+        print("comment part three")
+    except:
+        print("Bref .")    
 
 
 def unfollow_an_account(S,account):
