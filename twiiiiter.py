@@ -81,7 +81,7 @@ def accept_coockie(S):
     try:
         S.driver.get(S.test_tweet)
 
-        element = WebDriverWait(S.driver, 30).until(
+        element = WebDriverWait(S.driver, 10).until(
         EC.presence_of_element_located((By.XPATH, S.cookie_button_xpath)))
         
         cookie_button = S.driver.find_element(By.XPATH,S.cookie_button_xpath)
@@ -99,7 +99,7 @@ def accept_notification(S):
     try:
         S.driver.get(S.test_tweet)
 
-        element = WebDriverWait(S.driver, 30).until(
+        element = WebDriverWait(S.driver, 10).until(
         EC.presence_of_element_located((By.XPATH, S.notification_button_xpath)))
         
         cookie_button = S.driver.find_element(By.XPATH,S.notification_button_xpath)
@@ -109,7 +109,7 @@ def accept_notification(S):
     try:
         S.driver.get(S.test_tweet)
 
-        element = WebDriverWait(S.driver, 30).until(
+        element = WebDriverWait(S.driver, 10).until(
         EC.presence_of_element_located((By.XPATH, S.cookie_button_xpath)))
         
         cookie_button = S.driver.find_element(By.XPATH,S.cookie_button_xpath)
@@ -219,24 +219,54 @@ def unfollow_an_account(S,account):
 
 
 def follow_an_account(S,account):
-    
-    S.driver.get("https://twitter.com/"+account)
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
-    
-    follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
+    try:
+        S.driver.get("https://twitter.com/"+account)
+        element = WebDriverWait(S.driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
+        
+        follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
 
-    time.sleep(1)
+        time.sleep(1)
 
-    aria_label = element.get_attribute("aria-label")
-    print(aria_label)
-    aria_label = aria_label.split(" ")
-    follow_or_not = aria_label[0]
+        aria_label = element.get_attribute("aria-label")
+        print(aria_label)
+        aria_label = aria_label.split(" ")
+        
+        try:
+            follow_or_not = aria_label[0]
 
-    if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
-        follow_button.click()
-    print("You've followed another account")
+            if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
+                follow_button.click()
+            print("You've followed another account")
+        except:
+            pass
+    except:
+        follow_an_account_error(S,account)
 
+
+def follow_an_account_error(S,account):
+    try:
+        S.driver.get("https://twitter.com/"+account)
+        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")))
+        
+        follow_button = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")
+
+        time.sleep(1)
+
+        aria_label = element.get_attribute("aria-label")
+        print(aria_label)
+        aria_label = aria_label.split(" ")
+        try:
+            follow_or_not = aria_label[0]
+
+            if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
+                follow_button.click()
+            print("You've followed another account")
+        except:
+            pass
+    except:
+        print("Bref") 
+   
 def main():
 
     with open("configuration.yml", "r") as file:
@@ -256,6 +286,7 @@ def main():
     time.sleep(S.wait_time)
     accept_coockie(S)
     time.sleep(S.wait_time)
+
     for i in range(len(tweets_url)):
         like = like_a_tweet(S,tweets_url[i])
         time.sleep(S.wait_time)    
@@ -273,6 +304,10 @@ def main():
         follow_an_account(S,account_to_follow)
         time.sleep(S.wait_time)
     
+    print(tweets_url[0])
+    print(tweets_url[1])
+    print(tweets_url[2])
+    print("The bot have done " + str(len(tweets_url)) + " giveaway")
     print("End of the program")
 
 try:
