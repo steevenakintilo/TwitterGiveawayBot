@@ -1,4 +1,7 @@
 # TwitterGivewayBot
+
+Bot grandement inspiré de celui-ci: https://github.com/j4rj4r/BotTwitter
+
 A bot that make you participate to any twitter giveaway
 
 You need to install chromedriver from there https://chromedriver.chromium.org/downloads
