@@ -11,15 +11,34 @@ What the bot can do:
 -Store them into a file so that it won't make the same giveaway twice
 -Like the giveaway tweet
 -Rt the giveaway tweet
--Comment the tweet with the right stuff (except tagging people)
+-Comment the tweet with the right stuff
 -Follow the account you need
 -Check if a tweet has already been liked
 -Check if an user is already followed
 
-What the bot can't do:
-
--Commenting the tweet and tagging people
-
 All the configuration for the bot can be found on the configuration.yml file
 
 Feel free to change the bot or even upgrade it
+
+/////
+
+Un bot qui vous fait participer à n'importe quel cadeau Twitter
+
+Vous devez installer chromedriver à partir de là https://chromedriver.chromium.org/downloads
+Installez la version liée à votre version de chrome puis stockez-la dans le dossier du bot
+
+Ensuite, installez le module d'exigence avec la commande "pip install -r requirements.txt"
+Ce que le bot peut faire :
+
+-Recherche des concours
+-Les stockez dans un fichier afin qu'il ne fasse pas deux fois le même concour
+-Like le tweet du concour
+-Rt le tweet du concour
+-Commentez le tweet avec les bonnes choses
+-Suivre le compte lié au concour
+-Vérifier si un tweet a déjà été aimé
+-Vérifier si un utilisateur est déjà suivi
+
+Toute la configuration du bot se trouve dans le fichier configuration.yml
+
+N'hésitez pas à changer de bot ou même à le mettre à jour
