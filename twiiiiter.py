@@ -308,12 +308,15 @@ def main():
         
             comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
             time.sleep(S.wait_time)
+            time.sleep(60)
         else:
             print("You have already like the tweet")
+            time.sleep(60)
 
     for account_to_follow in tweets_account_to_follow:
         follow_an_account(S,account_to_follow)
         time.sleep(S.wait_time)
-    
+        time.sleep(60)
+        
     print("The bot have done " + str(giveaway_done) + " giveaway")
     print("End of the program")
