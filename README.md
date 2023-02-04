@@ -8,6 +8,8 @@ You need to install chromedriver from there https://chromedriver.chromium.org/do
 Install the version linked to your chrome version then store it into the folder of the bot
 
 Then install requirement module with the "pip install -r requirement.txt" command
+
+Then just do python main.py
 What the bot can do:
 
 -Search Giveaway
@@ -31,6 +33,9 @@ Vous devez installer chromedriver à partir de là https://chromedriver.chromium
 Installez la version liée à votre version de chrome puis stockez-la dans le dossier du bot
 
 Ensuite, installez le module d'exigence avec la commande "pip install -r requirements.txt"
+
+Puis juste faire python main.py
+
 Ce que le bot peut faire :
 
 -Recherche des concours

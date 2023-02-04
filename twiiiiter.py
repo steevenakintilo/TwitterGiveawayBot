@@ -270,7 +270,8 @@ def follow_an_account_error(S,account):
         print("Bref") 
    
 def main():
-
+    print("Inside main")
+    giveaway_done = 0
     with open("configuration.yml", "r") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     
@@ -294,6 +295,7 @@ def main():
         time.sleep(S.wait_time)    
         
         if like == True:
+            giveaway_done  += 1
             reetweet_a_tweet(S,tweets_url[i])
             time.sleep(S.wait_time)        
         
@@ -306,18 +308,5 @@ def main():
         follow_an_account(S,account_to_follow)
         time.sleep(S.wait_time)
     
-    print(tweets_url[0])
-    print(tweets_url[1])
-    print(tweets_url[2])
-    print("The bot have done " + str(len(tweets_url)) + " giveaway")
+    print("The bot have done " + str(giveaway_done) + " giveaway")
     print("End of the program")
-
-try:
-    main()
-except Exception as e:
-    print("Bip Bip Elon Musk")
-    if "Message: unknown error: net::ERR_INTERNET_DISCONNECTED" in str(e):
-        print("No connection")
-    else:
-        print("Another type of error")
-        print(traceback.format_exc())

@@ -3,6 +3,7 @@ import yaml
 from random import randint
 import re
 import emoji
+import datetime
 
 class Data:
     with open("configuration.yml", "r") as file:
@@ -16,6 +17,13 @@ class Data:
     max_giveaway = data["max_giveaway"]
     minimum_like = data["minimum_like"]
 
+def is_date_older_than_month(date):
+    today = datetime.datetime.now().date()
+    delta = today - date
+    if delta.days > 30:
+        return True
+    else:
+        return False
 
 def remove_non_alphanumeric(string):
     s = string.split("\n")
@@ -155,11 +163,16 @@ def search_giveaway():
     doublon = 0
     url_from_file = print_file_info("url.txt").split("\n")
     print_data = False
+    date_ = ""
+    date_format = "%Y-%m-%d"
     for search_word in d.word_to_search:
         text = search_word + ' lang:fr'
         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
+            date_ = str(tweet.date)
+            date_ = date_[0:10]
+            date = datetime.datetime.strptime(date_, date_format).date()
             url =  f"https://twitter.com/user/status/{tweet.id}"
-            if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.content) == False and tweet.username not in d.accounts_to_blacklist and url not in url_from_file:
+            if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.content) == False and tweet.username not in d.accounts_to_blacklist and url not in url_from_file and is_date_older_than_month(date) == False:
                 words = text.split()
                 result = [word for word in words if word.startswith(char)]
                 hashtag = delete_hashtag_we_dont_want(result)
@@ -189,5 +202,3 @@ def search_giveaway():
     print("Number of giveaway found = " + str(nb_of_giveaway_found))
     print("Ending giveaway search")
     return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow)
-    
-#search_giveaway()
