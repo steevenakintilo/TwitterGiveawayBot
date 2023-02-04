@@ -28,9 +28,8 @@ class Scraper:
     notification_button_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/span/span'
     reetweet_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[2]/div'
     reetweet_confirm_button_xpath = '/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/div/div/div/div/div[2]/div/span'
-    comment_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[1]/div'
+   n comment_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[1]/div'
     textbox_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[2]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div/label/div[1]/div/div/div/div/div/div[2]/div/div/div/div'
-    send_tweet_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div[2]/div/div/div/div/div[3]/div/div'
     follow_button_xpath = "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div"
     
 def login(S,_username,_password):
@@ -131,15 +130,17 @@ def like_a_tweet(S,url):
     like_button = S.driver.find_element(By.XPATH,S.like_button_xpath)
     #time.sleep(3000)
     # check the "aria-pressed" attribute
-    like_button.click()
     
-    #if like_button.get_attribute("aria-label") != "Aimer":
-    #    print("You have liked the tweet.")
-    #    return False
-    #else:
-    #    like_button.click()
-    #    print("You have not liked the tweet yet.")
-    #    return True
+    liked_or_not = like_button.get_attribute("aria-label")
+
+    time.sleep(1)
+
+    if liked_or_not.lower() == "like" or liked_or_not.lower() == "aimer":
+        like_button.click()
+        return True
+    if liked_or_not.lower() == "liked" or liked_or_not.lower() == "aimé":
+        return False
+    
 
 def reetweet_a_tweet(S,url):
     S.driver.get(url)
@@ -193,10 +194,29 @@ def comment_a_tweet(S,url,text):
 
     target_element.click()
 
-#    send_tweet = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="tweetButton"]')
-#    send_tweet.click()
     print("comment part three")
     
+
+
+def unfollow_an_account(S,account):
+    
+    S.driver.get("https://twitter.com/"+account)
+    element = WebDriverWait(S.driver, 30).until(
+    EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
+    
+    follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
+
+    time.sleep(1)
+
+    aria_label = element.get_attribute("aria-label")
+    print(aria_label)
+    aria_label = aria_label.split(" ")
+    follow_or_not = aria_label[0]
+
+    if follow_or_not.lower() == "following" or follow_or_not.lower() == "abonné":
+        follow_button.click()
+    print("You've unfollowed another account")
+
 
 def follow_an_account(S,account):
     
@@ -205,8 +225,16 @@ def follow_an_account(S,account):
     EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
     
     follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
-    follow_button.click()
 
+    time.sleep(1)
+
+    aria_label = element.get_attribute("aria-label")
+    print(aria_label)
+    aria_label = aria_label.split(" ")
+    follow_or_not = aria_label[0]
+
+    if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
+        follow_button.click()
     print("You've followed another account")
 
 def main():
@@ -229,27 +257,25 @@ def main():
     accept_coockie(S)
     time.sleep(S.wait_time)
     
+
     for i in range(len(tweets_url)):
         like = like_a_tweet(S,tweets_url[i])
         time.sleep(S.wait_time)    
         
-        #if like == True or like == False:
-        reetweet_a_tweet(S,tweets_url[i])
-        time.sleep(S.wait_time)        
+        if like == True:
+            reetweet_a_tweet(S,tweets_url[i])
+            time.sleep(S.wait_time)        
         
-        comment_a_tweet(S,tweets_url[i],"ça_ne_marche_pas_quand_je_tag_des_comptes_jsp_pk")
-        time.sleep(S.wait_time)
-        
+            comment_a_tweet(S,tweets_url[i],"ça_ne_marche_pas_quand_je_tag_des_comptes_jsp_pk")
+            time.sleep(S.wait_time)
+        else:
+            print("You have already like the tweet")
+
     for account_to_follow in tweets_account_to_follow:
         follow_an_account(S,account_to_follow)
         time.sleep(S.wait_time)
     
     print("End of the program")
-    #comment_a_tweet(S,"cacaboudin")
-    #time.sleep(S.wait_time)
-    #make_tweet()
-    #else:
-    #    print("caca boudin")
 
 try:
     main()

@@ -13,11 +13,12 @@ What the bot can do:
 -Rt the giveaway tweet
 -Comment the tweet with the right stuff (except tagging people)
 -Follow the account you need
+-Check if a tweet has already been liked
+-Check if an user is already followed
 
 What the bot can't do:
 
 -Commenting the tweet and tagging people
--Check if a tweet has already been liked
 
 All the configuration for the bot can be found on the configuration.yml file
 
