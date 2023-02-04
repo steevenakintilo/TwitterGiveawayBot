@@ -15,7 +15,7 @@ import traceback
 class Scraper:
     wait_time = 5
     options = webdriver.ChromeOptions()
-    #options.add_argument('headless')
+    options.add_argument('headless')
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
     username_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input'
     
