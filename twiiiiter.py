@@ -179,7 +179,7 @@ def comment_a_tweet(S,url,text):
         comment_button = S.driver.find_element(By.XPATH,S.comment_button_xpath)
         comment_button.click()
 
-        print("coment part one")
+        #print("coment part one")
         
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.textbox_xpath)))
@@ -189,7 +189,7 @@ def comment_a_tweet(S,url,text):
         time.sleep(S.wait_time)
         textbox.send_keys(text)
         
-        print("coment part two")
+        #print("coment part two")
         time.sleep(5)
         
         element = WebDriverWait(S.driver, 30).until(
@@ -202,9 +202,10 @@ def comment_a_tweet(S,url,text):
 
         target_element.click()
 
-        print("comment part three")
+        #print("comment part three")
+        print("comment done")
     except:
-        print("Bref .")    
+        print("Bref comment")    
 
 
 def unfollow_an_account(S,account):
@@ -274,7 +275,7 @@ def follow_an_account_error(S,account):
         except:
             pass
     except:
-        print("Bref") 
+        print("Bref follow") 
    
 def main():
     print("Inside main")
@@ -308,14 +309,14 @@ def main():
             time.sleep(S.wait_time)        
             if tweets_need_to_comment_or_not[i] == True:
                 comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
-                time.sleep(120)
+                time.sleep(60)
         else:
             print("You have already like the tweet")
             time.sleep(5)
 
     for account_to_follow in tweets_account_to_follow:
         follow_an_account(S,account_to_follow)
-        time.sleep(120)
+        time.sleep(60)
         
     print("The bot have done " + str(giveaway_done) + " giveaway")
     print("End of the program")
