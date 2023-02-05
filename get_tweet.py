@@ -218,6 +218,3 @@ def search_giveaway():
         print("Error " + str(e))
         time.sleep(600)
         search_giveaway()
-
-
-search_giveaway()
