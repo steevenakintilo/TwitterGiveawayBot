@@ -285,7 +285,7 @@ def main():
     print("Starting the program")
     print("Searching for Giveaway")
     username_password = data["account_info"]
-    tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow = search_giveaway()
+    tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
     time.sleep(1)
     S = Scraper()
     login(S,username_password[0],username_password[1])
@@ -298,6 +298,7 @@ def main():
     time.sleep(S.wait_time)
 
     for i in range(len(tweets_url)):
+        print("Giveaway n " + str(giveaway_done) + " / " + str(len(tweets_url)))
         like = like_a_tweet(S,tweets_url[i])
         time.sleep(S.wait_time)    
         
@@ -305,18 +306,16 @@ def main():
             giveaway_done  += 1
             reetweet_a_tweet(S,tweets_url[i])
             time.sleep(S.wait_time)        
-        
-            comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
-            time.sleep(S.wait_time)
-            time.sleep(60)
+            if tweets_need_to_comment_or_not[i] == True:
+                comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
+                time.sleep(120)
         else:
             print("You have already like the tweet")
-            time.sleep(60)
+            time.sleep(5)
 
     for account_to_follow in tweets_account_to_follow:
         follow_an_account(S,account_to_follow)
-        time.sleep(S.wait_time)
-        time.sleep(60)
+        time.sleep(120)
         
     print("The bot have done " + str(giveaway_done) + " giveaway")
     print("End of the program")
