@@ -61,12 +61,11 @@ def delete_hashtag_we_dont_want(l):
 
 def check_for_forbidden_word(sentence):
     d = Data()
-    s = sentence.split(" ")
-    for word in s:
-        if word.lower() in d.giveaway_to_blacklist:
+    forbidden = d.giveaway_to_blacklist
+    for elem in forbidden:
+        if elem.lower() in sentence.lower():
             return True
     return False
-
 
 def list_of_account_to_follow(maker_of_the_tweet,sentence):
     account_to_follow = [maker_of_the_tweet.replace("@","")]
@@ -155,12 +154,23 @@ def get_a_better_list(l):
     return (new_l)
 
 def check_if_we_need_to_comment(text):
-    word_list_to_check_for_comment = ["invit","mention","tag","comment","indentif","écrit","écrire","dit","cite","ami","personne"]
+    word_list_to_check_for_comment = ["invit","mention","tag","comment","indentif","écrit","écrire","dit","cite","ami","personne","donne"]
     for elem in word_list_to_check_for_comment:
-        if elem in text:
+        if elem.lower() in text.lower():
             return True
     
     return False
+
+def delete_url(s):
+    s_ = s.split(" ")
+    n_s = []
+    for i in range(len(s_)):
+        if "url" not in s_[i]:
+            n_s.append(s_[i])
+    n =  " ".join(n_s)
+    n = n.strip()
+
+    return(n)
 
 def search_giveaway():
     try:
@@ -190,7 +200,7 @@ def search_giveaway():
                     words = tweet.content.split()
                     result = [word for word in words if word.startswith(char)]
                     hashtag = delete_hashtag_we_dont_want(result)
-                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + what_to_comment(tweet.content) + " ".join(d.accounts_to_tag) + hashtag
+                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + delete_url(what_to_comment(tweet.content)) + " ".join(d.accounts_to_tag) + hashtag
                     tweets_id.append(tweet.id)
                     tweets_text.append(tweet.content)
                     tweets_url.append(url)

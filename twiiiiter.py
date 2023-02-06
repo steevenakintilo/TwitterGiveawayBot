@@ -14,9 +14,15 @@ import traceback
 
 class Scraper:
     wait_time = 5
+    
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
+    #options = webdriver.FirefoxOptions()
+    #options.headless = False
+
+    #driver = webdriver.Firefox(options=options)
+
     username_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input'
     
     button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[6]/div'
@@ -170,7 +176,6 @@ def reetweet_a_tweet(S,url):
 def comment_a_tweet(S,url,text):
 
     try:
-        print("coment part zero")
 
         S.driver.get(url)
         element = WebDriverWait(S.driver, 30).until(
@@ -239,7 +244,6 @@ def follow_an_account(S,account):
         time.sleep(1)
 
         aria_label = element.get_attribute("aria-label")
-        print(aria_label)
         aria_label = aria_label.split(" ")
         
         try:
@@ -247,8 +251,10 @@ def follow_an_account(S,account):
 
             if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
                 follow_button.click()
-            print("You've followed another account")
+                time.sleep(60)
+                print("You've followed another account " + account)
         except:
+            print("You already follow the account")
             pass
     except:
         follow_an_account_error(S,account)
@@ -264,15 +270,16 @@ def follow_an_account_error(S,account):
         time.sleep(1)
 
         aria_label = element.get_attribute("aria-label")
-        print(aria_label)
         aria_label = aria_label.split(" ")
         try:
             follow_or_not = aria_label[0]
 
             if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
                 follow_button.click()
-            print("You've followed another account")
+                time.sleep(60)
+                print("You've followed another account " + account)
         except:
+            print("You already follow the account")
             pass
     except:
         print("Bref follow") 
@@ -285,38 +292,51 @@ def main():
     
     print("Starting the program")
     print("Searching for Giveaway")
-    username_password = data["account_info"]
+    username_info = data["account_username"]
+    password_info = data["account_password"]
+    
     tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
-    time.sleep(1)
-    S = Scraper()
-    login(S,username_password[0],username_password[1])
-    time.sleep(3)   
-    accept_coockie(S)
-    time.sleep(S.wait_time)    
-    accept_notification(S)
-    time.sleep(S.wait_time)
-    accept_coockie(S)
-    time.sleep(S.wait_time)
-
-    for i in range(len(tweets_url)):
-        print("Giveaway n " + str(giveaway_done) + " / " + str(len(tweets_url)))
-        like = like_a_tweet(S,tweets_url[i])
+    
+    for i in range(len(username_info)):
+        print("Connecting to " + str(username_info[i]))
+        time.sleep(1)
+        S = Scraper()
+        login(S,username_info[i],password_info[i])
+        time.sleep(3)   
+        accept_coockie(S)
         time.sleep(S.wait_time)    
-        
-        if like == True:
-            giveaway_done  += 1
-            reetweet_a_tweet(S,tweets_url[i])
-            time.sleep(S.wait_time)        
-            if tweets_need_to_comment_or_not[i] == True:
-                comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
-                time.sleep(60)
-        else:
-            print("You have already like the tweet")
-            time.sleep(5)
+        accept_notification(S)
+        time.sleep(S.wait_time)
+        accept_coockie(S)
+        time.sleep(S.wait_time)
+        giveaway_g = 0
+        follow_nbr = 0
+        for i in range(len(tweets_url)):
+            print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweets_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
+            like = like_a_tweet(S,tweets_url[i])
+            time.sleep(S.wait_time)    
+            
+            if like == True:
+                giveaway_done  += 1
+                giveaway_g += 1
+                reetweet_a_tweet(S,tweets_url[i])
+                time.sleep(S.wait_time)        
+                if tweets_need_to_comment_or_not[i] == True:
+                    comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
+                    time.sleep(45)
+            else:
+                giveaway_done  += 1
+                print("You have already like the tweet")
+                time.sleep(5)
 
-    for account_to_follow in tweets_account_to_follow:
-        follow_an_account(S,account_to_follow)
-        time.sleep(60)
-        
-    print("The bot have done " + str(giveaway_done) + " giveaway")
+        for account_to_follow in tweets_account_to_follow:
+            follow_nbr +=1
+            print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
+            follow_an_account(S,account_to_follow)
+            
+        print("Giveaway finished for this account sleeping a bit")
+        giveaway_g = 0
+        follow_nbr = 0
+        giveaway_done = 0
+        time.sleep(180)
     print("End of the program")

@@ -1,6 +1,9 @@
-#Account info write username then password
-account_info:
+#Account info write the username of all your account
+account_username:
   - ""
+
+#Account info write the password of all your account
+account_password:
   - ""
 
 # Words to search for giveaway
@@ -118,15 +121,16 @@ hashtag_to_blacklist:
 # We don't want to participate in giveaway with these words
 giveaway_to_blacklist:
   - "nude"
+  - "sorare"
 
 # Maximum number of giveaway retrieve for each word
 max_giveaway : 10
 
 # Minimum of like the tweet must have
-minimum_like : 1000
+minimum_like : 10
 
 # Minimum of reetweet the tweet must have
-minimum_rt : 1000
+minimum_rt : 20
 
 #Maximum day for a giveaway to be done
 maximum_day: 30
