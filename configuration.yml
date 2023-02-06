@@ -1,11 +1,15 @@
+#Write 1 if you only have one account and write two if you have several account
+main_mode:
+  - 1
+
 #Account info write the username of all your account
 account_username:
-  - ""
-
+  - "ut"
+  
 #Account info write the password of all your account
 account_password:
-  - ""
-
+  - "S1"
+  
 # Words to search for giveaway
 words_to_search:
   - "#concours"

@@ -4,10 +4,12 @@ import traceback
 if __name__ == "__main__":
     try:
         print("Hello world")
-        choice = input("\nWrite 1 to launch giveaway if you have several account on the configuration.yml file.\nWrite 2 if you only have one account\nWrite 3 to quit\n\n:")
-        if choice == "1":
+        with open("configuration.yml", "r") as file:
+            data = yaml.load(file, Loader=yaml.FullLoader)
+        choice = data["main_mode"]
+        if choice[0] == 1:
             main_one()
-        elif choice == "2":
+        elif choice[0] == 2:
             main_two()
         else:
             quit()
