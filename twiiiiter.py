@@ -283,9 +283,9 @@ def follow_an_account_error(S,account):
             pass
     except:
         print("Bref follow") 
-   
-def main():
-    print("Inside main")
+
+def main_one():
+    print("Inside main one")
     giveaway_done = 0
     with open("configuration.yml", "r") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
@@ -339,4 +339,56 @@ def main():
         follow_nbr = 0
         giveaway_done = 0
         time.sleep(180)
+    print("End of the program")
+
+
+def main_two():
+    print("Inside main two")
+    giveaway_done = 0
+    with open("configuration.yml", "r") as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+    
+    print("Starting the program")
+    print("Searching for Giveaway")
+    username_info = data["account_username"]
+    password_info = data["account_password"]
+    
+    tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
+    
+    for i in range(len(username_info)):
+        print("Connecting to " + str(username_info[i]))
+        time.sleep(1)
+        S = Scraper()
+        login(S,username_info[i],password_info[i])
+        time.sleep(3)   
+        accept_coockie(S)
+        time.sleep(S.wait_time)    
+        accept_notification(S)
+        time.sleep(S.wait_time)
+        accept_coockie(S)
+        time.sleep(S.wait_time)
+        giveaway_g = 0
+        follow_nbr = 0
+        for i in range(len(tweets_url)):
+            print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweets_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
+            like = like_a_tweet(S,tweets_url[i])
+            time.sleep(S.wait_time)    
+            
+            if like == True:
+                giveaway_done  += 1
+                giveaway_g += 1
+                reetweet_a_tweet(S,tweets_url[i])
+                time.sleep(S.wait_time)        
+                if tweets_need_to_comment_or_not[i] == True:
+                    comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
+                    time.sleep(45)
+            else:
+                giveaway_done  += 1
+                print("You have already like the tweet")
+                time.sleep(5)
+
+        for account_to_follow in tweets_account_to_follow:
+            follow_nbr +=1
+            print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
+            follow_an_account(S,account_to_follow)
     print("End of the program")
