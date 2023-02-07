@@ -10,6 +10,8 @@ import pickle
 from selenium.webdriver.common.by import By
 from get_tweet import *
 import traceback
+import feedparser
+from random import randint
 
 
 class Scraper:
@@ -38,6 +40,46 @@ class Scraper:
     textbox_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[2]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div/label/div[1]/div/div/div/div/div/div[2]/div/div/div/div'
     follow_button_xpath = "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div"
     
+def get_news():
+    url_list = ["https://www.france24.com/fr/rss",
+    "https://www.france24.com/fr/europe/rss",
+    "https://www.france24.com/fr/france/rss",
+    "https://www.france24.com/fr/afrique/rss",
+    "https://www.france24.com/fr/moyen-orient/rss",
+    "https://www.france24.com/fr/am%C3%A9riques/rss",
+    "https://www.france24.com/fr/asie-pacifique/rss",
+    "https://www.france24.com/fr/%C3%A9co-tech/rss",
+    "https://www.france24.com/fr/sports/rss",
+    "https://www.france24.com/fr/culture/rss",
+    "https://www.france24.com/fr/plan%C3%A8te/rss",
+    ]
+
+    l = url_list[randint(0,len(url_list) - 1)]
+    #l = "https://www.france24.com/fr/rss"
+    news_feed = feedparser.parse(l)
+
+    news_title = []
+    news_link = []
+    idx = 0
+    for entry in news_feed.entries:
+        if idx != 0:
+            break
+        news_title.append(entry.title)
+        news_link.append(entry.link)
+        idx = idx + 1
+
+    try:
+        rdm_news = randint(0,len(news_title)) - 1
+        return(news_title[rdm_news],news_link[rdm_news])
+        print(news_title[rdm_news],news_link[rdm_news])
+    except:
+        try:
+            return(news_title[0],news_link[0])
+            print(news_title[0],news_link[0])
+        except:
+            return ("ok","ok")
+            print("ok","ok")
+
 def login(S,_username,_password):
 
     S.driver.get("https://twitter.com/i/flow/login")
@@ -213,6 +255,38 @@ def comment_a_tweet(S,url,text):
         print("Bref comment")    
 
 
+def make_a_tweet(S,text):
+    try:
+        S.driver.get("https://twitter.com/compose/tweet")
+        time.sleep(10)
+        #print("coment part one")
+        
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
+        
+        textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
+        textbox.click()
+        time.sleep(S.wait_time)
+        textbox.send_keys(text)
+        
+        #print("coment part two")
+        time.sleep(5)
+        
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
+
+        wait = WebDriverWait(S.driver, 10)
+        target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
+
+        S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
+
+        target_element.click()
+
+        #print("comment part three")
+        print("Tweet done")
+    except:
+        print("Bref tweet")    
+    
 def unfollow_an_account(S,account):
     
     S.driver.get("https://twitter.com/"+account)
@@ -294,7 +368,8 @@ def main_one():
     print("Searching for Giveaway")
     username_info = data["account_username"]
     password_info = data["account_password"]
-    
+    sentence_to_tweet = data["setence_to_tweet"]
+
     tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
     
     for i in range(len(username_info)):
@@ -333,7 +408,11 @@ def main_one():
             follow_nbr +=1
             print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
             follow_an_account(S,account_to_follow)
-            
+        for i in range(len(3)):
+            info , info_link = get_news()
+            make_a_tweet(S,info+" "+info_link)
+            time.sleep(60)
+        make_a_tweet(S,sentence_to_tweet[len(sentence_to_tweet) - 1])
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0
         follow_nbr = 0
@@ -352,10 +431,11 @@ def main_two():
     print("Searching for Giveaway")
     username_info = data["account_username"]
     password_info = data["account_password"]
-    
+    sentence_to_tweet = data["setence_to_tweet"]
     tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
     
     for i in range(len(username_info)):
+
         print("Connecting to " + str(username_info[i]))
         time.sleep(1)
         S = Scraper()
@@ -391,4 +471,10 @@ def main_two():
             follow_nbr +=1
             print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
             follow_an_account(S,account_to_follow)
+    
+        for i in range(3):
+            info , info_link = get_news()
+            make_a_tweet(S,info+" "+info_link)
+            time.sleep(60)
+        make_a_tweet(S,sentence_to_tweet[len(sentence_to_tweet) - 1])
     print("End of the program")

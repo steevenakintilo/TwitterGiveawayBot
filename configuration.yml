@@ -1,15 +1,15 @@
 #Write 1 if you only have one account and write two if you have several account
 main_mode:
-  - 1
+  - 2
 
 #Account info write the username of all your account
 account_username:
-  - "ut"
-  
+  - "u"
+
 #Account info write the password of all your account
 account_password:
-  - "S1"
-  
+  - "#"
+
 # Words to search for giveaway
 words_to_search:
   - "#concours"
@@ -46,6 +46,59 @@ accounts_to_blacklist:
   - "@BotSpotterBot"
   - "@gulzaarAvi"
   - "@BotFett"
+
+# Sentences that the bot will say to act not like a bot
+setence_to_tweet:
+  - "L'avenir appartient à ceux qui croient en la beauté de leurs rêves."
+  - "L'échec est la fondation de la réussite."
+  - "Chaque jour est une occasion de recommencer."
+  - "La vie est un voyage, pas une destination."
+  - "Le bonheur est un choix."
+  - "La patience est une vertu."
+  - "L'optimisme est la clé du succès."
+  - "Les erreurs sont la preuve que nous essayons."
+  - "La persévérance paie toujours."
+  - "L'amour est plus fort que la haine."
+  - "La vérité sort toujours du fond de l'âme."
+  - "La confiance en soi est la clé de la réussite."
+  - "La persévérance est la mère de la réussite."
+  - "Le temps guérit toutes les blessures."
+  - "L'espoir est l'antidote de la dépression."
+  - "La créativité est la clé de la réussite."
+  - "Les petits plaisirs de la vie sont les meilleurs."
+  - "L'amitié est un trésor précieux."
+  - "La vie est ce que vous en faites."
+  - "L'éducation est la clé du succès."
+  - "La vie est courte, profitez-en."
+  - "La sagesse vient avec l'âge."
+  - "La grâce est la plus grande force de la nature."
+  - "La beauté est dans les yeux de celui qui regarde."
+  - "La simplicité est la clé de la vie."
+  - "La vie est un cadeau, ne le gaspillez pas."
+  - "La compassion est la plus grande vertu de l'homme."
+  - "L'amour est le plus grand pouvoir du monde."
+  - "Le temps est précieux, ne le gaspillez pas."
+  - "La curiosité est le moteur de la découverte."
+  - "L'espoir est le moteur de la vie."
+  - "La générosité est la plus grande vertu de l'humanité."
+  - "La vie est un jeu, jouez-le à fond."
+  - "La vie est belle, appréciez-la."
+  - "La vie est un défi, relevez-le."
+  - "La vie est un choix, choisissez-la avec sagesse."
+  - "La vie est une danse, dansez-la avec joie."
+  - "La vie est un don, soyez reconnaissant."
+  - "La vie est une aventure, soyez audacieux."
+  - "La vie est un voyage, profitez-en."
+  - "La vie est un roman, écrivez-le avec passion."
+  - "La vie est un cadeau, célébrez-la."
+  - "La vie est un miracle, appréciez"
+  - "La tolérance est la clé de la paix."
+  - "La détermination est la clé de la réussite."
+  - "L'entraide est la clé de la solidarité."
+  - "La vie est une occasion unique, saisissez-la."
+  - "L'honnêteté est la base d'une bonne relation."
+  - "La vie est un chemin, suivez-le avec courage."
+  - "La gratitude est la clé du bonheur."
 
 # Sentences you need to tweet to invite a friend you must but a space at the end of each sentence
 sentence_for_tag:
@@ -128,13 +181,13 @@ giveaway_to_blacklist:
   - "sorare"
 
 # Maximum number of giveaway retrieve for each word
-max_giveaway : 10
+max_giveaway: 10
 
 # Minimum of like the tweet must have
-minimum_like : 10
+minimum_like: 10
 
 # Minimum of reetweet the tweet must have
-minimum_rt : 20
+minimum_rt: 2000
 
 #Maximum day for a giveaway to be done
 maximum_day: 30
