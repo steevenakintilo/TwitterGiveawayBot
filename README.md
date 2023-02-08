@@ -22,6 +22,7 @@ What the bot can do:
 -Follow the account you need
 -Check if a tweet has already been liked
 -Check if an user is already followed
+-Make a random tweet to be like "human"
 
 All the configuration for the bot can be found on the configuration.yml file
 
@@ -49,7 +50,8 @@ Ce que le bot peut faire :
 -Suivre le compte lié au concour
 -Vérifier si un tweet a déjà été aimé
 -Vérifier si un utilisateur est déjà suivi
+- Faire un tweet aléatoire pour parraitre plus "humain"
 
 Toute la configuration du bot se trouve dans le fichier configuration.yml
 
-N'hésitez pas à changer de bot ou même à le mettre à jour
+N'hésitez pas à changer le bot ou même à le mettre à jour
