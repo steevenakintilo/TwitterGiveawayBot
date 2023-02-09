@@ -165,7 +165,7 @@ def delete_url(s):
     s_ = s.split(" ")
     n_s = []
     for i in range(len(s_)):
-        if "url" not in s_[i]:
+        if "https" not in s_[i]:
             n_s.append(s_[i])
     n =  " ".join(n_s)
     n = n.strip()
@@ -196,16 +196,17 @@ def search_giveaway():
                 date_ = date_[0:10]
                 date = datetime.datetime.strptime(date_, date_format).date()
                 url =  f"https://twitter.com/user/status/{tweet.id}"
-                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.content) == False and tweet.username not in d.accounts_to_blacklist and url not in url_from_file and is_date_older_than_a_number_of_day(date) == False and tweet.retweetCount >= d.minimum_rt:
-                    words = tweet.content.split()
+                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and tweet.user.username not in d.accounts_to_blacklist and url not in url_from_file and is_date_older_than_a_number_of_day(date) == False and tweet.retweetCount >= d.minimum_rt:
+                    words = tweet.rawContent.split()
                     result = [word for word in words if word.startswith(char)]
                     hashtag = delete_hashtag_we_dont_want(result)
-                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + delete_url(what_to_comment(tweet.content)) + " ".join(d.accounts_to_tag) + hashtag
+                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
                     tweets_id.append(tweet.id)
-                    tweets_text.append(tweet.content)
+                    tweets_text.append(tweet.rawContent)
                     tweets_url.append(url)
-                    tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(tweet.content))
-                    tweets_account_to_follow.append(list_of_account_to_follow(tweet.username ,tweet.content))
+                    print(full_phrase)
+                    tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(tweet.rawContent))
+                    tweets_account_to_follow.append(list_of_account_to_follow(tweet.user.username ,tweet.rawContent))
                     tweets_full_comment.append(remove_emojie(full_phrase))
                     write_into_file("url.txt",url+"\n")
                     nb_of_giveaway_found+=1
@@ -228,3 +229,7 @@ def search_giveaway():
         print("Error " + str(e))
         time.sleep(600)
         search_giveaway()
+
+
+
+search_giveaway()
