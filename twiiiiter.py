@@ -408,7 +408,7 @@ def main_one():
             follow_nbr +=1
             print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
             follow_an_account(S,account_to_follow)
-        for i in range(len(3)):
+        for i in range(3):
             info , info_link = get_news()
             make_a_tweet(S,info+" "+info_link)
             time.sleep(60)
