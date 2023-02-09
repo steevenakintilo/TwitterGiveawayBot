@@ -204,7 +204,6 @@ def search_giveaway():
                     tweets_id.append(tweet.id)
                     tweets_text.append(tweet.rawContent)
                     tweets_url.append(url)
-                    print(full_phrase)
                     tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(tweet.rawContent))
                     tweets_account_to_follow.append(list_of_account_to_follow(tweet.user.username ,tweet.rawContent))
                     tweets_full_comment.append(remove_emojie(full_phrase))
@@ -229,7 +228,3 @@ def search_giveaway():
         print("Error " + str(e))
         time.sleep(600)
         search_giveaway()
-
-
-
-search_giveaway()
