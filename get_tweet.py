@@ -172,6 +172,30 @@ def delete_url(s):
 
     return(n)
 
+def search_tweet_for_rt(text):
+    tweet_url = []
+    MAX = 0
+    try:
+        text = text + ' lang:fr'
+        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text, top = True).get_items()):
+            url =  f"https://twitter.com/user/status/{tweet.id}"
+            tweet_url.append(url)
+            MAX+=1
+            if MAX >= 7:
+                break
+        return(tweet_url)
+    except:
+        return(tweet_url)
+
+
+def check_blacklist(account):
+    d = Data
+    for backlist_account in d.accounts_to_blacklist:
+        if account.lower() == backlist_account.lower().replace("@",""):
+            return(True)
+    return (False)
+
+
 def search_giveaway():
     try:
         d = Data()
@@ -196,11 +220,11 @@ def search_giveaway():
                 date_ = date_[0:10]
                 date = datetime.datetime.strptime(date_, date_format).date()
                 url =  f"https://twitter.com/user/status/{tweet.id}"
-                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and tweet.user.username not in d.accounts_to_blacklist and url not in url_from_file and is_date_older_than_a_number_of_day(date) == False and tweet.retweetCount >= d.minimum_rt:
+                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and check_blacklist(tweet.user.username) == False and url not in url_from_file and is_date_older_than_a_number_of_day(date) == False and tweet.retweetCount >= d.minimum_rt:
                     words = tweet.rawContent.split()
                     result = [word for word in words if word.startswith(char)]
                     hashtag = delete_hashtag_we_dont_want(result)
-                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
+                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
                     tweets_id.append(tweet.id)
                     tweets_text.append(tweet.rawContent)
                     tweets_url.append(url)

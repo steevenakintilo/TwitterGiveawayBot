@@ -358,6 +358,37 @@ def follow_an_account_error(S,account):
     except:
         print("Bref follow") 
 
+def scroll_down(S):
+    S.driver.get("https://twitter.com/un_twittos_bleu/following")
+    
+    # Get the current scroll height
+    last_height = S.driver.execute_script("return document.body.scrollHeight")
+    test = 0
+    new_height = 0
+    last_height = 0
+    # Keep scrolling until the bottom of the page is reached
+    while True:
+        S.driver.execute_script("window.scrollBy(0, 500)")        
+        print(test)
+        test = test + 1
+        new_height = S.driver.execute_script("return document.body.scrollHeight")
+        if test > 1000:
+            break
+        last_height = new_height
+    print("aaaaaaaa")
+    time.sleep(12000000)
+
+
+def get_trend(S):
+    try:
+        S.driver.get("https://twitter.com/explore")
+        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div/div/section/div/div/div[3]/div/div/div/div/div[2]")))
+        print(element.text)
+        return (str(element.text))
+    except:
+        print("Bred trend")
+        return ("je")
+
 def main_one():
     print("Inside main one")
     giveaway_done = 0
@@ -413,6 +444,15 @@ def main_one():
             make_a_tweet(S,info+" "+info_link)
             time.sleep(60)
         make_a_tweet(S,sentence_to_tweet[len(sentence_to_tweet) - 1])
+        
+        rt_url = search_tweet_for_rt(get_trend(S))
+        
+        for i in range(len(rt_url)):
+            like = like_a_tweet(S,rt_url[i])
+            if like == True:            
+                reetweet_a_tweet(S,rt_url[i])
+            time.sleep(15)
+        
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0
         follow_nbr = 0
@@ -476,5 +516,15 @@ def main_two():
             info , info_link = get_news()
             make_a_tweet(S,info+" "+info_link)
             time.sleep(60)
+        
+        rt_url = search_tweet_for_rt(get_trend(S))
+        
+        for i in range(len(rt_url)):
+            like = like_a_tweet(S,rt_url[i])
+            if like == True:            
+                reetweet_a_tweet(S,rt_url[i])
+            time.sleep(15)
+        
+        
         make_a_tweet(S,sentence_to_tweet[len(sentence_to_tweet) - 1])
     print("End of the program")
