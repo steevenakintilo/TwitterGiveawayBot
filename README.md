@@ -1,6 +1,10 @@
 # TwitterGivewayBot
 
 Bot grandement inspiré de celui-ci: https://github.com/j4rj4r/BotTwitter
+Bot greatly inspired by this one: https://github.com/j4rj4r/BotTwitter
+
+
+## English
 
 A bot that make you participate to any twitter giveaway
 
@@ -9,7 +13,7 @@ Install the version linked to your chrome version then store it into the folder 
 
 Then install requirement module with the "pip install -r requirement.txt" command
 
-Then just do python main.py
+Then just do: python main.py
 
 
 What the bot can do:
@@ -28,7 +32,7 @@ All the configuration for the bot can be found on the configuration.yml file
 
 Feel free to change the bot or even upgrade it
 
-/////
+## Français
 
 Un bot qui vous fait participer à n'importe quel cadeau Twitter
 
