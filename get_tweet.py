@@ -215,7 +215,8 @@ def search_giveaway():
         date_format = "%Y-%m-%d"
         for search_word in d.word_to_search:
             text = search_word + ' lang:fr'
-            for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
+            #for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
+            for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text, top = True).get_items()):
                 date_ = str(tweet.date)
                 date_ = date_[0:10]
                 date = datetime.datetime.strptime(date_, date_format).date()

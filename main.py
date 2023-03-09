@@ -4,15 +4,7 @@ import traceback
 if __name__ == "__main__":
     try:
         print("Hello world")
-        with open("configuration.yml", "r") as file:
-            data = yaml.load(file, Loader=yaml.FullLoader)
-        choice = data["main_mode"]
-        if choice[0] == 1:
-            main_one()
-        elif choice[0] == 2:
-            main_two()
-        else:
-            quit()
+        main_one()
     except Exception as e:
         print("Bip Bip Elon Musk")
         if "Message: unknown error: net::ERR_INTERNET_DISCONNECTED" in str(e):

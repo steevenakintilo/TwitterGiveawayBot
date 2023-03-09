@@ -30,8 +30,8 @@ class Scraper:
     button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[6]/div'
     password_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input'
     login_button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div'
-    like_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[3]/div'
     test_tweet = 'https://twitter.com/Twitter/status/1580661436132757506'
+    like_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[3]/div'
     cookie_button_xpath = '//*[@id="layers"]/div/div/div/div/div/div[2]/div[1]/div/span/span'
     notification_button_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/span/span'
     reetweet_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[2]/div'
@@ -39,7 +39,8 @@ class Scraper:
     comment_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[1]/div'
     textbox_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[2]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div/label/div[1]/div/div/div/div/div/div[2]/div/div/div/div'
     follow_button_xpath = "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div"
-    
+    unfollow_nbr = 0
+
 def get_news():
     url_list = ["https://www.france24.com/fr/rss",
     "https://www.france24.com/fr/europe/rss",
@@ -169,21 +170,20 @@ def accept_notification(S):
     
     print("notification done")
     
-    
+ 
 def like_a_tweet(S,url):
 
     try:
         S.driver.get(url)
         element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.like_button_xpath)))
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
         
-        like_button = S.driver.find_element(By.XPATH,S.like_button_xpath)
+        like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
         #time.sleep(3000)
         # check the "aria-pressed" attribute
         
         liked_or_not = like_button.get_attribute("aria-label")
 
-        time.sleep(1)
 
         if liked_or_not.lower() == "like" or liked_or_not.lower() == "aimer":
             like_button.click()
@@ -191,23 +191,24 @@ def like_a_tweet(S,url):
         if liked_or_not.lower() == "liked" or liked_or_not.lower() == "aimé":
             return False
     except:
-        print("Bref like")
+        print("Bref like" * 10)
         return True
+
 
 def reetweet_a_tweet(S,url):
 
     try:
         S.driver.get(url)
         element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.reetweet_button_xpath)))
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweet"]')))
         
-        reetweet_button = S.driver.find_element(By.XPATH,S.reetweet_button_xpath)
+        reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweet"]')
         reetweet_button.click()
 
         element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.reetweet_confirm_button_xpath)))
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')))
         
-        reetweet_button = S.driver.find_element(By.XPATH,S.reetweet_confirm_button_xpath)
+        reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')
         reetweet_button.click()
         
         print("reetweet done")
@@ -221,22 +222,22 @@ def comment_a_tweet(S,url,text):
 
         S.driver.get(url)
         element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.comment_button_xpath)))
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="reply"]')))
         
-        comment_button = S.driver.find_element(By.XPATH,S.comment_button_xpath)
+        comment_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="reply"]')
         comment_button.click()
 
-        #print("coment part one")
+      #  print("coment part one")
         
         element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.textbox_xpath)))
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
         
-        textbox = S.driver.find_element(By.XPATH,S.textbox_xpath)
+        textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
         textbox.click()
         time.sleep(S.wait_time)
         textbox.send_keys(text)
         
-        #print("coment part two")
+     #   print("coment part two")
         time.sleep(5)
         
         element = WebDriverWait(S.driver, 30).until(
@@ -249,7 +250,7 @@ def comment_a_tweet(S,url,text):
 
         target_element.click()
 
-        #print("comment part three")
+    #    print("comment part three")
         print("comment done")
     except:
         print("Bref comment")    
@@ -287,24 +288,67 @@ def make_a_tweet(S,text):
     except:
         print("Bref tweet")    
     
+
+
 def unfollow_an_account(S,account):
-    
-    S.driver.get("https://twitter.com/"+account)
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
-    
-    follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
+    try:
+        S.driver.get("https://twitter.com/"+account)
+        element = WebDriverWait(S.driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
+        
+        follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
 
-    time.sleep(1)
+        time.sleep(1)
 
-    aria_label = element.get_attribute("aria-label")
-    print(aria_label)
-    aria_label = aria_label.split(" ")
-    follow_or_not = aria_label[0]
+        aria_label = element.get_attribute("aria-label")
+        aria_label = aria_label.split(" ")
+        
+        try:
+            follow_or_not = aria_label[0]
 
-    if follow_or_not.lower() == "following" or follow_or_not.lower() == "abonné":
-        follow_button.click()
-    print("You've unfollowed another account")
+            if follow_or_not.lower() != "follow" and follow_or_not.lower() != "suivre":
+                follow_button.click()
+                element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="confirmationSheetConfirm"]')))
+                confirm_click = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
+                confirm_click.click()
+                S.unfollow_nbr+=1
+                time.sleep(15)
+                print("You've unfollowed another account " + account)
+        except:
+            print("You already unfollow the account")
+            pass
+    except Exception as e:
+        print("Bref unfollow " + str(e))
+        unfollow_an_account_error(S,account)
+
+
+def unfollow_an_account_error(S,account):
+    try:
+        S.driver.get("https://twitter.com/"+account)
+        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")))
+        
+        follow_button = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")
+
+        time.sleep(1)
+
+        aria_label = element.get_attribute("aria-label")
+        aria_label = aria_label.split(" ")
+        try:
+            follow_or_not = aria_label[0]
+
+            if follow_or_not.lower() != "follow" and follow_or_not.lower() != "suivre":
+                follow_button.click()
+                element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="confirmationSheetConfirm"]')))
+                confirm_click = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
+                confirm_click.click()
+                S.unfollow_nbr+=1
+                time.sleep(15)
+                print("You've unfollowed another account " + account)
+        except:
+            print("You already unfollow the account")
+            pass
+    except Exception as e:
+        print("Bref unfollow " + str(e)) 
 
 
 def follow_an_account(S,account):
@@ -325,6 +369,8 @@ def follow_an_account(S,account):
 
             if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
                 follow_button.click()
+                element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")))
+                confirm_click = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")
                 time.sleep(60)
                 print("You've followed another account " + account)
         except:
@@ -358,8 +404,16 @@ def follow_an_account_error(S,account):
     except:
         print("Bref follow") 
 
-def scroll_down(S):
-    S.driver.get("https://twitter.com/un_twittos_bleu/following")
+
+def get_only_account(s):
+    l = []
+    for i in range(len(s)):
+        if s[i][0] == "@":
+            l.append(s[i])
+    return (l)
+
+def scroll_down(S,account):
+    S.driver.get("https://twitter.com/" + account + "/following")
     
     # Get the current scroll height
     last_height = S.driver.execute_script("return document.body.scrollHeight")
@@ -367,17 +421,22 @@ def scroll_down(S):
     new_height = 0
     last_height = 0
     # Keep scrolling until the bottom of the page is reached
+    element = WebDriverWait(S.driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div")))
     while True:
         S.driver.execute_script("window.scrollBy(0, 500)")        
-        print(test)
         test = test + 1
         new_height = S.driver.execute_script("return document.body.scrollHeight")
-        if test > 1000:
+        print(test)
+        time.sleep(0.02)
+        if test > 3000:
             break
         last_height = new_height
-    print("aaaaaaaa")
-    time.sleep(12000000)
-
+    
+    element = WebDriverWait(S.driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div")))
+    account = element.text
+    account = account.split("\n")
+    return(get_only_account(account))
+    
 
 def get_trend(S):
     try:
@@ -388,6 +447,25 @@ def get_trend(S):
     except:
         print("Bred trend")
         return ("je")
+
+def check_for_unfollow(S,account):
+    try:
+        S.driver.get("https://twitter.com/"+account)
+        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[5]/div[1]/a/span[1]/span")))    
+        time.sleep(5)
+        print("The account currently have " + str(int(element.text.replace(" ",""))) + " following")
+        if int(element.text.replace(" ","")) > 4500:
+            print("Time to unfollow people") 
+            for i in range(10):
+                list_of_people_to_unfollow = scroll_down(S,account)
+                print(list_of_people_to_unfollow,len(list_of_people_to_unfollow))
+                for ac in list_of_people_to_unfollow:
+                    unfollow_an_account(S,ac.replace("@",""))
+        else:
+            print("Don't have to unfollow people")
+        print("Nbr of account unfollowed = " + str(S.unfollow_nbr))
+    except:
+        print("Bref unfollow")
 
 def main_one():
     print("Inside main one")
@@ -443,7 +521,7 @@ def main_one():
             info , info_link = get_news()
             make_a_tweet(S,info+" "+info_link)
             time.sleep(60)
-        make_a_tweet(S,sentence_to_tweet[len(sentence_to_tweet) - 1])
+        make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
         
         rt_url = search_tweet_for_rt(get_trend(S))
         
@@ -458,73 +536,4 @@ def main_one():
         follow_nbr = 0
         giveaway_done = 0
         time.sleep(180)
-    print("End of the program")
-
-
-def main_two():
-    print("Inside main two")
-    giveaway_done = 0
-    with open("configuration.yml", "r") as file:
-        data = yaml.load(file, Loader=yaml.FullLoader)
-    
-    print("Starting the program")
-    print("Searching for Giveaway")
-    username_info = data["account_username"]
-    password_info = data["account_password"]
-    sentence_to_tweet = data["setence_to_tweet"]
-    tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
-    
-    for i in range(len(username_info)):
-
-        print("Connecting to " + str(username_info[i]))
-        time.sleep(1)
-        S = Scraper()
-        login(S,username_info[i],password_info[i])
-        time.sleep(3)   
-        accept_coockie(S)
-        time.sleep(S.wait_time)    
-        accept_notification(S)
-        time.sleep(S.wait_time)
-        accept_coockie(S)
-        time.sleep(S.wait_time)
-        giveaway_g = 0
-        follow_nbr = 0
-        for i in range(len(tweets_url)):
-            print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweets_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
-            like = like_a_tweet(S,tweets_url[i])
-            time.sleep(S.wait_time)    
-            
-            if like == True:
-                giveaway_done  += 1
-                giveaway_g += 1
-                reetweet_a_tweet(S,tweets_url[i])
-                time.sleep(S.wait_time)        
-                if tweets_need_to_comment_or_not[i] == True:
-                    comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
-                    time.sleep(45)
-            else:
-                giveaway_done  += 1
-                print("You have already like the tweet")
-                time.sleep(5)
-
-        for account_to_follow in tweets_account_to_follow:
-            follow_nbr +=1
-            print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
-            follow_an_account(S,account_to_follow)
-    
-        for i in range(3):
-            info , info_link = get_news()
-            make_a_tweet(S,info+" "+info_link)
-            time.sleep(60)
-        
-        rt_url = search_tweet_for_rt(get_trend(S))
-        
-        for i in range(len(rt_url)):
-            like = like_a_tweet(S,rt_url[i])
-            if like == True:            
-                reetweet_a_tweet(S,rt_url[i])
-            time.sleep(15)
-        
-        
-        make_a_tweet(S,sentence_to_tweet[len(sentence_to_tweet) - 1])
     print("End of the program")
