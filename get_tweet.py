@@ -19,6 +19,7 @@ class Data:
     minimum_like = data["minimum_like"]
     minimum_rt = data["minimum_rt"]
     maximum_day = data["maximum_day"]
+    nb_of_giveaway = data["nb_of_giveaway"]
     
 def is_date_older_than_a_number_of_day(date):
     d = Data()
@@ -221,7 +222,7 @@ def search_giveaway():
                 date_ = date_[0:10]
                 date = datetime.datetime.strptime(date_, date_format).date()
                 url =  f"https://twitter.com/user/status/{tweet.id}"
-                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and check_blacklist(tweet.user.username) == False and url not in url_from_file and is_date_older_than_a_number_of_day(date) == False and tweet.retweetCount >= d.minimum_rt:
+                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and check_blacklist(tweet.user.username) == False and url not in url_from_file and is_date_older_than_a_number_of_day(date) == False and tweet.retweetCount >= d.minimum_rt and nb_of_giveaway_found < d.nb_of_giveaway:
                     words = tweet.rawContent.split()
                     result = [word for word in words if word.startswith(char)]
                     hashtag = delete_hashtag_we_dont_want(result)
