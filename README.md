@@ -34,14 +34,14 @@ Feel free to change the bot or even upgrade it
 
 ## Français
 
-Un bot qui vous fait participer à n'importe quel cadeau Twitter
+Un bot qui vous fait participer à n'importe quel concours Twitter
 
 Vous devez installer chromedriver à partir de là https://chromedriver.chromium.org/downloads
 Installez la version liée à votre version de chrome puis stockez-la dans le dossier du bot
 
-Ensuite, installez le module d'exigence avec la commande "pip install -r requirements.txt"
+Ensuite, installez les modules requis avec la commande "pip install -r requirements.txt"
 
-Puis juste faire python main.py
+Puis juste faire: python main.py
 
 
 Ce que le bot peut faire :
