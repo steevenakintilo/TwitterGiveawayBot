@@ -1,5 +1,5 @@
 emoji==2.2.0
+feedparser==6.0.10
 PyYAML==6.0
-selenium==4.8.0
-snscrape==0.5.0.20230113
-feedparser==6.0.8
+selenium==4.8.2
+snscrape==0.6.2.20230320

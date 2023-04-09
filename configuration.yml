@@ -1,6 +1,6 @@
 #Account info write the username of all your account
 account_username:
-  - "s"
+  - "m"
 
 #Account info write the password of all your account
 account_password:
@@ -27,7 +27,14 @@ words_to_search:
   - "rt suivez concours"
   - "rt suivre tirage au sort"
   - "rt suivre tas"
-
+  - "concours remporter"
+  - "remporter rt"
+  - "concours tas le"
+  - "concours résultats le rt"
+  - "concours t.a.s le"
+  - "tirage au sort concours"
+  - "concours résultat le rt"
+  
 # Accounts we want to invite you must but a space at the end of each account
 accounts_to_tag:
   - " @Mediavenir "
@@ -42,6 +49,58 @@ accounts_to_blacklist:
   - "@BotSpotterBot"
   - "@gulzaarAvi"
   - "@BotFett"
+  - "@ElChap0420"
+  - "@RealB0tSpotter"
+  - "@YNTF"
+  - "@0xCryptax"
+  - "@0xHaz666"
+  - "@0xMakeMoney"
+  - "@AGoldboxDeals"
+  - "@BestConcourss"
+  - "@BlackPromos"
+  - "@BrownConcours"
+  - "@buuuffNFT"
+  - "@ChrisGeekWorld"
+  - "@ConcoursYoko"
+  - "@Croissant_NFA"
+  - "@cryptogmznft"
+  - "@destyy657"
+  - "@drakebil22"
+  - "@Eks74326603"
+  - "@FailsDrole"
+  - "@oxyGiveaway"
+  - "@GarwyNFT"
+  - "@GreyConcours"
+  - "@LAGAMINGROOM"
+  - "@levraizarkx"
+  - "@lofi_feeling"
+  - "@MkNFTz"
+  - "@MONSIEURCHOUYTB"
+  - "@MONSIEURCHOYTB"
+  - "@NeyaGiveaway"
+  - "@nftconcours"
+  - "@simmessier"
+  - "@NigmoInft"
+  - "@Nigmolnft"
+  - "@PolinskiNFT"
+  - "@slconcours"
+  - "@SPIDEReGAMES"
+  - "@SPIFLY"
+  - "@THE_CALENDRIER"
+  - "@teoconcours"
+  - "@timgiveway"
+  - "@ToutgagnerCom"
+  - "@wayzeeth"
+  - "@wsconcours"
+  - "@Zarkxlevraii"
+  - "@cybervictimes"
+  - "@zarkxnft"
+  - "@ZetroxEu"
+  - "@sim_messier"
+  - "@BakoruDeFi"
+  - "@YuwyNFT"
+  - "@Mr_Rinos"
+  - "@corteiz_reps"
 
 # Sentences that the bot will say to act not like a bot
 setence_to_tweet:
@@ -180,13 +239,13 @@ giveaway_to_blacklist:
 max_giveaway: 10
 
 # Minimum of like the tweet must have
-minimum_like: 50
+minimum_like: 10
 
 # Minimum of reetweet the tweet must have
-minimum_rt: 500
+minimum_rt: 200
 
 #Maximum day for a giveaway to be done
-maximum_day: 30
+maximum_day: 20
 
 #Number of giveaway the bot can do
 nb_of_giveaway: 50
