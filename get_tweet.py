@@ -42,8 +42,8 @@ def write_into_file(path,x):
 def print_file_info(path):
     f = open(path, 'r')
     content = f.read()
-    return(content)
     f.close()
+    return(content)
 
 def remove_emojie(text):
     return emoji.replace_emoji(text, replace='')
@@ -216,8 +216,7 @@ def search_giveaway():
         date_format = "%Y-%m-%d"
         for search_word in d.word_to_search:
             text = search_word + ' lang:fr'
-            #for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
-            for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text, top = True).get_items()):
+            for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
                 date_ = str(tweet.date)
                 date_ = date_[0:10]
                 date = datetime.datetime.strptime(date_, date_format).date()
@@ -254,3 +253,32 @@ def search_giveaway():
         print("Error " + str(e))
         time.sleep(600)
         search_giveaway()
+
+def giweaway_from_url_file(tweets_text):
+    try:
+        d = Data()
+        tweets_need_to_comment_or_not = []
+        tweets_full_comment = []
+        nb_of_giveaway_found = 0
+        char = '#'
+        full_phrase = ""
+        url_from_file = print_file_info("url.txt").split("\n")
+        print_data = True
+        for t in tweets_text:
+            words = t.split(" ")
+            result = [word for word in words if word.startswith(char)]
+            hashtag = delete_hashtag_we_dont_want(result)
+            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + " ".join(d.accounts_to_tag) + hashtag
+            tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
+            tweets_full_comment.append(remove_emojie(full_phrase))
+        
+        if print_data == True:
+            print(tweets_full_comment)
+            print(tweets_need_to_comment_or_not)
+        print("Ending giveaway from url file")
+        return (tweets_need_to_comment_or_not,tweets_full_comment)
+    except Exception as e:
+        print("YOLO YOLO BANG BANG")
+        print("Error " + str(e))
+        time.sleep(600)
+        giweaway_from_url_file(tweets_text)
