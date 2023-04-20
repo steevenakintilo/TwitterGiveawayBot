@@ -291,7 +291,7 @@ def giweaway_from_url_file(tweets_text,account_list):
             print(tweets_full_comment)
             print(tweets_need_to_comment_or_not)
         print("Ending giveaway from url file")
-        return (tweets_need_to_comment_ora_not,tweets_full_comment,tweets_account_to_follow)
+        return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
     except Exception as e:
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
