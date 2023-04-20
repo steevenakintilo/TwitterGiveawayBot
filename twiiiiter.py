@@ -537,7 +537,8 @@ def main_one():
             for account_to_follow in t_follow:
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(t_follow)) + " account name: " + account_to_follow)
-                follow_an_account(S,account_to_follow,5)
+                if account_to_follow != "f":
+                    follow_an_account(S,account_to_follow,5)
             
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
