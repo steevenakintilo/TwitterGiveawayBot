@@ -281,7 +281,7 @@ def giweaway_from_url_file(tweets_text,account_list):
             full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + " ".join(d.accounts_to_tag) + hashtag
             tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
             tweets_full_comment.append(remove_emojie(full_phrase))
-            tweets_account_to_follow.append(list_of_account_to_follow("f" ,t))
+            tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
 
 
         for a in account_list:
@@ -291,7 +291,7 @@ def giweaway_from_url_file(tweets_text,account_list):
             print(tweets_full_comment)
             print(tweets_need_to_comment_or_not)
         print("Ending giveaway from url file")
-        return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
+        return (tweets_need_to_comment_ora_not,tweets_full_comment,tweets_account_to_follow)
     except Exception as e:
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))

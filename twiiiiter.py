@@ -488,7 +488,7 @@ def get_tweet_username(S,url):
         return (account[1])
     except:
         print("Bref username")
-        return ("tu")
+        return ("")
 
 def main_one():
     print("Inside main one")
@@ -526,19 +526,31 @@ def main_one():
             tweet_txt = []
             tweet_username = []
             crash_follow = []
+            t_follow = []
 
             tweet_from_url = print_file_info("recent_url.txt").split("\n")
             
             for t in tweet_from_url:
                 tweet_txt.append(get_tweet_text(S,t))
                 crash_follow.append(get_tweet_username(S,t))
-            t_comment_or_not , t_full_comment, t_follow = giweaway_from_url_file(tweet_txt,crash_follow)
+            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
             
+            t_follows.remove("")
+
+            for t in t_follows:
+                if t != "":
+                    t_follow.append(t.replace(" ",""))
+            
+            
+            print("caca")
+            print(t_follow)
+
+            time.sleep(100)
+
             for account_to_follow in t_follow:
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(t_follow)) + " account name: " + account_to_follow)
-                if account_to_follow != "f":
-                    follow_an_account(S,account_to_follow,5)
+                follow_an_account(S,account_to_follow,5)
             
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
