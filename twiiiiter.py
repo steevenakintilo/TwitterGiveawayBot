@@ -13,6 +13,8 @@ import traceback
 import feedparser
 from random import randint
 
+MINTIME = 45
+MAXTIME = 300
 
 class Scraper:
     wait_time = 5
@@ -351,10 +353,10 @@ def unfollow_an_account_error(S,account):
         print("Bref unfollow " + str(e)) 
 
 
-def follow_an_account(S,account):
+def follow_an_account(S,account,t):
     try:
         S.driver.get("https://twitter.com/"+account)
-        element = WebDriverWait(S.driver, 10).until(
+        element = WebDriverWait(S.driver, t).until(
         EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
         
         follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
@@ -371,16 +373,16 @@ def follow_an_account(S,account):
                 follow_button.click()
                 element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")))
                 confirm_click = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")
-                time.sleep(randint(45,300))
+                time.sleep(randint(MINTIME,MAXTIME))
                 print("You've followed another account " + account)
         except:
             print("You already follow the account")
             pass
     except:
-        follow_an_account_error(S,account)
+        follow_an_account_error(S,account,t)
 
 
-def follow_an_account_error(S,account):
+def follow_an_account_error(S,account,t):
     try:
         S.driver.get("https://twitter.com/"+account)
         element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")))
@@ -396,7 +398,7 @@ def follow_an_account_error(S,account):
 
             if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
                 follow_button.click()
-                time.sleep(randint(45,300))
+                time.sleep(randint(MINTIME,MAXTIME))
                 print("You've followed another account " + account)
         except:
             print("You already follow the account")
@@ -477,6 +479,17 @@ def get_tweet_text(S,url):
         print("Bref text")
         return ("je")
 
+def get_tweet_username(S,url):
+    try:
+        S.driver.get(url)
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="User-Name"]')))
+        account = str(element.text).split("@")
+        return (account[1])
+    except:
+        print("Bref username")
+        return ("tu")
+
 def main_one():
     print("Inside main one")
     giveaway_done = 0
@@ -490,7 +503,7 @@ def main_one():
     sentence_to_tweet = data["setence_to_tweet"]
 
     
-    crash = False
+    crash = True
 
     if crash == False:
         tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
@@ -509,23 +522,25 @@ def main_one():
         time.sleep(S.wait_time)
         giveaway_g = 0
         follow_nbr = 0
-
         if crash == True:
             tweet_txt = []
-            crash_follow = print_file_info("account.txt")
-            crash_follow = crash_follow.split("\n")
+            tweet_username = []
+            crash_follow = []
 
-            for account_to_follow in crash_follow:
-                follow_nbr +=1
-                print("Account n " + str(follow_nbr) + " / " + str(len(crash_follow)) + " account name: " + account_to_follow)
-                follow_an_account(S,account_to_follow)
-            tweet_from_url = print_file_info("url.txt").split("\n")
+            tweet_from_url = print_file_info("recent_url.txt").split("\n")
             
             for t in tweet_from_url:
                 tweet_txt.append(get_tweet_text(S,t))
-            t_comment_or_not , t_full_comment = giweaway_from_url_file(tweet_txt)
+                crash_follow.append(get_tweet_username(S,t))
+            t_comment_or_not , t_full_comment, t_follow = giweaway_from_url_file(tweet_txt,crash_follow)
+            
+            for account_to_follow in t_follow:
+                follow_nbr +=1
+                print("Account n " + str(follow_nbr) + " / " + str(len(t_follow)) + " account name: " + account_to_follow)
+                follow_an_account(S,account_to_follow,5)
             
             for t in tweet_from_url:
+                print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
                 time.sleep(S.wait_time)    
                 
@@ -536,7 +551,7 @@ def main_one():
                     time.sleep(S.wait_time)        
                     if t_comment_or_not[i] == True:
                         comment_a_tweet(S,t,t_full_comment[i])
-                        time.sleep(randint(45,300))
+                        time.sleep(randint(MINTIME,MAXTIME))
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
@@ -555,7 +570,7 @@ def main_one():
                     time.sleep(S.wait_time)        
                     if tweets_need_to_comment_or_not[i] == True:
                         comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
-                        time.sleep(randint(45,300))
+                        time.sleep(randint(MINTIME,MAXTIME))
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
@@ -564,11 +579,11 @@ def main_one():
             for account_to_follow in tweets_account_to_follow:
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
-                follow_an_account(S,account_to_follow)
+                follow_an_account(S,account_to_follow,10)
             for i in range(3):
                 info , info_link = get_news()
                 make_a_tweet(S,info+" "+info_link)
-                time.sleep(randint(45,300))
+                time.sleep(randint(MINTIME,MAXTIME))
             make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
             
             rt_url = search_tweet_for_rt(get_trend(S))
@@ -577,7 +592,7 @@ def main_one():
                 like = like_a_tweet(S,rt_url[i])
                 if like == True:            
                     reetweet_a_tweet(S,rt_url[i])
-                time.sleep(randint(45,300))
+                time.sleep(randint(MINTIME,MAXTIME))
             
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0

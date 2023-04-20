@@ -39,6 +39,12 @@ def write_into_file(path,x):
     f.write(str(x))    
     f.close            
 
+
+def reset_file(path):  
+    f = open(path, "w")
+    f.write("")    
+    f.close            
+
 def print_file_info(path):
     f = open(path, 'r')
     content = f.read()
@@ -155,7 +161,7 @@ def get_a_better_list(l):
     return (new_l)
 
 def check_if_we_need_to_comment(text):
-    word_list_to_check_for_comment = ["invit","mention","tag","comment","indentif","écrit","écrire","dit","cite","ami","personne","donne"]
+    word_list_to_check_for_comment = ["invit","mention","tag","comment","indentif","écrit","écrire","cite","ami","personne","donne"]
     for elem in word_list_to_check_for_comment:
         if elem.lower() in text.lower():
             return True
@@ -200,6 +206,8 @@ def check_blacklist(account):
 def search_giveaway():
     try:
         d = Data()
+        reset_file("recent_url.txt")
+
         tweets_need_to_comment_or_not = []
         tweets_text = []
         tweets_id = []
@@ -233,6 +241,7 @@ def search_giveaway():
                     tweets_account_to_follow.append(list_of_account_to_follow(tweet.user.username ,tweet.rawContent))
                     tweets_full_comment.append(remove_emojie(full_phrase))
                     write_into_file("url.txt",url+"\n")
+                    write_into_file("recent_url.txt",url+"\n")
                     nb_of_giveaway_found+=1
                 else:
                     doublon +=1
@@ -254,11 +263,12 @@ def search_giveaway():
         time.sleep(600)
         search_giveaway()
 
-def giweaway_from_url_file(tweets_text):
+def giweaway_from_url_file(tweets_text,account_list):
     try:
         d = Data()
         tweets_need_to_comment_or_not = []
         tweets_full_comment = []
+        tweets_account_to_follow = []
         nb_of_giveaway_found = 0
         char = '#'
         full_phrase = ""
@@ -271,12 +281,17 @@ def giweaway_from_url_file(tweets_text):
             full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + " ".join(d.accounts_to_tag) + hashtag
             tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
             tweets_full_comment.append(remove_emojie(full_phrase))
-        
+            tweets_account_to_follow.append(list_of_account_to_follow("f" ,t))
+
+
+        for a in account_list:
+            if a not in tweets_account_to_follow and a != "f":
+                tweets_account_to_follow.append(a)
         if print_data == True:
             print(tweets_full_comment)
             print(tweets_need_to_comment_or_not)
         print("Ending giveaway from url file")
-        return (tweets_need_to_comment_or_not,tweets_full_comment)
+        return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
     except Exception as e:
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
