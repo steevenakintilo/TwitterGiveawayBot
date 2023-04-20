@@ -545,7 +545,6 @@ def main_one():
             print("caca")
             print(t_follow)
 
-            time.sleep(100)
 
             for account_to_follow in t_follow:
                 follow_nbr +=1
