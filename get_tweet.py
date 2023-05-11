@@ -3,8 +3,10 @@ import yaml
 from random import randint
 import re
 import emoji
-import datetime
 import time
+
+import tweepy
+from datetime import datetime, timedelta, date
 
 class Data:
     with open("configuration.yml", "r") as file:
@@ -21,9 +23,11 @@ class Data:
     maximum_day = data["maximum_day"]
     nb_of_giveaway = data["nb_of_giveaway"]
     
-def is_date_older_than_a_number_of_day(date):
+def is_date_older_than_a_number_of_day(date_str):
     d = Data()
-    today = datetime.datetime.now().date()
+    date_str = str(date_str)
+    today = datetime.now().date()
+    date = datetime.strptime(date_str, '%Y-%m-%d').date()
     delta = today - date
     if delta.days > d.maximum_day:
         return True
@@ -219,7 +223,7 @@ def search_giveaway():
         full_phrase = ""
         doublon = 0
         url_from_file = print_file_info("url.txt").split("\n")
-        print_data = False
+        print_data = True
         date_ = ""
         date_format = "%Y-%m-%d"
         for search_word in d.word_to_search:
@@ -227,9 +231,10 @@ def search_giveaway():
             for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
                 date_ = str(tweet.date)
                 date_ = date_[0:10]
-                date = datetime.datetime.strptime(date_, date_format).date()
+                year, month, day = map(int, date_.split("-"))
+                ddate = date(year, month, day)
                 url =  f"https://twitter.com/user/status/{tweet.id}"
-                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and check_blacklist(tweet.user.username) == False and url not in url_from_file and is_date_older_than_a_number_of_day(date) == False and tweet.retweetCount >= d.minimum_rt and nb_of_giveaway_found < d.nb_of_giveaway:
+                if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and check_blacklist(tweet.user.username) == False and url not in url_from_file and is_date_older_than_a_number_of_day(ddate) == False and tweet.retweetCount >= d.minimum_rt and nb_of_giveaway_found < d.nb_of_giveaway:
                     words = tweet.rawContent.split()
                     result = [word for word in words if word.startswith(char)]
                     hashtag = delete_hashtag_we_dont_want(result)
@@ -297,3 +302,6 @@ def giweaway_from_url_file(tweets_text,account_list):
         print("Error " + str(e))
         time.sleep(600)
         giweaway_from_url_file(tweets_text)
+
+
+search_giveaway()
