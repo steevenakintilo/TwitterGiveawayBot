@@ -223,7 +223,7 @@ def search_giveaway():
         full_phrase = ""
         doublon = 0
         url_from_file = print_file_info("url.txt").split("\n")
-        print_data = True
+        print_data = False
         date_ = ""
         date_format = "%Y-%m-%d"
         for search_word in d.word_to_search:
@@ -302,6 +302,3 @@ def giweaway_from_url_file(tweets_text,account_list):
         print("Error " + str(e))
         time.sleep(600)
         giweaway_from_url_file(tweets_text)
-
-
-search_giveaway()

@@ -1,4 +1,3 @@
-
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,8 +12,8 @@ import traceback
 import feedparser
 from random import randint
 
-MINTIME = 45
-MAXTIME = 300
+MINTIME = 1
+MAXTIME = 3
 
 class Scraper:
     wait_time = 5
@@ -252,6 +251,7 @@ def comment_a_tweet(S,url,text):
 
         target_element.click()
 
+        time.sleep(10)
     #    print("comment part three")
         print("comment done")
     except:
@@ -503,8 +503,8 @@ def main_one():
     sentence_to_tweet = data["setence_to_tweet"]
 
     
-    crash = True
-
+    crash = False
+    idxx = 0
     if crash == False:
         tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
     
@@ -561,13 +561,14 @@ def main_one():
                     giveaway_g += 1
                     reetweet_a_tweet(S,t)
                     time.sleep(S.wait_time)        
-                    if t_comment_or_not[i] == True:
-                        comment_a_tweet(S,t,t_full_comment[i])
+                    if t_comment_or_not[idxx] == True:
+                        comment_a_tweet(S,t,t_full_comment[idxx])
                         time.sleep(randint(MINTIME,MAXTIME))
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
                     time.sleep(2)
+                idxx = idxx + 1
         
         if crash == False:
             for i in range(len(tweets_url)):
@@ -608,6 +609,7 @@ def main_one():
             
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0
+        idxx = 0
         follow_nbr = 0
         giveaway_done = 0
         time.sleep(180)
