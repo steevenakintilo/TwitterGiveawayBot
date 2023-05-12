@@ -12,8 +12,8 @@ import traceback
 import feedparser
 from random import randint
 
-MINTIME = 1
-MAXTIME = 3
+MINTIME = 45
+MAXTIME = 300
 
 class Scraper:
     wait_time = 5
@@ -490,6 +490,24 @@ def get_tweet_username(S,url):
         print("Bref username")
         return ("")
 
+
+def get_who_to_follow(S,url):
+
+    try:
+        a = get_tweet_username(S,url)
+        b = get_tweet_text(S,url)
+        c = list_of_account_to_follow(a ,b.strip().replace("\n",""))
+        c = c.replace(",","").strip()
+        c = c.split(" ")
+        d = []
+        for elem in c:
+            if elem.lower() not in d:
+                d.append(elem.lower())
+        return(d)
+    except:
+        print("Bref userrrr")
+        return("")
+
 def main_one():
     print("Inside main one")
     giveaway_done = 0
@@ -501,8 +519,10 @@ def main_one():
     username_info = data["account_username"]
     password_info = data["account_password"]
     sentence_to_tweet = data["setence_to_tweet"]
+    random_rt_and_tweet = data["random_retweet_and_tweet"]
+    random_tweet_nb = data["random_tweet_nb"]
+    random_retweet_nb = data["random_retweet_nb"]
 
-    
     crash = False
     idxx = 0
     if crash == False:
@@ -522,17 +542,27 @@ def main_one():
         time.sleep(S.wait_time)
         giveaway_g = 0
         follow_nbr = 0
+        
+        
         if crash == True:
             tweet_txt = []
             tweet_username = []
             crash_follow = []
             t_follow = []
-
+            tt_follow = []
+            ttt_follow = []
+            tttt_follow = []
             tweet_from_url = print_file_info("recent_url.txt").split("\n")
-            
             for t in tweet_from_url:
                 tweet_txt.append(get_tweet_text(S,t))
                 crash_follow.append(get_tweet_username(S,t))
+                for g in get_who_to_follow(S,t):
+                    tt_follow.append(g)
+            
+            
+            
+            for tt in tt_follow:
+                t_follow.append(tt)
             t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
             
             t_follows.remove("")
@@ -541,21 +571,26 @@ def main_one():
                 if t != "":
                     t_follow.append(t.replace(" ",""))
             
+            t_follow = list(dict.fromkeys(t_follow))
+            for c in t_follow:
+                if c.lower() not in ttt_follow:
+                    ttt_follow.append(c.lower())
+            ttt_follow = list(dict.fromkeys(ttt_follow))
+            ttt_follow = get_a_better_list(t_follow)
             
-            print("caca")
-            print(t_follow)
-
-
-            for account_to_follow in t_follow:
+            for i in range(len(ttt_follow)):
+                if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
+                    tttt_follow.append(ttt_follow[i])
+            
+            for account_to_follow in tttt_follow:
                 follow_nbr +=1
-                print("Account n " + str(follow_nbr) + " / " + str(len(t_follow)) + " account name: " + account_to_follow)
+                print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
                 follow_an_account(S,account_to_follow,5)
             
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
                 time.sleep(S.wait_time)    
-                
                 if like == True:
                     giveaway_done  += 1
                     giveaway_g += 1
@@ -563,13 +598,29 @@ def main_one():
                     time.sleep(S.wait_time)        
                     if t_comment_or_not[idxx] == True:
                         comment_a_tweet(S,t,t_full_comment[idxx])
-                        time.sleep(randint(MINTIME,MAXTIME))
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
                     time.sleep(2)
+                print(idxx)
                 idxx = idxx + 1
-        
+            if random_rt_and_tweet == True:
+                for i in range(random_tweet_nb):
+                    info , info_link = get_news()
+                    make_a_tweet(S,info+" "+info_link)
+                    time.sleep(randint(MINTIME,MAXTIME))
+                make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
+                try:
+                    rt_url = search_tweet_for_rt(get_trend(S),random_retweet_nb)
+                
+                    for i in range(len(rt_url)):
+                        like = like_a_tweet(S,rt_url[i])
+                        if like == True:            
+                            reetweet_a_tweet(S,rt_url[i])
+                        time.sleep(randint(MINTIME,MAXTIME))
+                except:
+                    print("ok")
+            
         if crash == False:
             for i in range(len(tweets_url)):
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweets_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
@@ -593,20 +644,21 @@ def main_one():
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
                 follow_an_account(S,account_to_follow,10)
-            for i in range(3):
-                info , info_link = get_news()
-                make_a_tweet(S,info+" "+info_link)
-                time.sleep(randint(MINTIME,MAXTIME))
-            make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
-            
-            rt_url = search_tweet_for_rt(get_trend(S))
-            
-            for i in range(len(rt_url)):
-                like = like_a_tweet(S,rt_url[i])
-                if like == True:            
-                    reetweet_a_tweet(S,rt_url[i])
-                time.sleep(randint(MINTIME,MAXTIME))
-            
+            if random_rt_and_tweet == True:
+                for i in range(random_tweet_nb):
+                    info , info_link = get_news()
+                    make_a_tweet(S,info+" "+info_link)
+                    time.sleep(randint(MINTIME,MAXTIME))
+                make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
+                
+                rt_url = search_tweet_for_rt(get_trend(S),random_retweet_nb)
+                
+                for i in range(len(rt_url)):
+                    like = like_a_tweet(S,rt_url[i])
+                    if like == True:            
+                        reetweet_a_tweet(S,rt_url[i])
+                    time.sleep(randint(MINTIME,MAXTIME))
+                
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0
         idxx = 0

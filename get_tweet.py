@@ -1,10 +1,11 @@
 import snscrape.modules.twitter as sntwitter
+
 import yaml
 from random import randint
 import re
 import emoji
 import time
-
+import traceback
 import tweepy
 from datetime import datetime, timedelta, date
 
@@ -183,16 +184,17 @@ def delete_url(s):
 
     return(n)
 
-def search_tweet_for_rt(text):
+def search_tweet_for_rt(text,nb):
     tweet_url = []
     MAX = 0
     try:
         text = text + ' lang:fr'
-        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text, top = True).get_items()):
+        mode_param = sntwitter.TwitterSearchScraperMode.TOP
+        for i,tweet in enumerate((sntwitter.TwitterSearchScraper(text, mode = mode_param).get_items())):
             url =  f"https://twitter.com/user/status/{tweet.id}"
             tweet_url.append(url)
             MAX+=1
-            if MAX >= 7:
+            if MAX >= nb:
                 break
         return(tweet_url)
     except:
@@ -265,6 +267,7 @@ def search_giveaway():
     except Exception as e:
         print("SNSCRAPE NEED TO RESTART WAIT 10 MINUTES")
         print("Error " + str(e))
+        print(traceback.format_exc())
         time.sleep(600)
         search_giveaway()
 

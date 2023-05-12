@@ -1,6 +1,6 @@
 #Account info write the username of all your account
 account_username:
-  - "m"
+  - "n"
 
 #Account info write the password of all your account
 account_password:
@@ -101,6 +101,9 @@ accounts_to_blacklist:
   - "@YuwyNFT"
   - "@Mr_Rinos"
   - "@corteiz_reps"
+  - "@concours_quiz"
+  - "@lagamoujeth"
+  - "@pormakino"
 
 # Sentences that the bot will say to act not like a bot
 setence_to_tweet:
@@ -235,17 +238,26 @@ giveaway_to_blacklist:
   - "nude"
   - "sorare"
 
+# If the value is set to true the bot will make random retweet and tweet
+random_retweet_and_tweet: True
+
+# The number of random tweet to do
+random_tweet_nb: 3
+
+# The number of random retweet to do
+random_retweet_nb: 7
+
 # Maximum number of giveaway retrieve for each word
-max_giveaway: 10
+max_giveaway: 30
 
 # Minimum of like the tweet must have
 minimum_like: 10
 
 # Minimum of reetweet the tweet must have
-minimum_rt: 200
+minimum_rt: 500
 
 #Maximum day for a giveaway to be done
 maximum_day: 20
 
 #Number of giveaway the bot can do
-nb_of_giveaway: 50
+nb_of_giveaway: 30
