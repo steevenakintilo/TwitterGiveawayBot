@@ -157,6 +157,32 @@ setence_to_tweet:
   - "L'honnêteté est la base d'une bonne relation."
   - "La vie est un chemin, suivez-le avec courage."
   - "La gratitude est la clé du bonheur."
+  - "Génial :)"
+  - "c'est parti !"
+  - "qui ne tente rien n'a rien :p"
+  - "Allez zou"
+  - "Here we go"
+  - "On y croit :o"
+  - "Je tente ce concour"
+  - "j'adore les cadeaux :p"
+  - "go go go"
+  - "je kiffe donc je tente"
+  - "Merci à vous, c'est top"
+  - "On y croit !"
+  - "zoouu !"
+  - "je joue ^^"
+  - "Je tente on sait jamais !"
+  - "j'y crois à mort"
+  - "goooo ! :D"
+  - "Je joue :)"
+  - "allez je tente le concours"
+  - "Que la chance soit avec moi"
+  - "Que la chance me sourit :)"
+  - "Allez là, j'y crois"
+  - "hello, je joue, merci à vous"
+  - "Allez c'est pour moi"
+  - "l'espoir fait vivre"
+  - "je commente même si je fais surement pas gagner"
 
 # Sentences you need to tweet to invite a friend you must but a space at the end of each sentence
 sentence_for_tag:
@@ -237,6 +263,7 @@ hashtag_to_blacklist:
 giveaway_to_blacklist:
   - "nude"
   - "sorare"
+  - "freebet"
 
 # If the value is set to true the bot will make random retweet and tweet
 random_retweet_and_tweet: True
@@ -254,7 +281,7 @@ max_giveaway: 30
 minimum_like: 10
 
 # Minimum of reetweet the tweet must have
-minimum_rt: 500
+minimum_rt: 200
 
 #Maximum day for a giveaway to be done
 maximum_day: 20
