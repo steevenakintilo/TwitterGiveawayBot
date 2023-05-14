@@ -166,7 +166,15 @@ def get_a_better_list(l):
     return (new_l)
 
 def check_if_we_need_to_comment(text):
-    word_list_to_check_for_comment = ["invit","mention","tag","comment","indentif","écrit","écrire","cite","ami","personne","donne"]
+    word_list_to_check_for_comment = ["invit","mention","tag","comment","indentif","écrit","écrire","cite","ami","personne","donne","tweet avec","tweet : avec"]
+    for elem in word_list_to_check_for_comment:
+        if elem.lower() in text.lower():
+            return True
+    
+    return False
+
+def check_if_we_need_to_tag(text):
+    word_list_to_check_for_comment = ["invit","mention","tag","indentif","ami"]
     for elem in word_list_to_check_for_comment:
         if elem.lower() in text.lower():
             return True
@@ -240,7 +248,10 @@ def search_giveaway():
                     words = tweet.rawContent.split()
                     result = [word for word in words if word.startswith(char)]
                     hashtag = delete_hashtag_we_dont_want(result)
-                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
+                    if check_if_we_need_to_tag(tweet.rawContent) == True:
+                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
+                    else:
+                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " " + hashtag
                     tweets_id.append(tweet.id)
                     tweets_text.append(tweet.rawContent)
                     tweets_url.append(url)
