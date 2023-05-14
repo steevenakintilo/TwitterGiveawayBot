@@ -297,7 +297,10 @@ def giweaway_from_url_file(tweets_text,account_list):
             words = t.split(" ")
             result = [word for word in words if word.startswith(char)]
             hashtag = delete_hashtag_we_dont_want(result)
-            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + " ".join(d.accounts_to_tag) + hashtag
+            if check_if_we_need_to_tag(tweet.rawContent) == True:
+                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
+            else:
+                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " " + hashtag
             tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
             tweets_full_comment.append(remove_emojie(full_phrase))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
