@@ -119,7 +119,6 @@ nb_of_giveaway: 50
 ```
 
 They are more information on the configuration.yml file but they are more easy to understand.
-
 ## Advices
 
 - Run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
@@ -131,7 +130,7 @@ They are more information on the configuration.yml file but they are more easy t
 
 - If the bot crash during the run don't panic and just set the crash_or_no value to True on the configuration.yml file and restart the bot it will redo the giveaways you couldn't do because of the crash
 
-- Fell free to modify as you wish the configuration.yml file to have the best giveaway bot you want
-Fell free to update the code or even add more features to it.
+- Don't put a min_time and max_time to low otherwise you will be locked then ban for spamming I think 45 seconds for min_time and 300 seconds for max_time is good but you can still but the time you want
+- Fell free to modify as you wish the configuration.yml file to have the best giveaway bot you wantFell free to update the code or even add more features to it.
 
 Hope this code will help you win more giveaways on twitter.
