@@ -1,61 +1,123 @@
-# TwitterGivewayBot
 
-Bot grandement inspiré de celui-ci: https://github.com/j4rj4r/BotTwitter
+# TwitterGiveawayBot
+
 Bot greatly inspired by this one: https://github.com/j4rj4r/BotTwitter
 
+## Requirements
+To make the code work you will need to have Python and Pip installed in your computer
 
-## English
+Link to download python: https://www.python.org/downloads/
 
-A bot that make you participate to any twitter giveaway
+Link to download pip: https://pip.pypa.io/en/stable/installation/
 
-You need to install chromedriver from there https://chromedriver.chromium.org/downloads
-Install the version linked to your chrome version then store it into the folder of the bot
+Download all the modules required for the bot to work using this command:
 
-Then install requirement module with the "pip install -r requirement.txt" command
+```bash
+    pip install -r requirement.txt
+```
 
-Then just do: python main.py
+To start the bot just do
 
+```bash
+    python main.py
+```
 
-What the bot can do:
+## Features of the bot
 
--Search Giveaway
--Store them into a file so that it won't make the same giveaway twice
--Like the giveaway tweet
--Rt the giveaway tweet
--Comment the tweet with the right stuff
--Follow the account you need
--Check if a tweet has already been liked
--Check if an user is already followed
--Make a random tweet to be like "human"
+- Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
+- Like Retweet and Comment a tweet link to a giveaway
+- Follow all the person asked for the giveaway
+- It can @ people when needed, comment with # when needed and make no comment when we don't need to
+- The bot can do random tweet and retweet to act more "human"
+- The bot can work with 1,2,20 or even 100 account you just have to fill the configuration.yml file well
+- The bot is flexible you can modify most of its features on the configuration.yml file
 
-All the configuration for the bot can be found on the configuration.yml file
+## Configuration file
+The most important features can be adjust on the configuration.yml file
 
-Feel free to change the bot or even upgrade it
+To add account just fill account_username and account_password with the username and password of the account you want to add
 
-## Français
+```yml
+#Account info write the username of all your account
+account_username:
+  - "test1234"
+  - "test4444"
+  - "test0000"
 
-Un bot qui vous fait participer à n'importe quel concours Twitter
+#Account info write the password of all your account
+account_password:
+  - "twitter1234"
+  - "twitter4444"
+  - "twitter0000"
+```
+When the bot need to @ account you can add any account you want by adding them to the account to tag 3 accounts is enough
 
-Vous devez installer chromedriver à partir de là https://chromedriver.chromium.org/downloads
-Installez la version liée à votre version de chrome puis stockez-la dans le dossier du bot
+```yml
+# Accounts we want to invite you must but a space at the end of each account
+accounts_to_tag:
+  - " @accoount_to_tag1 "
+  - "@accoount_to_tag2 "
+  - "@accoount_to_tag3 "
+```
 
-Ensuite, installez les modules requis avec la commande "pip install -r requirements.txt"
+If you don't want to do giveaways of a certain account just have to add him to the accounts you want to blacklist
 
-Puis juste faire: python main.py
+```yml
+# Accounts that we don't want to follow and make their giveaway
+accounts_to_blacklist:
+  - "@account1"
+  - "@account2"
+  - "@account3"
+```
 
+If you don't want to do giveaway about a certain "topic" just add the "topic" to the giveaway to blacklist
 
-Ce que le bot peut faire :
+```yml
+# We don't want to participate in giveaway with these words
+giveaway_to_blacklist:
+  - "crypto"
+  - "bitcoin"
+  - "nft"
+```
 
--Recherche des concours
--Les stockez dans un fichier afin qu'il ne fasse pas deux fois le même concour
--Like le tweet du concour
--Rt le tweet du concour
--Commentez le tweet avec les bonnes choses
--Suivre le compte lié au concour
--Vérifier si un tweet a déjà été aimé
--Vérifier si un utilisateur est déjà suivi
-- Faire un tweet aléatoire pour parraitre plus "humain"
+If the bot crashed during the run or you just want to redo the same giveaways for another account just set the crash_or_no to True and the bot will do the giveaway from the recent_url.txt file and not new giveaways
 
-Toute la configuration du bot se trouve dans le fichier configuration.yml
+```yml
+#If the bot crashed and you want to redo the giveaway you where doing just set the value to true
+crash_or_no: False
+```
 
-N'hésitez pas à changer le bot ou même à le mettre à jour
+If you don't want to do random tweet and retweet just set random_retweet_and_tweet to False but if you do want to do them just set the value to True and put the number of reetweet and tweet you want to do
+
+```yml
+# If the value is set to true the bot will make random retweet and tweet
+random_retweet_and_tweet: True
+
+# The number of random tweet to do
+random_tweet_nb: 10
+
+# The number of random retweet to do
+random_retweet_nb: 1
+```
+
+You can also specify the number of giveaways you want to do, the number of like and retweet the giveaway must have and the limit date of a giveaway to not participate on older and finished giveaway
+
+```yml
+# Minimum of like the tweet must have
+minimum_like: 10
+
+# Minimum of reetweet the tweet must have
+minimum_rt: 500
+
+#Maximum day for a giveaway to be done
+maximum_day: 14
+
+#Number of giveaway the bot can do
+nb_of_giveaway: 50
+```
+
+They are more information on the configuration.yml file but they are more easy to understand.
+
+Fell free to update the code or even add more features to it.
+
+Hope this code will help you win more giveaways on twitter.
