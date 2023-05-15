@@ -25,12 +25,14 @@ To start the bot just do
 ## Features of the bot
 
 - Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
+- The bot work with 3 txt files: account.txt url.txt and recent_url.txt , account.txt file list all the account you have followed since using the bot, url.txt file list all the giweaway (their links) you have done sice using the bot and recent_url.txt file list all the giweaway (their links) you have done on the last time you used the bot
 - Like Retweet and Comment a tweet link to a giveaway
 - Follow all the person asked for the giveaway
 - It can @ people when needed, comment with # when needed and make no comment when we don't need to
 - The bot can do random tweet and retweet to act more "human"
 - The bot can work with 1,2,20 or even 100 account you just have to fill the configuration.yml file well
 - The bot is flexible you can modify most of its features on the configuration.yml file
+- You can even add links to giveaways to the recent_url.txt to make this work you need to make sure the giveaways you are adding have a certain number of like retweet and good limit date all link to the configuration.yml settings and the bot will do the giveaway
 
 ## Configuration file
 The most important features can be adjust on the configuration.yml file
