@@ -120,6 +120,18 @@ nb_of_giveaway: 50
 
 They are more information on the configuration.yml file but they are more easy to understand.
 
+## Advices
+
+- Run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
+- Don't do more than 50 giveaways per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
+- If you want to add another account to the bot you have 2 options: 
+  
+  1) Either add it to the configuration.yml but you won't do all the giveaways you  have already done with the other account 
+  2) Make a copy of the folder remove everything stored on the url.txt recent_url.txt and account.txt files and store your account information to the configuration.yml and start the bot to make giveaways even the one your other accounts did
+
+- If the bot crash during the run don't panic and just set the crash_or_no value to True on the configuration.yml file and restart the bot it will redo the giveaways you couldn't do because of the crash
+
+- Fell free to modify as you wish the configuration.yml file to have the best giveaway bot you want
 Fell free to update the code or even add more features to it.
 
 Hope this code will help you win more giveaways on twitter.
