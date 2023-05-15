@@ -232,7 +232,7 @@ def comment_a_tweet(S,url,text):
         comment_button.click()
 
       #  print("coment part one")
-        
+        time.sleep(10)
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
         
@@ -242,7 +242,7 @@ def comment_a_tweet(S,url,text):
         textbox.send_keys(text)
         
      #   print("coment part two")
-        time.sleep(5)
+        time.sleep(15)
         
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
@@ -254,7 +254,7 @@ def comment_a_tweet(S,url,text):
 
         target_element.click()
 
-        time.sleep(10)
+        time.sleep(20)
     #    print("comment part three")
         print("comment done")
     except:
