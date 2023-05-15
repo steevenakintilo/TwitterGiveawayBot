@@ -22,7 +22,7 @@ To start the bot just do
     python main.py
 ```
 
-## Features of the bot
+## Features
 
 - Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
 - The bot work with 3 txt files: account.txt url.txt and recent_url.txt , account.txt file list all the account you have followed since using the bot, url.txt file list all the giweaway (their links) you have done sice using the bot and recent_url.txt file list all the giweaway (their links) you have done on the last time you used the bot
