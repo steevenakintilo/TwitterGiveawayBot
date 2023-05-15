@@ -12,8 +12,11 @@ import traceback
 import feedparser
 from random import randint
 
-MINTIME = 45
-MAXTIME = 300
+with open("configuration.yml", "r") as file:
+    data = yaml.load(file, Loader=yaml.FullLoader)
+    
+MINTIME = data["min_time"]
+MAXTIME = data["max_time"]
 
 class Scraper:
     wait_time = 5

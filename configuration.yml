@@ -4,7 +4,7 @@ account_username:
 
 #Account info write the password of all your account
 account_password:
-  - "s"
+  - "a"
 
 # Words to search for giveaway
 words_to_search:
@@ -302,6 +302,12 @@ giveaway_to_blacklist:
   - "sorare"
   - "freebet"
 
+#The minimum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
+min_time: 45
+
+#The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
+max_time: 300
+
 #If the bot crashed and you want to redo the giveaway you where doing just set the value to true
 crash_or_no: False
 
@@ -324,7 +330,7 @@ minimum_like: 10
 minimum_rt: 200
 
 #Maximum day for a giveaway to be done
-maximum_day: 20
+maximum_day: 14
 
 #Number of giveaway the bot can do
 nb_of_giveaway: 30
