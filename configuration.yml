@@ -1,6 +1,6 @@
 #Account info write the username of all your account
 account_username:
-  - "n"
+  - "e"
 
 #Account info write the password of all your account
 account_password:
@@ -229,6 +229,43 @@ sentence_for_tag:
   - "Qu'est ce que vous en pensez ? Allez participez-vous aussi "
   - "Let's go, je suis sûr qu'on va gagner cette fois :) "
 
+# Sentences you need to tweet when you need to do a comment but don't need to invite friend you must but a space at the end of each sentence
+sentence_for_random_comment:
+  - "Merci ! "
+  - "Je participe "
+  - "Hop Hop "
+  - "Que la force soit avec moi "
+  - "Je tente ma chance ! J'espère que je vais gagner ! "
+  - "J'espère que vais gagner ! "
+  - "Merci pour le concours ! "
+  - "Que la chance soit avec moi ! "
+  - "Merci d'organiser ce concours ! "
+  - "On croise les doigts ! "
+  - "C'est pour moi ça ! "
+  - "Celui là on le gagne"
+  - "J'espère que vais gagner ! Je participe ! "
+  - "Merci d'organiser ce concours ! "
+  - "Bonne chance à tous ! "
+  - "J'adore les concours et surtout celui si "
+  - "J'ai tellement envie de gagner "
+  - "Bonjour je participe avec plaisir. Merci pour ce concours et bonne journée ! "
+  - "Merci beaucoup pour j'adore votre compte. Je vous souhaite une belle continuation "
+  - "Bonjour je participe avec plaisir à ce super concours "
+  - "Superbe ! Je tente ma chance bien volontiers "
+  - "Chouette bonjour je participe avec plaisir "
+  - "Bonjour je tente ma chance "
+  - "Bonjour, Je tente ma chance bien volontiers "
+  - "Merci beaucoup pour ce super concour "
+  - "Bonjour génial ! Je tente ma chance "
+  - "Hello !!! Merci beaucoup je tente ma chance "
+  - "Bonjour je participe avec plaisir pour ce beau cadeau "
+  - "Bonjour et merci pour ce super concours :) "
+  - "Bonjour, trop Sympa ce concours. "
+  - "On tente encore et encore "
+  - "Je tente ma chance même si je risque de ne pas gagner "
+  - "Ça vous intéressent ? "
+  - "Let's go, je suis sûr qu'on va gagner cette fois :) "
+
 # hashtag we don't want to tweet
 hashtag_to_blacklist:
   - "giveaway"
@@ -264,6 +301,9 @@ giveaway_to_blacklist:
   - "nude"
   - "sorare"
   - "freebet"
+
+#If the bot crashed and you want to redo the giveaway you where doing just set the value to true
+crash_or_no: False
 
 # If the value is set to true the bot will make random retweet and tweet
 random_retweet_and_tweet: True

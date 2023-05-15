@@ -23,6 +23,7 @@ class Data:
     minimum_rt = data["minimum_rt"]
     maximum_day = data["maximum_day"]
     nb_of_giveaway = data["nb_of_giveaway"]
+    sentence_for_random_comment = data["sentence_for_random_comment"]
     
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
@@ -174,7 +175,7 @@ def check_if_we_need_to_comment(text):
     return False
 
 def check_if_we_need_to_tag(text):
-    word_list_to_check_for_comment = ["invit","mention","tag","indentif","ami"]
+    word_list_to_check_for_comment = ["invit","mention","tag","indentif"]
     for elem in word_list_to_check_for_comment:
         if elem.lower() in text.lower():
             return True
@@ -251,7 +252,7 @@ def search_giveaway():
                     if check_if_we_need_to_tag(tweet.rawContent) == True:
                         full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
                     else:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " " + hashtag
+                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " " + hashtag
                     tweets_id.append(tweet.id)
                     tweets_text.append(tweet.rawContent)
                     tweets_url.append(url)
@@ -292,15 +293,15 @@ def giweaway_from_url_file(tweets_text,account_list):
         char = '#'
         full_phrase = ""
         url_from_file = print_file_info("url.txt").split("\n")
-        print_data = True
+        print_data = False
         for t in tweets_text:
             words = t.split(" ")
             result = [word for word in words if word.startswith(char)]
             hashtag = delete_hashtag_we_dont_want(result)
-            if check_if_we_need_to_tag(tweet.rawContent) == True:
-                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
+            if check_if_we_need_to_tag(t) == True:
+                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + " ".join(d.accounts_to_tag) + hashtag
             else:
-                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " " + hashtag
+                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag       
             tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
             tweets_full_comment.append(remove_emojie(full_phrase))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))

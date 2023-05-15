@@ -522,10 +522,9 @@ def main_one():
     random_rt_and_tweet = data["random_retweet_and_tweet"]
     random_tweet_nb = data["random_tweet_nb"]
     random_retweet_nb = data["random_retweet_nb"]
-
-    crash = False
+    crash_or_no = data["crash_or_no"]
     idxx = 0
-    if crash == False:
+    if crash_or_no == False:
         tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
     
     for i in range(len(username_info)):
@@ -544,7 +543,7 @@ def main_one():
         follow_nbr = 0
         
         
-        if crash == True:
+        if crash_or_no == True:
             tweet_txt = []
             tweet_username = []
             crash_follow = []
@@ -621,7 +620,7 @@ def main_one():
                 except:
                     print("ok")
             
-        if crash == False:
+        if crash_or_no == False:
             for i in range(len(tweets_url)):
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweets_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,tweets_url[i])
