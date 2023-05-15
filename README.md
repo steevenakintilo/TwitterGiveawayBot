@@ -53,7 +53,7 @@ account_password:
 When the bot need to @ account you can add any account you want by adding them to the account to tag 3 accounts is enough
 
 ```yml
-# Accounts we want to invite you must but a space at the end of each account
+# Accounts we want to invite you must but a space at the end of each account and a space at the start of the first account
 accounts_to_tag:
   - " @accoount_to_tag1 "
   - "@accoount_to_tag2 "
@@ -93,7 +93,7 @@ If you don't want to do random tweet and retweet just set random_retweet_and_twe
 # If the value is set to true the bot will make random retweet and tweet
 random_retweet_and_tweet: True
 
-# The number of random tweet to do
+# The number of random tweet to do (to make this work only if your account is new otherwise you can skip it you need to make a tweet and accept twitter circle once and then it will work)
 random_tweet_nb: 10
 
 # The number of random retweet to do

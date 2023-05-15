@@ -35,7 +35,7 @@ words_to_search:
   - "tirage au sort concours"
   - "concours résultat le rt"
   
-# Accounts we want to invite you must but a space at the end of each account
+# Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
 accounts_to_tag:
   - " @Mediavenir "
   - "@NetflixFR "
@@ -308,7 +308,7 @@ crash_or_no: False
 # If the value is set to true the bot will make random retweet and tweet
 random_retweet_and_tweet: True
 
-# The number of random tweet to do
+# The number of random tweet to do (to make this work only if your account is new otherwise you can skip it you need to make a tweet and accept twitter circle once and then it will work) 
 random_tweet_nb: 3
 
 # The number of random retweet to do
