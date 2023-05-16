@@ -233,7 +233,25 @@ def who_many_people_to_tag(text):
     
     return(" ".join(d.accounts_to_tag))
     
+def check_if_we_need_to_tag_two(text):
+    d = Data()
+    one_poeple_list = ["un ami","un copain","une personne","un pote","1 pote","1 ami","1 copain","1 personne","un(e) ami(e)","un.e ami.e"]
+    two_poeple_list = ["2 amis","2 ami(e)s","2 ami","2 personnes","2 potes","deux amis","deux ami(e)s","deux ami","deux personnes","deux potes"]
+    other_list = ["3 amis","3 ami(e)s","3 ami","3 personnes","3 potes","trois amis","trois ami(e)s","trois ami","trois personnes","trois potes","tes amis","des amis","tes potes","des potes"]
+    for one in one_poeple_list:
+        if one.lower() in text.lower():
+            return True
     
+    for two in two_poeple_list:
+        if two.lower() in text.lower():
+            return True
+    
+    for other in other_list:
+        if other.lower() in text.lower():
+            return True
+    
+    return False    
+
 def check_blacklist(account):
     d = Data
     for backlist_account in d.accounts_to_blacklist:
@@ -283,7 +301,7 @@ def search_giveaway():
                     tweets_id.append(tweet.id)
                     tweets_text.append(tweet.rawContent)
                     tweets_url.append(url)
-                    if check_if_we_need_to_tag(tweet.rawContent) == True:
+                    if check_if_we_need_to_tag(tweet.rawContent) == True or check_if_we_need_to_tag_two(tweet.rawContent) == True:
                         tweets_need_to_comment_or_not.append(True)
                     else:
                         tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(tweet.rawContent))
@@ -336,7 +354,7 @@ def giweaway_from_url_file(tweets_text,account_list):
             else:
                 full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
             
-            if check_if_we_need_to_tag(t) == True:
+            if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
                 tweets_need_to_comment_or_not.append(True)
             else:
                 tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
@@ -359,3 +377,4 @@ def giweaway_from_url_file(tweets_text,account_list):
         print("Error " + str(e))
         time.sleep(600)
         giweaway_from_url_file(tweets_text)
+
