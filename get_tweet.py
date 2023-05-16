@@ -167,19 +167,27 @@ def get_a_better_list(l):
     return (new_l)
 
 def check_if_we_need_to_comment(text):
-    word_list_to_check_for_comment = ["invit","mention","tag","comment","indentif","écrit","écrire","cite","ami","personne","donne","tweet avec","tweet : avec"]
+    word_list_to_check_for_comment = ["comment","écrit","écrire","cite","donne","tweet avec","tweet : avec","tweet #","réponse","hashtag"]
+    short_word_list = ["dit","dis"]
+    
     for elem in word_list_to_check_for_comment:
         if elem.lower() in text.lower():
             return True
     
+    for word_to_check in short_word_list:
+        for word in text.split():
+            if word.lower().startswith(word_to_check.lower()) and len(word) <= 6:
+                return True
+
+    text = text.lower()
     return False
 
+
 def check_if_we_need_to_tag(text):
-    word_list_to_check_for_comment = ["invit","mention","tag","indentif"]
+    word_list_to_check_for_comment = ["invit","mention","tag","identif","@ un","@ une","@ des","@ tes"]
     for elem in word_list_to_check_for_comment:
         if elem.lower() in text.lower():
             return True
-    
     return False
 
 def delete_url(s):
@@ -210,6 +218,22 @@ def search_tweet_for_rt(text,nb):
         return(tweet_url)
 
 
+def who_many_people_to_tag(text):
+    d = Data()
+    one_poeple_list = ["un ami","un copain","une personne","un pote","1 pote","1 ami","1 copain","1 personne","un(e) ami(e)","un.e ami.e"]
+    two_poeple_list = ["2 amis","2 ami(e)s","2 ami","2 personnes","2 potes","deux amis","deux ami(e)s","deux ami","deux personnes","deux potes"]
+    
+    for one in one_poeple_list:
+        if one.lower() in text.lower():
+            return(d.accounts_to_tag[0])
+    
+    for two in two_poeple_list:
+        if two.lower() in text.lower():
+            return(d.accounts_to_tag[0]+" "+d.accounts_to_tag[1])
+    
+    return(" ".join(d.accounts_to_tag))
+    
+    
 def check_blacklist(account):
     d = Data
     for backlist_account in d.accounts_to_blacklist:
@@ -250,13 +274,19 @@ def search_giveaway():
                     result = [word for word in words if word.startswith(char)]
                     hashtag = delete_hashtag_we_dont_want(result)
                     if check_if_we_need_to_tag(tweet.rawContent) == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " ".join(d.accounts_to_tag) + hashtag
+                        if check_if_we_need_to_comment(tweet.rawContent) == True:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + hashtag
+                        else:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + " "
                     else:
                         full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " " + hashtag
                     tweets_id.append(tweet.id)
                     tweets_text.append(tweet.rawContent)
                     tweets_url.append(url)
-                    tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(tweet.rawContent))
+                    if check_if_we_need_to_tag(tweet.rawContent) == True:
+                        tweets_need_to_comment_or_not.append(True)
+                    else:
+                        tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(tweet.rawContent))
                     tweets_account_to_follow.append(list_of_account_to_follow(tweet.user.username ,tweet.rawContent))
                     tweets_full_comment.append(remove_emojie(full_phrase))
                     write_into_file("url.txt",url+"\n")
@@ -299,10 +329,17 @@ def giweaway_from_url_file(tweets_text,account_list):
             result = [word for word in words if word.startswith(char)]
             hashtag = delete_hashtag_we_dont_want(result)
             if check_if_we_need_to_tag(t) == True:
-                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + " ".join(d.accounts_to_tag) + hashtag
+                if check_if_we_need_to_comment(t) == True:
+                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + hashtag
+                else:
+                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
             else:
-                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag       
-            tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
+                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
+            
+            if check_if_we_need_to_tag(t) == True:
+                tweets_need_to_comment_or_not.append(True)
+            else:
+                tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
             tweets_full_comment.append(remove_emojie(full_phrase))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
 
@@ -314,6 +351,8 @@ def giweaway_from_url_file(tweets_text,account_list):
             print(tweets_full_comment)
             print(tweets_need_to_comment_or_not)
         print("Ending giveaway from url file")
+        print(tweets_need_to_comment_or_not)
+        print("flopipipipipa")
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
     except Exception as e:
         print("YOLO YOLO BANG BANG")
