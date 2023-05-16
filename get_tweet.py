@@ -294,7 +294,7 @@ def search_giveaway():
                     nb_of_giveaway_found+=1
                 else:
                     doublon +=1
-                if i>d.max_giveaway:
+                if nb_of_giveaway_found>d.max_giveaway:
                     break
         tweets_account_to_follow = get_a_better_list(tweets_account_to_follow)
         if print_data == True:
