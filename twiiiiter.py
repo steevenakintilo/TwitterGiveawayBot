@@ -22,7 +22,7 @@ class Scraper:
     wait_time = 5
     
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    #options.add_argument('headless')
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
     #options.headless = False
@@ -511,6 +511,15 @@ def get_who_to_follow(S,url):
         print("Bref userrrr")
         return("")
 
+def forever_loop():
+    while True:
+        try:
+            main_one()
+        except Exception as e:
+            print("Flop " + str(e))
+            time.sleep(600)
+        time.sleep(randint(86400,172800))
+
 def main_one():
     print("Inside main one")
     giveaway_done = 0
@@ -544,8 +553,6 @@ def main_one():
         time.sleep(S.wait_time)
         giveaway_g = 0
         follow_nbr = 0
-        
-        
         if crash_or_no == True:
             tweet_txt = []
             tweet_username = []
@@ -668,3 +675,5 @@ def main_one():
         giveaway_done = 0
         time.sleep(180)
     print("End of the program")
+
+

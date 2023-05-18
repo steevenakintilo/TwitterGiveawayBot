@@ -1,10 +1,10 @@
 #Account info write the username of all your account
 account_username:
-  - "e"
+  - "b"
 
 #Account info write the password of all your account
 account_password:
-  - "a"
+  - "s"
 
 # Words to search for giveaway
 words_to_search:
@@ -37,9 +37,9 @@ words_to_search:
   
 # Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
 accounts_to_tag:
-  - " @Mediavenir "
-  - "@NetflixFR "
-  - "@ActuFoot_ "
+  - " @cnn "
+  - "@BarackObama "
+  - "@EmmanuelMacron "
 
 # Accounts that we don't want to follow
 accounts_to_blacklist:
@@ -302,11 +302,14 @@ giveaway_to_blacklist:
   - "sorare"
   - "freebet"
 
+#If forever_loop is set to true the bot will run forever otherwise it will run once
+forever_loop: True
+
 #The minimum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
 min_time: 45
 
 #The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
-max_time: 300
+max_time: 400
 
 #If the bot crashed and you want to redo the giveaway you where doing just set the value to true
 crash_or_no: False
@@ -315,13 +318,13 @@ crash_or_no: False
 random_retweet_and_tweet: True
 
 # The number of random tweet to do (to make this work only if your account is new otherwise you can skip it you need to make a tweet and accept twitter circle once and then it will work) 
-random_tweet_nb: 3
+random_tweet_nb: 5
 
 # The number of random retweet to do
-random_retweet_nb: 7
+random_retweet_nb: 5
 
 # Maximum number of giveaway retrieve for each word
-max_giveaway: 30
+max_giveaway: 50
 
 # Minimum of like the tweet must have
 minimum_like: 10
@@ -330,7 +333,7 @@ minimum_like: 10
 minimum_rt: 200
 
 #Maximum day for a giveaway to be done
-maximum_day: 14
+maximum_day: 10
 
 #Number of giveaway the bot can do
 nb_of_giveaway: 30
