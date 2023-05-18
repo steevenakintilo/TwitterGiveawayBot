@@ -264,7 +264,6 @@ def search_giveaway():
     try:
         d = Data()
         reset_file("recent_url.txt")
-
         tweets_need_to_comment_or_not = []
         tweets_text = []
         tweets_id = []
@@ -312,7 +311,7 @@ def search_giveaway():
                     nb_of_giveaway_found+=1
                 else:
                     doublon +=1
-                if nb_of_giveaway_found>d.max_giveaway:
+                if nb_of_giveaway_found>=d.nb_of_giveaway:
                     break
         tweets_account_to_follow = get_a_better_list(tweets_account_to_follow)
         if print_data == True:
@@ -377,4 +376,5 @@ def giweaway_from_url_file(tweets_text,account_list):
         print("Error " + str(e))
         time.sleep(600)
         giweaway_from_url_file(tweets_text)
+
 
