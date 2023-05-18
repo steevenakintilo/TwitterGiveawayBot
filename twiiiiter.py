@@ -22,7 +22,7 @@ class Scraper:
     wait_time = 5
     
     options = webdriver.ChromeOptions()
-    #options.add_argument('headless')
+    options.add_argument('headless')
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
     #options.headless = False
@@ -675,5 +675,3 @@ def main_one():
         giveaway_done = 0
         time.sleep(180)
     print("End of the program")
-
-
