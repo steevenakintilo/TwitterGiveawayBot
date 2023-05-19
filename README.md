@@ -87,6 +87,12 @@ giveaway_to_blacklist:
   - "bitcoin"
   - "nft"
 ```
+If you want to run the bot forever just set the forever_loop to true
+
+```yml
+#If forever_loop is set to true the bot will run forever otherwise it will run once
+forever_loop: True
+```
 
 If the bot crashed during the run or you just want to redo the same giveaways for another account just set the crash_or_no to True and the bot will do the giveaway from the recent_url.txt file and not new giveaways
 
@@ -127,7 +133,7 @@ nb_of_giveaway: 50
 They are more information on the configuration.yml file but they are more easy to understand.
 ## Advices
 
-- Run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
+- If you don't want to set forever_loop to True run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
 - Don't do more than 50 giveaways per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
 - If you want to add another account to the bot you have 2 options: 
   
