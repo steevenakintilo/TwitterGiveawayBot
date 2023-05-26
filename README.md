@@ -140,7 +140,9 @@ nb_of_giveaway: 50
 
 They are more information on the configuration.yml file but they are more easy to understand.
 ## Advices
-
+- If you want to do giveaway that are not in french you have to modify those part of the get_tweet.py file:
+  Replace the lists on check_if_we_need_to_comment , check_if_we_need_to_tag , check_if_we_need_to_tag_two functions with the word giveaway often asked you for comment and tagging people in the language you want and you also need to modify the 4 words ("commenter","commente","écrit","écrire") on what_to_comment function the same way.
+  
 - If you don't want to set forever_loop to True run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
 - Don't do more than 50 giveaways per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
 - If you want to add another account to the bot you have 2 options: 
