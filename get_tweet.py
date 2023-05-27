@@ -6,7 +6,6 @@ import re
 import emoji
 import time
 import traceback
-import tweepy
 from datetime import datetime, timedelta, date
 
 class Data:
