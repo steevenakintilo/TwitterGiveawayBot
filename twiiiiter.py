@@ -23,6 +23,7 @@ class Scraper:
     
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
+    options.add_argument("--log-level=3")  # Suppress all logging levels
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
     #options.headless = False
