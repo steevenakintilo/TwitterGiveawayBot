@@ -38,9 +38,9 @@ words_to_search:
   
 # Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
 accounts_to_tag:
-  - " @cnn "
-  - "@BarackObama "
-  - "@EmmanuelMacron "
+  - " @Mediavenir "
+  - "@NetflixFR "
+  - "@ActuFoot_ "
 
 # Accounts that we don't want to follow
 accounts_to_blacklist:
@@ -324,13 +324,13 @@ flux_rss:
 forever_loop: False
 
 #The minimum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
-min_time: 1
+min_time: 45
 
 #The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
-max_time: 3
+max_time: 300
 
 #If the bot crashed and you want to redo the giveaway you where doing just set the value to true
-crash_or_no: True
+crash_or_no: False
 
 #If the option is set to False the bot will only @ account withouth the sentence when he need to
 add_sentence_to_tag: True
@@ -339,10 +339,10 @@ add_sentence_to_tag: True
 random_retweet_and_tweet: True
 
 # The number of random tweet to do (to make this work only if your account is new otherwise you can skip it you need to make a tweet and accept twitter circle once and then it will work) 
-random_tweet_nb: 1
+random_tweet_nb: 5
 
 # The number of random retweet to do
-random_retweet_nb: 1
+random_retweet_nb: 5
 
 # The language of the tweet to search fr,en etc put any if you want to search tweet in any language
 tweet_lang: "fr"
@@ -360,4 +360,4 @@ minimum_rt: 200
 maximum_day: 10
 
 #Number of giveaway the bot can do
-nb_of_giveaway: 10
+nb_of_giveaway: 5
