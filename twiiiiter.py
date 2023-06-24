@@ -67,14 +67,11 @@ def get_news():
     try:
         rdm_news = randint(0,len(news_title)) - 1
         return(news_title[rdm_news],news_link[rdm_news])
-        print(news_title[rdm_news],news_link[rdm_news])
     except:
         try:
             return(news_title[0],news_link[0])
-            print(news_title[0],news_link[0])
         except:
             return ("ok","ok")
-            print("ok","ok")
 
 def login(S,_username,_password):
 
@@ -223,7 +220,7 @@ def comment_a_tweet(S,url,text):
         comment_button.click()
 
       #  print("coment part one")
-        time.sleep(10)
+        time.sleep(15)
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
         
@@ -408,32 +405,6 @@ def get_only_account(s):
             l.append(s[i])
     return (l)
 
-def scroll_down(S,account):
-    S.driver.get("https://twitter.com/" + account + "/following")
-    
-    # Get the current scroll height
-    last_height = S.driver.execute_script("return document.body.scrollHeight")
-    test = 0
-    new_height = 0
-    last_height = 0
-    # Keep scrolling until the bottom of the page is reached
-    element = WebDriverWait(S.driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div")))
-    while True:
-        S.driver.execute_script("window.scrollBy(0, 500)")        
-        test = test + 1
-        new_height = S.driver.execute_script("return document.body.scrollHeight")
-        print(test)
-        time.sleep(0.02)
-        if test > 3000:
-            break
-        last_height = new_height
-    
-    element = WebDriverWait(S.driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div")))
-    account = element.text
-    account = account.split("\n")
-    return(get_only_account(account))
-    
-
 def get_trend(S):
     try:
         S.driver.get("https://twitter.com/explore")
@@ -443,25 +414,6 @@ def get_trend(S):
     except:
         print("Bred trend")
         return ("je")
-
-def check_for_unfollow(S,account):
-    try:
-        S.driver.get("https://twitter.com/"+account)
-        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[5]/div[1]/a/span[1]/span")))    
-        time.sleep(5)
-        print("The account currently have " + str(int(element.text.replace(" ",""))) + " following")
-        if int(element.text.replace(" ","")) > 4500:
-            print("Time to unfollow people") 
-            for i in range(10):
-                list_of_people_to_unfollow = scroll_down(S,account)
-                print(list_of_people_to_unfollow,len(list_of_people_to_unfollow))
-                for ac in list_of_people_to_unfollow:
-                    unfollow_an_account(S,ac.replace("@",""))
-        else:
-            print("Don't have to unfollow people")
-        print("Nbr of account unfollowed = " + str(S.unfollow_nbr))
-    except:
-        print("Bref unfollow")
 
 def get_tweet_text(S,url):
     try:

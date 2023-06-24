@@ -324,22 +324,25 @@ flux_rss:
 forever_loop: False
 
 #The minimum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
-min_time: 45
+min_time: 1
 
 #The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
-max_time: 300
+max_time: 3
 
 #If the bot crashed and you want to redo the giveaway you where doing just set the value to true
-crash_or_no: False
+crash_or_no: True
+
+#If the option is set to False the bot will only @ account withouth the sentence when he need to
+add_sentence_to_tag: True
 
 # If the value is set to true the bot will make random retweet and tweet
 random_retweet_and_tweet: True
 
 # The number of random tweet to do (to make this work only if your account is new otherwise you can skip it you need to make a tweet and accept twitter circle once and then it will work) 
-random_tweet_nb: 5
+random_tweet_nb: 1
 
 # The number of random retweet to do
-random_retweet_nb: 5
+random_retweet_nb: 1
 
 # The language of the tweet to search fr,en etc put any if you want to search tweet in any language
 tweet_lang: "fr"
@@ -357,4 +360,4 @@ minimum_rt: 200
 maximum_day: 10
 
 #Number of giveaway the bot can do
-nb_of_giveaway: 30
+nb_of_giveaway: 10
