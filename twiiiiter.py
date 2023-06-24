@@ -47,21 +47,11 @@ class Scraper:
     unfollow_nbr = 0
 
 def get_news():
-    url_list = ["https://www.france24.com/fr/rss",
-    "https://www.france24.com/fr/europe/rss",
-    "https://www.france24.com/fr/france/rss",
-    "https://www.france24.com/fr/afrique/rss",
-    "https://www.france24.com/fr/moyen-orient/rss",
-    "https://www.france24.com/fr/am%C3%A9riques/rss",
-    "https://www.france24.com/fr/asie-pacifique/rss",
-    "https://www.france24.com/fr/%C3%A9co-tech/rss",
-    "https://www.france24.com/fr/sports/rss",
-    "https://www.france24.com/fr/culture/rss",
-    "https://www.france24.com/fr/plan%C3%A8te/rss",
-    ]
-
+    with open("configuration.yml", "r") as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
+    url_list = data["flux_rss"]
+    
     l = url_list[randint(0,len(url_list) - 1)]
-    #l = "https://www.france24.com/fr/rss"
     news_feed = feedparser.parse(l)
 
     news_title = []

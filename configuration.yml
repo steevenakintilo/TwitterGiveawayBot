@@ -1,13 +1,14 @@
 #Account info write the username of all your account
 account_username:
-  - "s"
+  - "b"
 
 #Account info write the password of all your account
 account_password:
-  - "S"
+  - "s"
 
 # Words to search for giveaway
 words_to_search:
+  - "giveaway"
   - "#concours"
   - "#JeuConcours"
   - "concours pour gagner"
@@ -305,14 +306,28 @@ giveaway_to_blacklist:
   - "sorare"
   - "freebet"
 
+#Add your own flux rss those will be used to make tweet after doing giveaway
+flux_rss:
+  - "https://www.france24.com/fr/rss"
+  - "https://www.france24.com/fr/europe/rss"
+  - "https://www.france24.com/fr/france/rss"
+  - "https://www.france24.com/fr/afrique/rss"
+  - "https://www.france24.com/fr/moyen-orient/rss"
+  - "https://www.france24.com/fr/am%C3%A9riques/rss"
+  - "https://www.france24.com/fr/asie-pacifique/rss"
+  - "https://www.france24.com/fr/%C3%A9co-tech/rss"
+  - "https://www.france24.com/fr/sports/rss"
+  - "https://www.france24.com/fr/culture/rss"
+  - "https://www.france24.com/fr/plan%C3%A8te/rss"
+
 #If forever_loop is set to true the bot will run forever otherwise it will run once
-forever_loop: True
+forever_loop: False
 
 #The minimum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
 min_time: 45
 
 #The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
-max_time: 400
+max_time: 300
 
 #If the bot crashed and you want to redo the giveaway you where doing just set the value to true
 crash_or_no: False
@@ -325,6 +340,9 @@ random_tweet_nb: 5
 
 # The number of random retweet to do
 random_retweet_nb: 5
+
+# The language of the tweet to search fr,en etc put any if you want to search tweet in any language
+tweet_lang: "fr"
 
 # Maximum number of giveaway retrieve for each word
 max_giveaway: 50
@@ -339,4 +357,4 @@ minimum_rt: 200
 maximum_day: 10
 
 #Number of giveaway the bot can do
-nb_of_giveaway: 3
+nb_of_giveaway: 30

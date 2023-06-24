@@ -121,6 +121,12 @@ random_tweet_nb: 10
 # The number of random retweet to do
 random_retweet_nb: 1
 ```
+You can also add your own flux rss from this link https://github.com/plenaryapp/awesome-rss-feeds
+```yml
+#Add your own flux rss those will be used to make tweet after doing giveaway
+flux_rss:
+  - "https://www.france24.com/fr/rss"
+```
 
 You can also specify the number of giveaways you want to do, the number of like and retweet the giveaway must have and the limit date of a giveaway to not participate on older and finished giveaway
 

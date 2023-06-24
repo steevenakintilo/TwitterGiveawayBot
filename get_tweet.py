@@ -23,7 +23,8 @@ class Data:
     maximum_day = data["maximum_day"]
     nb_of_giveaway = data["nb_of_giveaway"]
     sentence_for_random_comment = data["sentence_for_random_comment"]
-    
+    tweet_lang = data["tweet_lang"]
+
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
     date_str = str(date_str)
@@ -278,7 +279,9 @@ def search_giveaway():
         date_ = ""
         date_format = "%Y-%m-%d"
         for search_word in d.word_to_search:
-            text = search_word + ' lang:fr'
+            text = search_word + ' lang:'+d.tweet_lang
+            if d.tweet_lang == "any":
+                text = search_word 
             for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
                 date_ = str(tweet.date)
                 date_ = date_[0:10]
@@ -291,7 +294,7 @@ def search_giveaway():
                     hashtag = delete_hashtag_we_dont_want(result)
                     if check_if_we_need_to_tag(tweet.rawContent) == True:
                         if check_if_we_need_to_comment(tweet.rawContent) == True:
-                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + hashtag
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + " " + hashtag
                         else:
                             full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + " "
                     else:
@@ -346,7 +349,7 @@ def giweaway_from_url_file(tweets_text,account_list):
             hashtag = delete_hashtag_we_dont_want(result)
             if check_if_we_need_to_tag(t) == True:
                 if check_if_we_need_to_comment(t) == True:
-                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + hashtag
+                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " " + hashtag
                 else:
                     full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
             else:
