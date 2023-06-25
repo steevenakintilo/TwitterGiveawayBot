@@ -158,7 +158,7 @@ Change the tweet_lang to en or any It will either search for english tweet only 
 ```yml
 # The language of the tweet to search fr,en etc put any if you want to search tweet in any language
 tweet_lang: "en"
-```yml
+```
 
 After that add your own word to the words_to_search list like this it will search giveaways which contain those words
 
@@ -169,7 +169,7 @@ words_to_search:
   - "win"
   - "contest"
 
-```yml
+```
 
 Then you just need to modify the comment/tag list
 
@@ -178,7 +178,7 @@ On this list add the words that are asked when you need to comment a certain thi
 # Those are the words needed on the tweet for the bot to comment when the tweet ask to comment one thing in particular
 word_list_to_check_for_special_comment:
   - "comments"
-```yml
+```
 
 On this list add the word that are asked when you need to comment on the giveaway but not necessarily anything special like if the giveaway says "comments to enter the giveaway" then add the words comments to the list
 
@@ -186,7 +186,7 @@ On this list add the word that are asked when you need to comment on the giveawa
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment random stuff
 word_list_to_check_for_comment:
   - "comment"
-```yml
+```
 
 This list do the same things that word_list_to_check_for_comment but for word shorter than 6 characters
 
@@ -195,7 +195,7 @@ This list do the same things that word_list_to_check_for_comment but for word sh
 short_word_list_to_check_for_comment:
   - "dit"
   - "dis"
-```yml
+```
 
 On this list add the word that are asked when you need to tag one or more accounts to a giveaway 
 ```yml
@@ -203,7 +203,7 @@ On this list add the word that are asked when you need to tag one or more accoun
 word_list_to_check_for_tag:
   - "tag"
   - "mention"
-```yml
+```
 
 Add to this list word asked when you only need to tag 1 account to enter the giveaway
 
@@ -214,7 +214,7 @@ one_poeple_list:
   - "a friend"
   - "@ someone"
   
-```yml
+```
 
 Add to this list word asked when you only need to tag 2 accounts to enter the giveaway
 
@@ -223,7 +223,7 @@ Add to this list word asked when you only need to tag 2 accounts to enter the gi
 two_poeple_list:
   - "two friends"
   - "two persons"
-```yml
+```
 
 Add to this list word asked when you need to tag 3 or more accounts to enter the giveaway
 
@@ -233,8 +233,7 @@ three_or_more_poeple_list:
   - "three friends"
   - "three persons"
   - "some friends"
-
-```yml
+```
 
 With all of that you will be able to do giveaway in english or any language you want
 
