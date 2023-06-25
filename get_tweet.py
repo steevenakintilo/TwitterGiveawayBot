@@ -25,6 +25,14 @@ class Data:
     sentence_for_random_comment = data["sentence_for_random_comment"]
     tweet_lang = data["tweet_lang"]
     add_sentence_to_tag = data["add_sentence_to_tag"]
+    word_list_to_check_for_special_comment = data["word_list_to_check_for_special_comment"]
+    word_list_to_check_for_comment = data["word_list_to_check_for_comment"]
+    short_word_list_to_check_for_comment = data["short_word_list_to_check_for_comment"]
+    word_list_to_check_for_tag = data["word_list_to_check_for_tag"]
+    one_poeple_list = data["one_poeple_list"]
+    two_poeple_list = data["two_poeple_list"]
+    three_or_more_poeple_list = data["three_or_more_poeple_list"]
+
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
     date_str = str(date_str)
@@ -108,49 +116,19 @@ def get_the_right_word(sentence):
 
 def what_to_comment(sentences):
     s = sentences.split("\n")
-
-    for sentence in s:
-        #comment = ""
-        if "commenter" in sentence.lower():
-            comment = sentence.split("commenter")
-            if len(comment) == 1:
-                c = comment[0]
-            else:
-                c = comment[1]
-            if '"' in c or '“' in c:
-                c = get_the_right_word(c)
-            return(c.replace('"',"").replace("“","").replace("«","").replace("»",""))
-            
-        if "commente" in sentence.lower():
-            comment = sentence.split("commente")
-            if len(comment) == 1:
-                c = comment[0]
-            else:
-                c = comment[1]
-            if '"' in c or '“' in c:
-                c = get_the_right_word(c)
-            return(c.replace('"',"").replace("“","").replace("«","").replace("»",""))
-
-        if "écrit" in sentence.lower():
-            comment = sentence.split("écrit")
-            if len(comment) == 1:
-                c = comment[0]
-            else:
-                c = comment[1]
-            if '"' in c or '“' in c:
-                c = get_the_right_word(c)
-            return(c.replace('"',"").replace("“","").replace("«","").replace("»",""))
-            
-        if "écrire" in sentence.lower():
-            comment = sentence.split("écrire")
-            if len(comment) == 1:
-                c = comment[0]
-            else:
-                c = comment[1]
-            if '"' in c or '“' in c:
-                c = get_the_right_word(c)
-            return(str(c.replace('"',"").replace("“","").replace("«","").replace("»","")))
-        
+    d = Data()
+    for word in d.word_list_to_check_for_special_comment:
+        for sentence in s:
+            if word in sentence.lower():
+                comment = sentence.split(word)
+                if len(comment) == 1:
+                    c = comment[0]
+                else:
+                    c = comment[1]
+                if '"' in c or '“' in c:
+                    c = get_the_right_word(c)
+                return(c.replace('"',"").replace("“","").replace("«","").replace("»",""))
+                
     return ("")
 
 def get_a_better_list(l):
@@ -167,14 +145,13 @@ def get_a_better_list(l):
     return (new_l)
 
 def check_if_we_need_to_comment(text):
-    word_list_to_check_for_comment = ["comment","écrit","écrire","cite","donne","tweet avec","tweet : avec","tweet #","réponse","hashtag"]
-    short_word_list = ["dit","dis"]
-    
-    for elem in word_list_to_check_for_comment:
+    d = Data()
+
+    for elem in d.word_list_to_check_for_comment:
         if elem.lower() in text.lower():
             return True
     
-    for word_to_check in short_word_list:
+    for word_to_check in d.short_word_list_to_check_for_comment:
         for word in text.split():
             if word.lower().startswith(word_to_check.lower()) and len(word) <= 6:
                 return True
@@ -184,8 +161,8 @@ def check_if_we_need_to_comment(text):
 
 
 def check_if_we_need_to_tag(text):
-    word_list_to_check_for_comment = ["invit","mention","tag","identif","@ un","@ une","@ des","@ tes"]
-    for elem in word_list_to_check_for_comment:
+    d = Data()
+    for elem in d.word_list_to_check_for_tag:
         if elem.lower() in text.lower():
             return True
     return False
@@ -220,14 +197,12 @@ def search_tweet_for_rt(text,nb):
 
 def who_many_people_to_tag(text):
     d = Data()
-    one_poeple_list = ["un ami","un copain","une personne","un pote","1 pote","1 ami","1 copain","1 personne","un(e) ami(e)","un.e ami.e"]
-    two_poeple_list = ["2 amis","2 ami(e)s","2 ami","2 personnes","2 potes","deux amis","deux ami(e)s","deux ami","deux personnes","deux potes"]
-    
-    for one in one_poeple_list:
+
+    for one in d.one_poeple_list:
         if one.lower() in text.lower():
             return(d.accounts_to_tag[0])
     
-    for two in two_poeple_list:
+    for two in d.two_poeple_list:
         if two.lower() in text.lower():
             return(d.accounts_to_tag[0]+" "+d.accounts_to_tag[1])
     
@@ -235,18 +210,16 @@ def who_many_people_to_tag(text):
     
 def check_if_we_need_to_tag_two(text):
     d = Data()
-    one_poeple_list = ["un ami","un copain","une personne","un pote","1 pote","1 ami","1 copain","1 personne","un(e) ami(e)","un.e ami.e"]
-    two_poeple_list = ["2 amis","2 ami(e)s","2 ami","2 personnes","2 potes","deux amis","deux ami(e)s","deux ami","deux personnes","deux potes"]
-    other_list = ["3 amis","3 ami(e)s","3 ami","3 personnes","3 potes","trois amis","trois ami(e)s","trois ami","trois personnes","trois potes","tes amis","des amis","tes potes","des potes"]
-    for one in one_poeple_list:
+    
+    for one in d.one_poeple_list:
         if one.lower() in text.lower():
             return True
     
-    for two in two_poeple_list:
+    for two in d.two_poeple_list:
         if two.lower() in text.lower():
             return True
     
-    for other in other_list:
+    for other in d.three_or_more_poeple_list:
         if other.lower() in text.lower():
             return True
     

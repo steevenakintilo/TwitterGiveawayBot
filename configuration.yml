@@ -35,7 +35,84 @@ words_to_search:
   - "concours t.a.s le"
   - "tirage au sort concours"
   - "concours résultat le rt"
-  
+
+# Those are the word needed on the tweet for the bot to comment when the tweet ask to comment one thing in particular
+word_list_to_check_for_special_comment:
+  - "commenter"
+  - "écrit"
+  - "écrire"
+
+# Those are the word needed on the tweet for the bot to comment when the tweet ask to comment random stuff
+word_list_to_check_for_comment:
+  - "comment"
+  - "écrit"
+  - "écrire"
+  - "cite"
+  - "donne"
+  - "tweet avec"
+  - "tweet : avec"
+  - "tweet #"
+  - "hashtag"
+
+# The same as word_list_to_check_for_comment but for word shorter than 6 characters
+short_word_list_to_check_for_comment:
+  - "dit"
+  - "dis"
+
+# Those are the word needed on the tweet for the bot to tag one or more account
+word_list_to_check_for_tag:
+  - "invit"
+  - "mention"
+  - "tag"
+  - "identif"
+  - "@ un"
+  - "@ une"
+  - "@ des"
+  - "@ tes"
+
+# Word list to check if we need to tag 1 account
+one_poeple_list:
+  - "un ami"
+  - "un copain"
+  - "une personne"
+  - "un pote"
+  - "1 pote"
+  - "1 ami"
+  - "1 copain"
+  - "1 personne"
+  - "un(e) ami(e)"
+  - "un.e ami.e"
+
+# Word list to check if we need to tag 2 accounts
+two_poeple_list:
+  - "2 amis"
+  - "2 ami(e)s"
+  - "2 ami"
+  - "2 personnes"
+  - "2 potes"
+  - "deux amis"
+  - "deux ami(e)s"
+  - "deux ami"
+  - "deux personnes"
+  - "deux potes"
+
+# Word list to check if we need to tag 3 accounts or more
+three_or_more_poeple_list:
+  - "3 amis"
+  - "3 ami(e)s"
+  - "3 ami"
+  - "3 personnes"
+  - "3 potes"
+  - "trois amis"
+  - "trois ami(e)s"
+  - "trois ami"
+  - "trois personnes"
+  - "trois potes"
+  - "tes amis"
+  - "des amis"
+  - "tes potes"
+  - "des potes"
+
 # Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
 accounts_to_tag:
   - " @Mediavenir "
@@ -360,4 +437,4 @@ minimum_rt: 200
 maximum_day: 10
 
 #Number of giveaway the bot can do
-nb_of_giveaway: 5
+nb_of_giveaway: 30

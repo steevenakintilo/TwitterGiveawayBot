@@ -450,7 +450,7 @@ def get_trend(S):
         print(element.text)
         return (str(element.text))
     except:
-        print("Bred trend")
+        print("Bref trend")
         return ("je")
 
 def get_tweet_text(S,url):
