@@ -24,7 +24,7 @@ Download all the modules required for the bot to work using this command:
     pip install -r requirement.txt
 ```
 
-If snscrape installation failed then do that 
+Then install snscrape like that:
 
 ```bash
     pip install --upgrade git+https://github.com/JustAnotherArchivist/snscrape.git
@@ -37,14 +37,14 @@ To start the bot just do
 ```
 
 ## Features
-
+- The bot can work in any language
 - Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
 - The bot work with 3 txt files: account.txt url.txt and recent_url.txt , account.txt file list all the account you have followed since using the bot, url.txt file list all the giweaway (their links) you have done sice using the bot and recent_url.txt file list all the giweaway (their links) you have done on the last time you used the bot
 - Like Retweet and Comment a tweet link to a giveaway
 - Follow all the person asked for the giveaway
 - It can @ people when needed, comment with # when needed and make no comment when we don't need to
 - The bot can do random tweet and retweet to act more "human"
-- The bot can work with 1,2,20 or even 100 account you just have to fill the configuration.yml file well
+- The bot can work with 1,2,20 or even 100 accounts you just have to fill the configuration.yml file well
 - The bot is flexible you can modify most of its features on the configuration.yml file
 - You can even add links to giveaways to the recent_url.txt to make this work you need to make sure the giveaways you are adding have a certain number of like retweet and good limit date all link to the configuration.yml settings and the bot will do the giveaway
 
@@ -145,10 +145,100 @@ nb_of_giveaway: 50
 ```
 
 They are more information on the configuration.yml file but they are more easy to understand.
-## Advices
-- If you want to do giveaway that are not in french you have to modify those part of the get_tweet.py file:
-  Replace the lists on check_if_we_need_to_comment , check_if_we_need_to_tag , check_if_we_need_to_tag_two functions with the word giveaway often asked you for comment and tagging people in the language you want and you also need to modify the 4 words ("commenter","commente","écrit","écrire") on what_to_comment function the same way.
+
+
+If you are not a french speaker or you want to do english spanish or any language giveaways read this otherwise skip it.
+
+If you set your configuration.yml well you will be able to do giveaway that are not necessarily french just do it like that:
+
+for the exemple let's say you want to do english giveaways
+
+Change the tweet_lang to en or any It will either search for english tweet only or tweet of any language
+
+```yml
+# The language of the tweet to search fr,en etc put any if you want to search tweet in any language
+tweet_lang: "en"
+```yml
+
+After that add your own word to the words_to_search list like this it will search giveaways which contain those words
+
+```yml
+# Words to search for giveaway
+words_to_search:
+  - "giveaway"
+  - "win"
+  - "contest"
+
+```yml
+
+Then you just need to modify the comment/tag list
+
+On this list add the words that are asked when you need to comment a certain thing like if giveaways often ask "comments Done or comments #Winner" then add the word comments to the list 
+```yml
+# Those are the words needed on the tweet for the bot to comment when the tweet ask to comment one thing in particular
+word_list_to_check_for_special_comment:
+  - "comments"
+```yml
+
+On this list add the word that are asked when you need to comment on the giveaway but not necessarily anything special like if the giveaway says "comments to enter the giveaway" then add the words comments to the list
+
+```yml
+# Those are the word needed on the tweet for the bot to comment when the tweet ask to comment random stuff
+word_list_to_check_for_comment:
+  - "comment"
+```yml
+
+This list do the same things that word_list_to_check_for_comment but for word shorter than 6 characters
+
+```yml
+# The same as word_list_to_check_for_comment but for word shorter than 6 characters
+short_word_list_to_check_for_comment:
+  - "dit"
+  - "dis"
+```yml
+
+On this list add the word that are asked when you need to tag one or more accounts to a giveaway 
+```yml
+# Those are the word needed on the tweet for the bot to tag one or more account
+word_list_to_check_for_tag:
+  - "tag"
+  - "mention"
+```yml
+
+Add to this list word asked when you only need to tag 1 account to enter the giveaway
+
+```yml
+# Word list to check if we need to tag 1 account
+one_poeple_list:
+  - "one friend"
+  - "a friend"
+  - "@ someone"
   
+```yml
+
+Add to this list word asked when you only need to tag 2 accounts to enter the giveaway
+
+```yml
+# Word list to check if we need to tag 2 accounts
+two_poeple_list:
+  - "two friends"
+  - "two persons"
+```yml
+
+Add to this list word asked when you need to tag 3 or more accounts to enter the giveaway
+
+```yml
+# Word list to check if we need to tag 3 accounts or more
+three_or_more_poeple_list:
+  - "three friends"
+  - "three persons"
+  - "some friends"
+
+```yml
+
+With all of that you will be able to do giveaway in english or any language you want
+
+## Advices  
 - If you don't want to set forever_loop to True run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
 - Don't do more than 50 giveaways per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
 - If you want to add another account to the bot you have 2 options: 
@@ -158,7 +248,7 @@ They are more information on the configuration.yml file but they are more easy t
 
 - If the bot crash during the run don't panic and just set the crash_or_no value to True on the configuration.yml file and restart the bot it will redo the giveaways you couldn't do because of the crash
 
-- Don't put a min_time and max_time to low otherwise you will be locked then ban for spamming I think 45 seconds for min_time and 300 seconds for max_time is good but you can still but the time you want
+- Don't put a min_time and max_time too low otherwise you will be locked then ban for spamming I think 45 seconds for min_time and 300 seconds for max_time is good but you can still but the time you want
 - Fell free to modify as you wish the configuration.yml file to have the best giveaway bot you wantFell free to update the code or even add more features to it.
 
 Hope this code will help you win more giveaways on twitter.
