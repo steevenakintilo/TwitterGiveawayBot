@@ -149,7 +149,7 @@ They are more information on the configuration.yml file but they are more easy t
 
 If you are not a french speaker or you want to do english spanish or any language giveaways read this otherwise skip it.
 
-If you set your configuration.yml well you will be able to do giveaway that are not necessarily french just do it like that:
+If you set your configuration.yml well you will be able to do giveaways that are not necessarily french just do it like that:
 
 for the exemple let's say you want to do english giveaways
 
