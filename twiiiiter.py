@@ -21,9 +21,10 @@ MAXTIME = data["max_time"]
 
 class Scraper:
     wait_time = 5
-    
+    headless = data["headless"]
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    if headless == True:
+        options.add_argument('headless')
     options.add_argument("--log-level=3")  # Suppress all logging levels
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
