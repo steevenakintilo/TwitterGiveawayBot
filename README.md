@@ -36,6 +36,8 @@ To start the bot just do
     python main.py
 ```
 
+If the bot failed to launch after several try set the headless to false on the configuration.yml and if even after that the bot still don't work just make an issues I will help you make it work
+
 ## Features
 - The bot can work in any language
 - Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
