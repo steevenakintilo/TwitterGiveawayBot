@@ -385,7 +385,7 @@ giveaway_to_blacklist:
 
 
 # If headless is set to True the bot won't open a chrome windows while doing giveaways otherwise it will
-headless: true
+headless: True
 
 #Add your own flux rss those will be used to make tweet after doing giveaway
 flux_rss:
