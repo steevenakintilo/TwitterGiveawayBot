@@ -586,7 +586,7 @@ def main_one():
                     giveaway_done  += 1
                     giveaway_g += 1
                     reetweet_a_tweet(S,t)
-                    time.sleep(S.wait_time)        
+                    time.sleep(randint(MINTIME,MAXTIME))
                     if t_comment_or_not[idxx] == True:
                         comment_a_tweet(S,t,t_full_comment[idxx])
                 else:
