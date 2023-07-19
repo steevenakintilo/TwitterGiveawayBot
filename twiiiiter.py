@@ -26,6 +26,7 @@ class Scraper:
     if headless == True:
         options.add_argument('headless')
     options.add_argument("--log-level=3")  # Suppress all logging levels
+    
     driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
     #options.headless = False
@@ -460,7 +461,7 @@ def get_tweet_text(S,url):
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetText"]')))
         return (str(element.text))
-    except:
+    except Exception as e:
         print("Bref text")
         return ("je")
 
@@ -546,6 +547,7 @@ def main_one():
             tweet_from_url = print_file_info("recent_url.txt").split("\n")
             for t in tweet_from_url:
                 tweet_txt.append(get_tweet_text(S,t))
+                time.sleep(60)
                 crash_follow.append(get_tweet_username(S,t))
                 for g in get_who_to_follow(S,t):
                     tt_follow.append(g)
@@ -586,9 +588,10 @@ def main_one():
                     giveaway_done  += 1
                     giveaway_g += 1
                     reetweet_a_tweet(S,t)
-                    time.sleep(S.wait_time)        
+                    #time.sleep(S.wait_time)        
                     if t_comment_or_not[idxx] == True:
                         comment_a_tweet(S,t,t_full_comment[idxx])
+                    time.sleep(randint(MINTIME,MAXTIME))
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
