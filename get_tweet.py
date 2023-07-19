@@ -49,7 +49,6 @@ def remove_non_alphanumeric(string):
     return s[0]
 
 def write_into_file(path, x):
-    return
     with open(path, "ab") as f:
         f.write(str(x).encode("utf-8"))
 
@@ -59,9 +58,10 @@ def reset_file(path):
     f.close            
 
 def print_file_info(path):
-    with open(path, "r" ,encoding='utf8', errors='ignore') as f:
-        content = f.read()
-    return content
+    f = open(path, 'r')
+    content = f.read()
+    f.close()
+    return(content)
 
 def remove_emojie(text):
     return emoji.replace_emoji(text, replace='')
@@ -301,11 +301,8 @@ def search_giveaway():
         print("Ending giveaway search")
         return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)
     except Exception as e:
-        print("SNSCRAPE NEED TO RESTART WAIT 10 MINUTES")
-        print("Error " + str(e))
-        print(traceback.format_exc())
-        time.sleep(600)
-        search_giveaway()
+        print("SNSCRAPE ERROR")
+        return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)
 
 def giweaway_from_url_file(tweets_text,account_list):
     try:
@@ -355,5 +352,4 @@ def giweaway_from_url_file(tweets_text,account_list):
     except Exception as e:
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
-        time.sleep(600)
-        giweaway_from_url_file(tweets_text)
+        return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
