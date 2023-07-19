@@ -411,7 +411,7 @@ min_time: 45
 max_time: 300
 
 #If the bot crashed and you want to redo the giveaway you where doing just set the value to true
-crash_or_no: False
+crash_or_no: True
 
 #If the option is set to False the bot will only @ account withouth the sentence when he need to
 add_sentence_to_tag: True

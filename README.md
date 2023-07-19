@@ -108,7 +108,7 @@ If the bot crashed during the run or you just want to redo the same giveaways fo
 
 ```yml
 #If the bot crashed and you want to redo the giveaway you where doing just set the value to true
-crash_or_no: False
+crash_or_no: True
 ```
 
 If you don't want to do random tweet and retweet just set random_retweet_and_tweet to False but if you do want to do them just set the value to True and put the number of reetweet and tweet you want to do

@@ -48,11 +48,10 @@ def remove_non_alphanumeric(string):
     s = string.split("\n")
     return s[0]
 
-def write_into_file(path,x):  
-    f = open(path, "a")
-    f.write(str(x))    
-    f.close            
-
+def write_into_file(path, x):
+    return
+    with open(path, "ab") as f:
+        f.write(str(x).encode("utf-8"))
 
 def reset_file(path):  
     f = open(path, "w")
@@ -60,10 +59,9 @@ def reset_file(path):
     f.close            
 
 def print_file_info(path):
-    f = open(path, 'r')
-    content = f.read()
-    f.close()
-    return(content)
+    with open(path, "r" ,encoding='utf8', errors='ignore') as f:
+        content = f.read()
+    return content
 
 def remove_emojie(text):
     return emoji.replace_emoji(text, replace='')
@@ -359,5 +357,3 @@ def giweaway_from_url_file(tweets_text,account_list):
         print("Error " + str(e))
         time.sleep(600)
         giweaway_from_url_file(tweets_text)
-
-

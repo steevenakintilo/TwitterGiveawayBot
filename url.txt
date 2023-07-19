@@ -1,0 +1,1 @@
+Un MMO PvP/PvE avec des maps. En PvP, extrayez-vous pour garder votre équipement. En PvE, combattez des IA pour obtenir un meilleur équipement. Style graphique cartoon/pixel, menu jouable sous forme de petite map. Gameplay varié avec combat au corps à corps et à distance, destructibilité et batailles navales. Compétences et nombreux items.
