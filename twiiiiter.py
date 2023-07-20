@@ -355,7 +355,7 @@ def follow_an_account(S,account,t):
                 follow_button.click()
                 element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")))
                 confirm_click = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")
-                time.sleep(randint(MINTIME,MAXTIME))
+                time.sleep(randint(MINTIME,300))
                 print("You've followed another account " + account)
         except:
             print("You already follow the account")
@@ -380,7 +380,7 @@ def follow_an_account_error(S,account,t):
 
             if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
                 follow_button.click()
-                time.sleep(randint(MINTIME,MAXTIME))
+                time.sleep(randint(MINTIME,300))
                 print("You've followed another account " + account)
         except:
             print("You already follow the account")
@@ -537,12 +537,17 @@ def get_user_following_count(S,user):
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
         following_count = ""
-        f = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"abonnements").split(" "))
-        for n in f:
-            if n in num:
-                following_count = following_count + n
-        return (int(following_count))
+        try:
+            f = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"abonnements").split(" "))
+            for n in f:
+                if n in num:
+                    following_count = following_count + n
+            return (int(following_count))
+        except:
+            following_count = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"Following").split(" ")[0])
+            return int(following_count)
     except Exception as e:
+        traceback.print_exc()
         print("Following count error")
         return(0)
 
