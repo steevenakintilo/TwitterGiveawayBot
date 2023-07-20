@@ -47,8 +47,9 @@ If the bot failed to launch after several try set the headless to false on the c
 - It can @ people when needed, comment with # when needed and make no comment when we don't need to
 - The bot can do random tweet and retweet to act more "human"
 - The bot can work with 1,2,20 or even 100 accounts you just have to fill the configuration.yml file well
+- Unfollow account when the user have more than 4500 followings
 - The bot is flexible you can modify most of its features on the configuration.yml file
-- You can even add links to giveaways to the recent_url.txt to make this work you need to make sure the giveaways you are adding have a certain number of like retweet and good limit date all link to the configuration.yml settings and the bot will do the giveaway
+- You can even add links to giveaways to the recent_url.txt to make this work you need to set the crash_or_true on the configuration.yml to True ,make sure the giveaways you are adding have a certain number of like retweet and good limit date all linked to the configuration.yml settings and the bot will do the giveaway
 
 ## Configuration file
 The most important features can be adjust on the configuration.yml file
