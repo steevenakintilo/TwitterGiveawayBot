@@ -355,7 +355,7 @@ def follow_an_account(S,account,t):
                 follow_button.click()
                 element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")))
                 confirm_click = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")
-                time.sleep(randint(MINTIME,300))
+                time.sleep(randint(MINTIME,MAXTIME))
                 print("You've followed another account " + account)
         except:
             print("You already follow the account")
@@ -380,7 +380,7 @@ def follow_an_account_error(S,account,t):
 
             if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
                 follow_button.click()
-                time.sleep(randint(MINTIME,300))
+                time.sleep(randint(MINTIME,MAXTIME))
                 print("You've followed another account " + account)
         except:
             print("You already follow the account")
@@ -604,8 +604,8 @@ def main_one():
                 print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
                 unfollow_an_account(S,account_to_unfollow)
                 time.sleep(3)
-        nb_of_following_t2 = get_user_following_count(S,username_info[i])    
-        print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
+            nb_of_following_t2 = get_user_following_count(S,username_info[i])    
+            print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
 
         if crash_or_no == True:
             tweet_txt = []
