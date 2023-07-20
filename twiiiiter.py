@@ -131,7 +131,6 @@ def accept_coockie(S):
         cookie_button.click()
 
     except:
-        print("error")
         pass    
     
     
@@ -159,7 +158,6 @@ def accept_notification(S):
         cookie_button.click()
 
     except:
-        print("error")
         pass    
     
     print("notification done")
@@ -173,7 +171,7 @@ def like_a_tweet(S,url):
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
         
         like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
-        #time.sleep(3000)
+        #time.sleep(10000)
         # check the "aria-pressed" attribute
         
         liked_or_not = like_button.get_attribute("aria-label")
@@ -320,68 +318,21 @@ def make_a_tweet(S,text):
         print("Tweet done")
     except:
         print("Bref tweet")    
-    
-
 
 def unfollow_an_account(S,account):
     try:
         S.driver.get("https://twitter.com/"+account)
-        element = WebDriverWait(S.driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
-        
-        follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
-
-        time.sleep(1)
-
-        aria_label = element.get_attribute("aria-label")
-        aria_label = aria_label.split(" ")
-        
-        try:
-            follow_or_not = aria_label[0]
-
-            if follow_or_not.lower() != "follow" and follow_or_not.lower() != "suivre":
-                follow_button.click()
-                element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="confirmationSheetConfirm"]')))
-                confirm_click = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
-                confirm_click.click()
-                S.unfollow_nbr+=1
-                time.sleep(15)
-                print("You've unfollowed another account " + account)
-        except:
-            print("You already unfollow the account")
-            pass
+        element = WebDriverWait(S.driver, 15).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
+        unfollow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
+        if unfollow_button.text != "Abonné":
+            return (True)
+        unfollow_button.click()
+        click_confirm = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
+        click_confirm.click()
     except Exception as e:
-        print("Bref unfollow " + str(e))
-        unfollow_an_account_error(S,account)
-
-
-def unfollow_an_account_error(S,account):
-    try:
-        S.driver.get("https://twitter.com/"+account)
-        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")))
-        
-        follow_button = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")
-
-        time.sleep(1)
-
-        aria_label = element.get_attribute("aria-label")
-        aria_label = aria_label.split(" ")
-        try:
-            follow_or_not = aria_label[0]
-
-            if follow_or_not.lower() != "follow" and follow_or_not.lower() != "suivre":
-                follow_button.click()
-                element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="confirmationSheetConfirm"]')))
-                confirm_click = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
-                confirm_click.click()
-                S.unfollow_nbr+=1
-                time.sleep(15)
-                print("You've unfollowed another account " + account)
-        except:
-            print("You already unfollow the account")
-            pass
-    except Exception as e:
-        print("Bref unfollow " + str(e)) 
+        print("Unfollow account error")
+        return (False)
 
 
 def follow_an_account(S,account,t):
@@ -494,6 +445,108 @@ def get_who_to_follow(S,url):
         print("Bref userrrr")
         return("")
 
+def get_elem_from_list(list_,elem_):
+    for l in list_:
+        if elem_ in l:
+            return (l)
+    return ("")
+
+def parse_number(num):
+    num = str(num)
+    if "B" in num:
+        if "." in num:
+            num  = num.replace(".","").replace("B","")
+            num  = num + "00000000"
+            
+        else:
+            num = num.replace("B","")
+            num  = num + "000000000"
+            
+    elif "M" in num:
+        if "." in num:
+            num  = num.replace(".","").replace("B","")
+            num  = num + "00000"
+
+        else:
+            num = num.replace("B","")
+            num  = num + "000000"
+    
+    elif "K" in num:
+        if "." in num:
+            num  = num.replace(".","").replace("K","")
+            num = num + "00"
+        else:
+            num = num.replace("K","")
+            num = num + "000"
+    else:
+        if "." in num:
+            num  = num.replace(".","").replace("B","")
+        else:
+            num = num.replace("B","")
+    if "," in num:
+        num = num.replace(",","")
+    return num
+
+
+def get_list_of_my_followings(S,user):
+    try:
+        nb_of_followings = get_user_following_count(S,user)
+        S.driver.get("https://twitter.com/"+user+"/following")
+        run  = True
+        list_of_user = []
+        selenium_data = []
+        account = ""
+        nb = 0
+        while run:
+            try:
+                element = WebDriverWait(S.driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserCell"]')))
+                tweets_username = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="UserCell"]')
+                last_user = tweets_username[len(tweets_username) - 1]
+                for tweet_username in tweets_username:
+                
+                    if tweet_username not in selenium_data:
+                        try:
+                            parsing_user =str(tweet_username.text).split("\n")
+                            account = parsing_user[1]
+                            list_of_user.append(account.replace("@",""))
+                            selenium_data.append(tweet_username)
+                            S.driver.execute_script("arguments[0].scrollIntoView();", tweet_username)
+                            nb+=1
+                            time.sleep(0.025)
+                        except:
+                            time.sleep(0.025)
+                            pass
+                        if nb >= nb_of_followings:
+                            print("Your following listing done")
+                            return(list_of_user)
+            except Exception as e:
+                print("Your following listing failed")
+                traceback.print_exc()
+                return (list_of_user)
+        return(list_of_user)
+    except Exception as e:
+        print("Your following listing failed")
+        traceback.print_exc()
+        return([])
+
+def get_user_following_count(S,user):
+    try:
+        num = "0123456789"
+        S.driver.get("https://twitter.com/"+user)
+        element = WebDriverWait(S.driver, 15).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
+        following_count = ""
+        f = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"abonnements").split(" "))
+        for n in f:
+            if n in num:
+                following_count = following_count + n
+        return (int(following_count))
+    except Exception as e:
+        print("Following count error")
+        return(0)
+
+
 def forever_loop():
     while True:
         try:
@@ -536,6 +589,19 @@ def main_one():
         time.sleep(S.wait_time)
         giveaway_g = 0
         follow_nbr = 0
+        nb_of_following_t1 = get_user_following_count(S,username_info[i])
+        account_to_unfollow = ""
+        if nb_of_following_t1 > 4500:
+            print("You got to much following bot going to unfollow some people")
+            all_my_following = get_list_of_my_followings(S,username_info[i])
+            for j in range(1000):
+                account_to_unfollow = all_my_following[len(all_my_following) - 1 - j]
+                print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
+                unfollow_an_account(S,account_to_unfollow)
+                time.sleep(3)
+        nb_of_following_t2 = get_user_following_count(S,username_info[i])    
+        print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
+
         if crash_or_no == True:
             tweet_txt = []
             tweet_username = []
