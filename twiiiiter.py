@@ -601,7 +601,7 @@ def main_one():
             all_my_following = get_list_of_my_followings(S,username_info[i])
             for j in range(1000):
                 account_to_unfollow = all_my_following[len(all_my_following) - 1 - j]
-                print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
+                #print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
                 unfollow_an_account(S,account_to_unfollow)
                 time.sleep(3)
             nb_of_following_t2 = get_user_following_count(S,username_info[i])    
@@ -618,7 +618,7 @@ def main_one():
             tweet_from_url = print_file_info("recent_url.txt").split("\n")
             for t in tweet_from_url:
                 tweet_txt.append(get_tweet_text(S,t))
-                time.sleep(60)
+                time.sleep(2)
                 crash_follow.append(get_tweet_username(S,t))
                 for g in get_who_to_follow(S,t):
                     tt_follow.append(g)
