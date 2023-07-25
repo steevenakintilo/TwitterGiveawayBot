@@ -325,7 +325,7 @@ def unfollow_an_account(S,account):
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
         unfollow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
-        if unfollow_button.text != "Abonné":
+        if unfollow_button.text != "Abonné" and unfollow_button.text != "Following":
             return (True)
         unfollow_button.click()
         click_confirm = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
