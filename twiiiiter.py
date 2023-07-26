@@ -27,7 +27,7 @@ class Scraper:
         options.add_argument('headless')
     options.add_argument("--log-level=3")  # Suppress all logging levels
     
-    driver = webdriver.Chrome(executable_path="chromedriver", options=options)  # to open the chromedriver    
+    driver = webdriver.Chrome(options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
     #options.headless = False
 
@@ -592,6 +592,7 @@ def main_one():
         time.sleep(S.wait_time)
         accept_coockie(S)
         time.sleep(S.wait_time)
+
         giveaway_g = 0
         follow_nbr = 0
         nb_of_following_t1 = get_user_following_count(S,username_info[i])

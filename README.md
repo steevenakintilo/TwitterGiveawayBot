@@ -10,13 +10,9 @@ Link to download python: https://www.python.org/downloads/
 
 Link to download pip: https://pip.pypa.io/en/stable/installation/
 
-You also need to download google chrome and the chromedriver link to the version of your chrome (which can be seen on Help button then about chrome button)
-
 Link to download google chrome: https://www.google.com/intl/fr_fr/chrome/ 
 
 Link to download the chromedriver: https://chromedriver.chromium.org/downloads
-
-Then Unzip the chromedriver on the same path of this code
 
 Download all the modules required for the bot to work using this command:
 
