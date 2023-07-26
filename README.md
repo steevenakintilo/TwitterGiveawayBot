@@ -12,7 +12,6 @@ Link to download pip: https://pip.pypa.io/en/stable/installation/
 
 Link to download google chrome: https://www.google.com/intl/fr_fr/chrome/ 
 
-Link to download the chromedriver: https://chromedriver.chromium.org/downloads
 
 Download all the modules required for the bot to work using this command:
 
@@ -33,6 +32,10 @@ To start the bot just do
 ```
 
 If the bot failed to launch after several try set the headless to false on the configuration.yml and if even after that the bot still don't work just make an issues I will help you make it work
+
+## Current Twitter situation
+- For about 1 month elon musk has making scrapping twitter harder so as long as there's no change on this side snscrape or any other scrapping technique won't work so you have to search for giveaways by hand and put them in recent_url.txt and the bot will do the rest all by itself.
+- Of course, you need to put contests with a number of likes, rt ... linked to what you've put in your configuration.yml file 
 
 ## Features
 - The bot can work in any language
