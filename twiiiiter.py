@@ -522,12 +522,10 @@ def get_list_of_my_followings(S,user):
                             return(list_of_user)
             except Exception as e:
                 print("Your following listing failed")
-                traceback.print_exc()
                 return (list_of_user)
         return(list_of_user)
     except Exception as e:
         print("Your following listing failed")
-        traceback.print_exc()
         return([])
 
 def get_user_following_count(S,user):
@@ -547,7 +545,6 @@ def get_user_following_count(S,user):
             following_count = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"Following").split(" ")[0])
             return int(following_count)
     except Exception as e:
-        traceback.print_exc()
         print("Following count error")
         return(0)
 
