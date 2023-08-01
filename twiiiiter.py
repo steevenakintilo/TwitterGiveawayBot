@@ -7,6 +7,7 @@ import time
 import pickle
 from selenium.webdriver.common.action_chains import ActionChains
 
+from search import search_tweet_for_better_rt
 from selenium.webdriver.common.by import By
 from get_tweet import *
 import traceback
@@ -396,16 +397,6 @@ def get_only_account(s):
             l.append(s[i])
     return (l)
 
-def get_trend(S):
-    try:
-        S.driver.get("https://twitter.com/explore")
-        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div/div/section/div/div/div[3]/div/div/div/div/div[2]")))
-        print(element.text)
-        return (str(element.text))
-    except:
-        print("Bref trend")
-        return ("je")
-
 def get_tweet_text(S,url):
     try:
         S.driver.get(url)
@@ -582,14 +573,13 @@ def main_one():
         time.sleep(1)
         S = Scraper()
         login(S,username_info[i],password_info[i])
-        time.sleep(3)   
+        time.sleep(3)
         accept_coockie(S)
         time.sleep(S.wait_time)    
         accept_notification(S)
         time.sleep(S.wait_time)
         accept_coockie(S)
         time.sleep(S.wait_time)
-
         giveaway_g = 0
         follow_nbr = 0
         nb_of_following_t1 = get_user_following_count(S,username_info[i])
@@ -674,7 +664,7 @@ def main_one():
                     time.sleep(randint(MINTIME,MAXTIME))
                 make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                 try:
-                    rt_url = search_tweet_for_rt(get_trend(S),random_retweet_nb)
+                    rt_url = search_tweet_for_better_rt(S)
                 
                     for i in range(len(rt_url)):
                         like = like_a_tweet(S,rt_url[i])
@@ -714,8 +704,8 @@ def main_one():
                     time.sleep(randint(MINTIME,MAXTIME))
                 make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                 
-                rt_url = search_tweet_for_rt(get_trend(S),random_retweet_nb)
-                
+                rt_url = search_tweet_for_better_rt(S)
+                                
                 for i in range(len(rt_url)):
                     like = like_a_tweet(S,rt_url[i])
                     if like == True:            
