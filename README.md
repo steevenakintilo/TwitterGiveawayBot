@@ -34,8 +34,7 @@ To start the bot just do
 If the bot failed to launch after several try set the headless to false on the configuration.yml and if even after that the bot still don't work just make an issues I will help you make it work
 
 ## Current Twitter situation
-- For about 1 month elon musk has making scrapping twitter harder so as long as there's no change on this side snscrape or any other scrapping technique won't work so you have to search for giveaways by hand and put them in recent_url.txt and the bot will do the rest all by itself.
-- Of course, you need to put contests with a number of likes, rt ... linked to what you've put in your configuration.yml file 
+- For about 1 month elon musk has making scrapping twitter harder so snscrape isn't working anymore so I've made my own searching giveaway function it work quite well you can now only do 50 giveaways per session to avoid twitter  rate limit otherwise it's still the same as before.
 
 ## Features
 - The bot can work in any language
@@ -241,7 +240,7 @@ With all of that you will be able to do giveaway in english or any language you 
 
 ## Advices  
 - If you don't want to set forever_loop to True run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
-- Don't do more than 50 giveaways per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
+- Don't do more than 50 giveaways (well well you can't do more than 50 since new twitter/x update) per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
 - If you want to add another account to the bot you have 2 options: 
   
   1) Either add it to the configuration.yml but you won't do all the giveaways you  have already done with the other account 
@@ -250,6 +249,7 @@ With all of that you will be able to do giveaway in english or any language you 
 - If the bot crash during the run don't panic and just set the crash_or_no value to True on the configuration.yml file and restart the bot it will redo the giveaways you couldn't do because of the crash
 
 - Don't put a min_time and max_time too low otherwise you will be locked then ban for spamming I think 45 seconds for min_time and 300 seconds for max_time is good but you can still but the time you want
+- To avoid getting blocked for ban it's better to do giveaways during day time and not the night to act more human
 - Fell free to modify as you wish the configuration.yml file to have the best giveaway bot you wantFell free to update the code or even add more features to it.
 
 Hope this code will help you win more giveaways on twitter.
