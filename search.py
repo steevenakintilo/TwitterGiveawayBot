@@ -239,7 +239,7 @@ def list_inside_text(list_one,text):
             return False
     return True
 
-def search_giveaway(selenium_session):
+def get_giveaway_url(selenium_session):
     try:
         d = Data()
         reset_file("recent_url.txt")
@@ -337,8 +337,8 @@ def search_giveaway(selenium_session):
             print("Nb of doublon " + str(doublon))
         print("Number of giveaway found = " + str(nb_of_giveaway_found))
         print("Ending giveaway search")
-        return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)    
+        return (tweets_url)    
     except Exception as e:
         print("Error occured but we are still doing some giveaways")
-        return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)    
+        return (tweets_url)    
 
