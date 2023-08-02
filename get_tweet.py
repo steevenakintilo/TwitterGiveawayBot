@@ -9,7 +9,7 @@ import traceback
 from datetime import datetime, timedelta, date
 
 class Data:
-    with open("configuration.yml", "r") as file:
+    with open("configuration.yml", "r",encoding="utf-8") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     word_to_search = data["words_to_search"]
     accounts_to_tag = data["accounts_to_tag"]
@@ -58,7 +58,7 @@ def reset_file(path):
     f.close            
 
 def print_file_info(path):
-    f = open(path, 'r')
+    f = open(path, 'r',encoding="utf-8")
     content = f.read()
     f.close()
     return(content)
@@ -231,7 +231,7 @@ def check_blacklist(account):
     return (False)
 
 
-def search_giveaway():
+def search_giveaway_not_working_anymore_since_snscrape_is_down_and_i_have_made_my_own_function_who_work_well_too_so_i_keep_this_function_just_in_case_snscrape_will_work_again_and_also_for_the_big_name_of_the_function_which_is_funny_for_me_and_maybe_not_for_everyone():
     try:
         d = Data()
         reset_file("recent_url.txt")

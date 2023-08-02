@@ -11,6 +11,17 @@ import os
 import traceback
 import time
 
+def remove_days(days_to_remove):
+    if days_to_remove < 0:
+        days_to_remove = 0
+    
+    date_format = "%Y-%m-%d"
+    today_date = datetime.now().strftime("%Y-%m-%d")
+    current_date = datetime.strptime(today_date, date_format)
+    new_date = current_date - timedelta(days=days_to_remove)
+    
+    return(new_date.strftime(date_format))
+
 def get_trend(selenium_session):
     try:
       selenium_session.driver.get("https://twitter.com/explore")
@@ -86,7 +97,7 @@ def are_last_x_elements_same(lst,x):
 def check_elem_on_a_list(elem_, list_):
     return next((l for l in list_ if elem_ in l.lower()), elem_)
 
-def search_tweet(selenium_session,query="hello",mode="recent",nb_of_tweet_to_search=10):
+def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
     list_of_tweet_url = []
     selenium_data = []
     list_of_tweet_url_ = []
@@ -104,15 +115,17 @@ def search_tweet(selenium_session,query="hello",mode="recent",nb_of_tweet_to_sea
     p = '"'
     nb = 0
     try:
-        if mode == "top":
-            selenium_session.driver.get("https://twitter.com/search?q="+query+"&src=typed_query&f=top")
-        elif mode == "recent":
-            selenium_session.driver.get("https://twitter.com/search?q="+query+"&src=typed_query&f=live")
-        else:
-            selenium_session.driver.get("https://twitter.com/search?q="+query+"&src=typed_query&f=live")
-        
+        selenium_session.driver.get("https://twitter.com/explore")
         run  = True
         p = '"'
+        time.sleep(1)
+        element = WebDriverWait(selenium_session.driver, 15).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="SearchBox_Search_Input"]')))
+        input_box = selenium_session.driver.find_element(By.CSS_SELECTOR, '[data-testid="SearchBox_Search_Input"]')
+        input_box.click()
+        input_box.send_keys(query)
+        input_box.send_keys(Keys.ENTER)
+        time.sleep(5)
         while run:
             element = WebDriverWait(selenium_session.driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweet"]')))
@@ -123,7 +136,7 @@ def search_tweet(selenium_session,query="hello",mode="recent",nb_of_tweet_to_sea
                 if len(data_list) >= nb_of_tweet_to_search:
                     run = False
                 list_len.append(len(data_list))
-                if are_last_x_elements_same(list_len,500) == True:
+                if are_last_x_elements_same(list_len,250) == True:
                     run = False
                 if tweet_info not in selenium_data:
                     try:
@@ -213,9 +226,119 @@ def search_tweet_for_better_rt(selenium_session):
     with open("configuration.yml", "r") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     nb = data["random_retweet_nb"]
-    tweet_found = search_tweet(selenium_session,str("lang:fr" + " " + get_trend(selenium_session)[0]),"top",nb)
+    tweet_found = search_tweet(selenium_session,str("lang:fr" + " " + get_trend(selenium_session)[0]),nb)
     url_list = []
     for tweet in tweet_found:
         url_list.append(tweet["url"])
     
     return url_list
+
+def list_inside_text(list_one,text):
+    for l in list_one:
+        if l.lower() not in text.lower():
+            return False
+    return True
+
+def search_giveaway(selenium_session):
+    try:
+        d = Data()
+        reset_file("recent_url.txt")
+        tweets_need_to_comment_or_not = []
+        tweets_text = []
+        tweets_id = []
+        tweets_url = []
+        tweets_full_comment = []
+        tweets_account_to_follow = []
+        nb_of_giveaway_found = 0
+        char = '#'
+        full_phrase = ""
+        doublon = 0
+        url_from_file = print_file_info("url.txt").split("\n")
+        print_data = False
+        date_ = ""
+        date_format = "%Y-%m-%d"
+        check_ = []
+        MAX = 50
+        giveaway_foud_per_word = 0
+        skip_text = False
+        nb_of_tweet_to_search = d.max_giveaway
+        if nb_of_tweet_to_search > 100:
+            nb_of_tweet_to_search = 100
+        if d.nb_of_giveaway > MAX:
+            d.nb_of_giveaway = MAX
+        for search_word in d.word_to_search:
+            if print_data == True:
+                print("### " , search_word)
+                print("### nb of giveaway foud " , nb_of_giveaway_found)
+            if nb_of_giveaway_found <d.nb_of_giveaway:
+                text = search_word + ' lang:'+d.tweet_lang + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day))
+                if d.tweet_lang == "any":
+                    text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) 
+                
+                giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search)
+                for g in giveaway:
+                    if list_inside_text(search_word.split(" ") , g["text"].lower()) == True:
+                        giveaway_foud_per_word+=1
+                        if giveaway_foud_per_word >= int(len(giveaway)/3):
+                            skip_text = True
+
+                time.sleep(120)
+                for g in giveaway:
+                    if g["url"] not in tweets_id and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (list_inside_text(search_word.split(" ") , g["text"]) == True or skip_text == True) and nb_of_giveaway_found<d.nb_of_giveaway:
+                        if nb_of_giveaway_found>=d.nb_of_giveaway:
+                            break
+                        words = g["text"].split()
+                        result = [word for word in words if word.startswith(char)]
+                        hashtag = delete_hashtag_we_dont_want(result)
+                        if check_if_we_need_to_tag(g["text"]) == True:
+                            if check_if_we_need_to_comment(g["text"]) == True:
+                                full_phrase = delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " " + hashtag
+                                if d.add_sentence_to_tag == True:
+                                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " " + hashtag
+                            else:
+                                full_phrase = delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " "
+                                if d.add_sentence_to_tag == True:
+                                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " "
+                            full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(g["text"])) + " " + hashtag
+                        tweets_id.append(g["id"])
+                        tweets_text.append(g["text"])
+                        tweets_url.append(g["url"])
+                        if check_if_we_need_to_tag(g["text"]) == True or check_if_we_need_to_tag_two(g["text"]) == True:
+                            tweets_need_to_comment_or_not.append(True)
+                        else:
+                            tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(g["text"]))
+                        tweets_account_to_follow.append(list_of_account_to_follow(g["username"] ,g["text"]))
+                        tweets_full_comment.append(remove_emojie(full_phrase))
+                        nb_of_giveaway_found+=1
+                    else:
+                        doublon +=1
+                    if nb_of_giveaway_found>=d.nb_of_giveaway:
+                        break
+            giveaway_foud_per_word = 0
+            skip_text = False
+        if len(tweets_id) > d.nb_of_giveaway:
+            dif = len(tweets_id) - d.nb_of_giveaway
+            tweets_text = tweets_text[:dif]
+            tweets_url = tweets_url[:dif]
+            tweets_full_comment = tweets_full_comment[:dif]
+            tweets_account_to_follow =tweets_account_to_follow[:dif]
+            tweets_need_to_comment_or_not = tweets_need_to_comment_or_not[:dif]
+
+        for url in tweets_url:
+            write_into_file("url.txt",url+"\n")
+            write_into_file("recent_url.txt",url+"\n")
+                    
+        tweets_account_to_follow = get_a_better_list(tweets_account_to_follow)
+        if print_data == True:
+            print(tweets_text)
+            print(tweets_url)
+            print(tweets_full_comment)
+            print(tweets_account_to_follow)
+            print("Nb of doublon " + str(doublon))
+        print("Number of giveaway found = " + str(nb_of_giveaway_found))
+        print("Ending giveaway search")
+        return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)    
+    except Exception as e:
+        print("Error occured but we are still doing some giveaways")
+        return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)    
+

@@ -7,7 +7,7 @@ import time
 import pickle
 from selenium.webdriver.common.action_chains import ActionChains
 
-from search import search_tweet_for_better_rt
+from search import search_tweet_for_better_rt ,  search_giveaway
 from selenium.webdriver.common.by import By
 from get_tweet import *
 import traceback
@@ -552,7 +552,7 @@ def forever_loop():
 def main_one():
     print("Inside main one")
     giveaway_done = 0
-    with open("configuration.yml", "r") as file:
+    with open("configuration.yml", "r",encoding="utf-8") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     
     print("Starting the program")
@@ -564,10 +564,8 @@ def main_one():
     random_tweet_nb = data["random_tweet_nb"]
     random_retweet_nb = data["random_retweet_nb"]
     crash_or_no = data["crash_or_no"]
+    human = data["human"]
     idxx = 0
-    if crash_or_no == False:
-        tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway()
-    
     for i in range(len(username_info)):
         print("Connecting to " + str(username_info[i]))
         time.sleep(1)
@@ -580,6 +578,8 @@ def main_one():
         time.sleep(S.wait_time)
         accept_coockie(S)
         time.sleep(S.wait_time)
+        if crash_or_no == False:
+            tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway(S)
         giveaway_g = 0
         follow_nbr = 0
         nb_of_following_t1 = get_user_following_count(S,username_info[i])
@@ -606,7 +606,7 @@ def main_one():
             tweet_from_url = print_file_info("recent_url.txt").split("\n")
             for t in tweet_from_url:
                 tweet_txt.append(get_tweet_text(S,t))
-                time.sleep(2)
+                time.sleep(1)
                 crash_follow.append(get_tweet_username(S,t))
                 for g in get_who_to_follow(S,t):
                     tt_follow.append(g)
@@ -655,6 +655,8 @@ def main_one():
                     giveaway_done  += 1
                     print("You have already like the tweet")
                     time.sleep(2)
+                if giveaway_g % 10 == 0 and giveaway_g > 1 and human == True:
+                    time.sleep(5400)
                 print(idxx)
                 idxx = idxx + 1
             if random_rt_and_tweet == True:
@@ -692,6 +694,8 @@ def main_one():
                     giveaway_done  += 1
                     print("You have already like the tweet")
                     time.sleep(5)
+                if giveaway_g % 10 == 0 and giveaway_g > 1 and human == True:
+                    time.sleep(5400)
 
             for account_to_follow in tweets_account_to_follow:
                 follow_nbr +=1
