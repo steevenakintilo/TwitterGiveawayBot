@@ -332,7 +332,7 @@ def unfollow_an_account(S,account):
         click_confirm = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
         click_confirm.click()
     except Exception as e:
-        print("Unfollow account error")
+        #print("Unfollow account error")
         return (False)
 
 

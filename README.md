@@ -194,8 +194,8 @@ This list do the same things that word_list_to_check_for_comment but for word sh
 ```yml
 # The same as word_list_to_check_for_comment but for word shorter than 6 characters
 short_word_list_to_check_for_comment:
-  - "dit"
-  - "dis"
+  - "say"
+  - "tell"
 ```
 
 On this list add the word that are asked when you need to tag one or more accounts to a giveaway 
