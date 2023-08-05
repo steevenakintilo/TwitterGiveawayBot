@@ -262,8 +262,8 @@ def get_giveaway_url(selenium_session):
         giveaway_foud_per_word = 0
         skip_text = False
         nb_of_tweet_to_search = d.max_giveaway
-        if nb_of_tweet_to_search > 100:
-            nb_of_tweet_to_search = 100
+        if nb_of_tweet_to_search > 500:
+            nb_of_tweet_to_search = 500
         if d.nb_of_giveaway > MAX:
             d.nb_of_giveaway = MAX
         for search_word in d.word_to_search:
@@ -281,8 +281,13 @@ def get_giveaway_url(selenium_session):
                         giveaway_foud_per_word+=1
                         if giveaway_foud_per_word >= int(len(giveaway)/3):
                             skip_text = True
-
-                time.sleep(120)
+                if nb_of_tweet_to_search <= 100:
+                    time.sleep(120)
+                if nb_of_tweet_to_search > 100 and nb_of_tweet_to_search <= 300:
+                    time.sleep(180)
+                if nb_of_tweet_to_search > 300:
+                    time.sleep(300)
+                
                 for g in giveaway:
                     if g["url"] not in tweets_id and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (list_inside_text(search_word.split(" ") , g["text"]) == True or skip_text == True) and nb_of_giveaway_found<d.nb_of_giveaway:
                         if nb_of_giveaway_found>=d.nb_of_giveaway:

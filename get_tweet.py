@@ -319,26 +319,26 @@ def giweaway_from_url_file(tweets_text,account_list):
             words = t.split(" ")
             result = [word for word in words if word.startswith(char)]
             hashtag = delete_hashtag_we_dont_want(result)
-            if check_if_we_need_to_tag(t) == True:
-                if check_if_we_need_to_comment(t) == True:
-                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " " + hashtag
-                    if d.add_sentence_to_tag == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " " + hashtag
+            if check_for_forbidden_word(t) == False:
+                if check_if_we_need_to_tag(t) == True:
+                    if check_if_we_need_to_comment(t) == True:
+                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " " + hashtag
+                        if d.add_sentence_to_tag == True:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " " + hashtag
+                    else:
+                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
+                        if d.add_sentence_to_tag == True:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
                 else:
-                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
-                    if d.add_sentence_to_tag == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
-            else:
-                full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
+                    full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
+                
+                if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
+                    tweets_need_to_comment_or_not.append(True)
+                else:
+                    tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
+                tweets_full_comment.append(remove_emojie(full_phrase))
+                tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
             
-            if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
-                tweets_need_to_comment_or_not.append(True)
-            else:
-                tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
-            tweets_full_comment.append(remove_emojie(full_phrase))
-            tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
-
-
         for a in account_list:
             if a not in tweets_account_to_follow and a != "f":
                 tweets_account_to_follow.append(a)
