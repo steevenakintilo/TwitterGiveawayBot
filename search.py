@@ -261,6 +261,13 @@ def get_giveaway_url(selenium_session):
         MAX = 50
         giveaway_foud_per_word = 0
         skip_text = False
+        ban_word = ""
+        ban_word_list = []
+        for banned_word in d.giveaway_to_blacklist:
+            ban_word += "-" + banned_word + " "
+
+        if len(ban_word) <= len(d.giveaway_to_blacklist):
+            ban_word = ""
         nb_of_tweet_to_search = d.max_giveaway
         if nb_of_tweet_to_search > 500:
             nb_of_tweet_to_search = 500
