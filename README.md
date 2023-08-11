@@ -16,7 +16,7 @@ Link to download google chrome: https://www.google.com/intl/fr_fr/chrome/
 Download all the modules required for the bot to work using this command:
 
 ```bash
-    pip install -r requirement.txt
+    pip install -r requirements.txt
 ```
 
 Then install snscrape like that (Since snscrape doesn't work because of twitter rate limit you can skip this command):
