@@ -19,7 +19,7 @@ Download all the modules required for the bot to work using this command:
     pip install -r requirements.txt
 ```
 
-Then install snscrape like that (Since snscrape doesn't work because of twitter rate limit you can skip this command):
+Then install snscrape like that:
 
 ```bash
     pip install --upgrade git+https://github.com/JustAnotherArchivist/snscrape.git
