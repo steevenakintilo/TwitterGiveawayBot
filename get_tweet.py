@@ -1,4 +1,4 @@
-# import snscrape.modules.twitter as sntwitter
+import snscrape.modules.twitter as sntwitter
 
 import yaml
 from random import randint
