@@ -411,7 +411,7 @@ max_time: 300
 #If this option is set to true the bot will make a sleep of 1H30 every 10 giveaways to act more human
 human: False
 
-#If the bot crashed and you want to redo the giveaway you where doing just set the value to true
+#If the bot crashed and you want to redo the giveaway you where doing  or you just want to do your own giveaway you put on the recen_url.txt file just set the value to true
 crash_or_no: False
 
 #If the option is set to False the bot will only @ account withouth the sentence when he need to
