@@ -343,7 +343,6 @@ def giweaway_from_url_file(tweets_text,account_list):
         if print_data == True:
             print(tweets_full_comment)
             print(tweets_need_to_comment_or_not)
-        print("Ending giveaway from url file")
         print(tweets_need_to_comment_or_not)
         print("flopipipipipa")
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
