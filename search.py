@@ -296,7 +296,7 @@ def get_giveaway_url(selenium_session):
                     time.sleep(300)
                 
                 for g in giveaway:
-                    if g["url"] not in tweets_id and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (list_inside_text(search_word.split(" ") , g["text"]) == True or skip_text == True) and nb_of_giveaway_found<d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
+                    if g["url"] not in tweets_url and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (list_inside_text(search_word.split(" ") , g["text"]) == True or skip_text == True) and nb_of_giveaway_found<d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
                         if nb_of_giveaway_found>=d.nb_of_giveaway:
                             break
                         words = g["text"].split()
