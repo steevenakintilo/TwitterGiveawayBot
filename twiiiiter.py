@@ -549,7 +549,8 @@ def main_one():
         time.sleep(3)
         if check_login_good(S) == False:
             print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
-            quit()
+            print("Skipping the account")
+            continue
         accept_coockie(S)
         time.sleep(S.wait_time)    
         accept_notification(S)

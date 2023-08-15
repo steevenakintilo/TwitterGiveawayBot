@@ -34,7 +34,7 @@ To start the bot just do
 If the bot failed to launch after several try set the headless to false on the configuration.yml and if even after that the bot still don't work just make an issues I will help you make it work
 
 ## Current Twitter situation
-- For about 1 month elon musk has making scrapping twitter harder so snscrape isn't working anymore so I've made my own searching giveaway function it work quite well you can now only do 50 giveaways per session to avoid twitter  rate limit otherwise it's still the same as before.
+- For about 1 month elon musk has making scrapping twitter harder so snscrape isn't working anymore so I've made my own searching giveaway function it work quite well you can now only do 100 giveaways per session to avoid twitter  rate limit otherwise it's still the same as before.
 
 ## Features
 - The bot can work in any language
