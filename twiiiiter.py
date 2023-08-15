@@ -11,6 +11,7 @@ from search import search_tweet_for_better_rt ,  get_giveaway_url
 from selenium.webdriver.common.by import By
 from get_tweet import *
 import traceback
+
 import feedparser
 from random import randint
 
@@ -21,6 +22,7 @@ MINTIME = data["min_time"]
 MAXTIME = data["max_time"]
 
 class Scraper:
+    
     wait_time = 5
     headless = data["headless"]
     options = webdriver.ChromeOptions()
@@ -121,6 +123,16 @@ def login(S,_username,_password):
     #print("Closing Twitter")
 
 
+def check_login_good(selenium_session):
+    try:
+        selenium_session.driver.get("https://twitter.com/home")
+        element = WebDriverWait(selenium_session.driver, 15).until(
+    EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="AppTabBar_Notifications_Link"]')))
+        return True
+    except Exception as e:
+        
+        return False
+ 
 def accept_coockie(S):
     try:
         S.driver.get(S.test_tweet)
@@ -340,55 +352,18 @@ def follow_an_account(S,account,t):
     try:
         S.driver.get("https://twitter.com/"+account)
         element = WebDriverWait(S.driver, t).until(
-        EC.presence_of_element_located((By.XPATH, S.follow_button_xpath)))
-        
-        follow_button = S.driver.find_element(By.XPATH,S.follow_button_xpath)
-
-        time.sleep(1)
-
-        aria_label = element.get_attribute("aria-label")
-        aria_label = aria_label.split(" ")
-        
-        try:
-            follow_or_not = aria_label[0]
-
-            if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
-                follow_button.click()
-                element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")))
-                confirm_click = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]")
-                time.sleep(randint(MINTIME,MAXTIME))
-                print("You've followed another account " + account)
-        except:
+        EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
+        follow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
+        if follow_button.text != "Follow" and follow_button.text != "Suivre":
             print("You already follow the account")
-            pass
-    except:
-        follow_an_account_error(S,account,t)
-
-
-def follow_an_account_error(S,account,t):
-    try:
-        S.driver.get("https://twitter.com/"+account)
-        element = WebDriverWait(S.driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")))
-        
-        follow_button = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div")
-
-        time.sleep(1)
-
-        aria_label = element.get_attribute("aria-label")
-        aria_label = aria_label.split(" ")
-        try:
-            follow_or_not = aria_label[0]
-
-            if follow_or_not.lower() == "follow" or follow_or_not.lower() == "suivre":
-                follow_button.click()
-                time.sleep(randint(MINTIME,MAXTIME))
-                print("You've followed another account " + account)
-        except:
-            print("You already follow the account")
-            pass
-    except:
-        print("Bref follow") 
-
+            return (True)
+        follow_button.click()
+        time.sleep(randint(MINTIME,MAXTIME))
+        print("You've followed another account " + account)
+        return True
+    except Exception as e:
+        print("Bref follow")
+        return (False)
 
 def get_only_account(s):
     l = []
@@ -572,12 +547,16 @@ def main_one():
         S = Scraper()
         login(S,username_info[i],password_info[i])
         time.sleep(3)
+        if check_login_good(S) == False:
+            print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
+            quit()
         accept_coockie(S)
         time.sleep(S.wait_time)    
         accept_notification(S)
         time.sleep(S.wait_time)
         accept_coockie(S)
         time.sleep(S.wait_time)
+
         if crash_or_no == False:
             #tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = search_giveaway(S)
             tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = [] , [] , [] , [] , []
