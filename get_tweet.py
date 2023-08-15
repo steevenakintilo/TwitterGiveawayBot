@@ -357,6 +357,3 @@ def giweaway_from_url_file(tweets_text,account_list):
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
-
-
-d = Data()
