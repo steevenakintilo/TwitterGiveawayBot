@@ -81,47 +81,51 @@ def get_news():
 
 def login(S,_username,_password):
 
-    S.driver.get("https://twitter.com/i/flow/login")
-    print("Starting Twitter")
-    #USERNAME
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.username_xpath)))
+    try:
+        S.driver.get("https://twitter.com/i/flow/login")
+        print("Starting Twitter")
+        #USERNAME
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.username_xpath)))
 
-    username = S.driver.find_element(By.XPATH,S.username_xpath)
-    username.send_keys(_username)    
-    
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.button_xpath)))
-
-
-    #FIRST BUTTON
-
-    button = S.driver.find_element(By.XPATH,S.button_xpath)
-    button.click()
-    print("button click")
+        username = S.driver.find_element(By.XPATH,S.username_xpath)
+        username.send_keys(_username)    
+        
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.button_xpath)))
 
 
-    #PASSWORD
+        #FIRST BUTTON
 
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.password_xpath)))
-    
-    password = S.driver.find_element(By.XPATH,S.password_xpath)
-    password.send_keys(_password)
-    print("password done")
+        button = S.driver.find_element(By.XPATH,S.button_xpath)
+        button.click()
+        print("button click")
 
 
-    #LOGIN BUTTON
+        #PASSWORD
 
-    element = WebDriverWait(S.driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
-    
-    login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
-    login_button.click()
-    print("login done")
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.password_xpath)))
+        
+        password = S.driver.find_element(By.XPATH,S.password_xpath)
+        password.send_keys(_password)
+        print("password done")
 
-    #print("Closing Twitter")
 
+        #LOGIN BUTTON
+
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
+        
+        login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
+        login_button.click()
+        print("login done")
+        return True
+        #print("Closing Twitter")
+    except:
+        print("wrong username of password")
+        print("skipping the account")
+        return False
 
 def check_login_good(selenium_session):
     try:
@@ -541,11 +545,14 @@ def main_one():
     crash_or_no = data["crash_or_no"]
     human = data["human"]
     idxx = 0
+    account_num = 0
     for i in range(len(username_info)):
+        account_num+=1
         print("Connecting to " + str(username_info[i]))
         time.sleep(1)
         S = Scraper()
-        login(S,username_info[i],password_info[i])
+        if login(S,username_info[i],password_info[i]) == False:
+            continue
         time.sleep(3)
         if check_login_good(S) == False:
             print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
@@ -666,7 +673,10 @@ def main_one():
             tt_follow = []
             ttt_follow = []
             tttt_follow = []
-            tweet_from_url = get_giveaway_url(S)
+            if account_num == 1:
+                tweet_from_url = get_giveaway_url(S)
+            else:
+                tweet_from_url = print_file_info("recent_url.txt").split("\n")
             for t in tweet_from_url:
                 tweet_txt.append(get_tweet_text(S,t))
                 time.sleep(1)
