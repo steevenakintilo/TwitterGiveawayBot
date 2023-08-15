@@ -68,7 +68,7 @@ account_password:
   - "twitter4444"
   - "twitter0000"
 ```
-When the bot need to @ account you can add any account you want by adding them to the account to tag 3 accounts is enough
+When the bot need to @ account you can add any account you want by adding them to the account to tag 3 accounts is enough but you can add more if you want
 
 ```yml
 # Accounts we want to invite you must but a space at the end of each account and a space at the start of the first account

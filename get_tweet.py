@@ -6,13 +6,21 @@ import re
 import emoji
 import time
 import traceback
+import random
 from datetime import datetime, timedelta, date
 
 class Data:
     with open("configuration.yml", "r",encoding="utf-8") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     word_to_search = data["words_to_search"]
-    accounts_to_tag = data["accounts_to_tag"]
+    accounts_to_tag_ = data["accounts_to_tag"]
+    accounts_to_tag_ = random.sample(accounts_to_tag_, len(accounts_to_tag_))
+    accounts_to_tag = []
+    if len(accounts_to_tag_) >= 3:
+        for i in range(3):
+            accounts_to_tag.append(accounts_to_tag_[i])
+    else:
+        accounts_to_tag = [' @Twitter ', '@X ', '@ElonMusk ']   
     accounts_to_blacklist = data["accounts_to_blacklist"]
     sentence_for_tag = data["sentence_for_tag"]
     hashtag_to_blacklist = data["hashtag_to_blacklist"]
@@ -349,3 +357,6 @@ def giweaway_from_url_file(tweets_text,account_list):
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
+
+
+d = Data()
