@@ -546,6 +546,14 @@ def main_one():
     human = data["human"]
     idxx = 0
     account_num = 0
+    tweet_txt = []
+    tweet_username = []
+    crash_follow = []
+    t_follow = []
+    tt_follow = []
+    ttt_follow = []
+    tttt_follow = []
+    
     for i in range(len(username_info)):
         account_num+=1
         print("Connecting to " + str(username_info[i]))
@@ -585,44 +593,38 @@ def main_one():
             print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
 
         if crash_or_no == True:
-            tweet_txt = []
-            tweet_username = []
-            crash_follow = []
-            t_follow = []
-            tt_follow = []
-            ttt_follow = []
-            tttt_follow = []
-            tweet_from_url = print_file_info("recent_url.txt").split("\n")
-            for t in tweet_from_url:
-                tweet_txt.append(get_tweet_text(S,t))
-                time.sleep(1)
-                crash_follow.append(get_tweet_username(S,t))
-                for g in get_who_to_follow(S,t):
-                    tt_follow.append(g)
-            
-            
-            
-            for tt in tt_follow:
-                t_follow.append(tt)
-            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
-            
-            t_follows.remove("")
+            if account_num == 1:
+                tweet_from_url = print_file_info("recent_url.txt").split("\n")
+                for t in tweet_from_url:
+                    tweet_txt.append(get_tweet_text(S,t))
+                    time.sleep(1)
+                    crash_follow.append(get_tweet_username(S,t))
+                    for g in get_who_to_follow(S,t):
+                        tt_follow.append(g)
+                
+                
+                
+                for tt in tt_follow:
+                    t_follow.append(tt)
+                t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
+                
+                t_follows.remove("")
 
-            for t in t_follows:
-                if t != "":
-                    t_follow.append(t.replace(" ",""))
-            
-            t_follow = list(dict.fromkeys(t_follow))
-            for c in t_follow:
-                if c.lower() not in ttt_follow:
-                    ttt_follow.append(c.lower())
-            ttt_follow = list(dict.fromkeys(ttt_follow))
-            ttt_follow = get_a_better_list(t_follow)
-            
-            for i in range(len(ttt_follow)):
-                if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
-                    tttt_follow.append(ttt_follow[i])
-            
+                for t in t_follows:
+                    if t != "":
+                        t_follow.append(t.replace(" ",""))
+                
+                t_follow = list(dict.fromkeys(t_follow))
+                for c in t_follow:
+                    if c.lower() not in ttt_follow:
+                        ttt_follow.append(c.lower())
+                ttt_follow = list(dict.fromkeys(ttt_follow))
+                ttt_follow = get_a_better_list(t_follow)
+                
+                for i in range(len(ttt_follow)):
+                    if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
+                        tttt_follow.append(ttt_follow[i])
+                
             for account_to_follow in tttt_follow:
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
