@@ -687,7 +687,24 @@ def main_one():
             for tt in tt_follow:
                 t_follow.append(tt)
             t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
-            
+            if len(t_follow) == 0:
+                print("No giveaway found...")
+                for i in range(random_tweet_nb):
+                    info , info_link = get_news()
+                    make_a_tweet(S,info+" "+info_link)
+                    time.sleep(randint(MINTIME,MAXTIME))
+                make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
+                try:
+                    rt_url = search_tweet_for_better_rt(S)
+                
+                    for i in range(len(rt_url)):
+                        like = like_a_tweet(S,rt_url[i])
+                        if like == True:            
+                            reetweet_a_tweet(S,rt_url[i])
+                        time.sleep(randint(MINTIME,MAXTIME))
+                except:
+                    print("ok")
+                continue
             t_follows.remove("")
 
             for t in t_follows:

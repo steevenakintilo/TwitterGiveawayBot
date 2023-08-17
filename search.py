@@ -347,9 +347,6 @@ def get_giveaway_url(selenium_session):
             print(tweets_full_comment)
             print(tweets_account_to_follow)
             print("Nb of doublon " + str(doublon))
-        if nb_of_giveaway_found == 0:
-            print("No giveaway found ...")
-            quit()
         print("Number of giveaway found = " + str(nb_of_giveaway_found))
         print("Ending giveaway search the bot will now start doing giveaways")
         return (tweets_url)    
