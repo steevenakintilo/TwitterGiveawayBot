@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from os import system
 import time
+
 import pickle
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -528,6 +529,7 @@ def forever_loop():
             time.sleep(600)
         time.sleep(randint(86400,172800))
 
+
 def main_one():
     print("Inside main one")
     giveaway_done = 0
@@ -602,28 +604,26 @@ def main_one():
                     for g in get_who_to_follow(S,t):
                         tt_follow.append(g)
                 
-                
-                
-                for tt in tt_follow:
-                    t_follow.append(tt)
-                t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
-                
-                t_follows.remove("")
+            for tt in tt_follow:
+                t_follow.append(tt)
+            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
+            
+            t_follows.remove("")
 
-                for t in t_follows:
-                    if t != "":
-                        t_follow.append(t.replace(" ",""))
-                
-                t_follow = list(dict.fromkeys(t_follow))
-                for c in t_follow:
-                    if c.lower() not in ttt_follow:
-                        ttt_follow.append(c.lower())
-                ttt_follow = list(dict.fromkeys(ttt_follow))
-                ttt_follow = get_a_better_list(t_follow)
-                
-                for i in range(len(ttt_follow)):
-                    if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
-                        tttt_follow.append(ttt_follow[i])
+            for t in t_follows:
+                if t != "":
+                    t_follow.append(t.replace(" ",""))
+            
+            t_follow = list(dict.fromkeys(t_follow))
+            for c in t_follow:
+                if c.lower() not in ttt_follow:
+                    ttt_follow.append(c.lower())
+            ttt_follow = list(dict.fromkeys(ttt_follow))
+            ttt_follow = get_a_better_list(t_follow)
+            
+            for i in range(len(ttt_follow)):
+                if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
+                    tttt_follow.append(ttt_follow[i])
                 
             for account_to_follow in tttt_follow:
                 follow_nbr +=1

@@ -16,11 +16,6 @@ class Data:
     accounts_to_tag_ = data["accounts_to_tag"]
     accounts_to_tag_ = random.sample(accounts_to_tag_, len(accounts_to_tag_))
     accounts_to_tag = []
-    if len(accounts_to_tag_) >= 3:
-        for i in range(3):
-            accounts_to_tag.append(accounts_to_tag_[i])
-    else:
-        accounts_to_tag = [' @Twitter ', '@X ', '@ElonMusk ']   
     accounts_to_blacklist = data["accounts_to_blacklist"]
     sentence_for_tag = data["sentence_for_tag"]
     hashtag_to_blacklist = data["hashtag_to_blacklist"]
@@ -95,6 +90,7 @@ def check_for_forbidden_word(sentence):
     return False
 
 def list_of_account_to_follow(maker_of_the_tweet,sentence):
+    
     account_to_follow = [maker_of_the_tweet.replace("@","")]
     s = sentence.split(" ")
     for word in s:
@@ -201,18 +197,18 @@ def search_tweet_for_rt(text,nb):
         return(tweet_url)
 
 
-def who_many_people_to_tag(text):
+def who_many_people_to_tag(text,accounts_to_tag):
     d = Data()
-
+    
     for one in d.one_poeple_list:
         if one.lower() in text.lower():
-            return(d.accounts_to_tag[0])
+            return(accounts_to_tag[0])
     
     for two in d.two_poeple_list:
         if two.lower() in text.lower():
-            return(d.accounts_to_tag[0]+" "+d.accounts_to_tag[1])
+            return(accounts_to_tag[0]+" "+accounts_to_tag[1])
     
-    return(" ".join(d.accounts_to_tag))
+    return(" ".join(accounts_to_tag))
     
 def check_if_we_need_to_tag_two(text):
     d = Data()
@@ -315,6 +311,16 @@ def search_giveaway_not_working_anymore_since_snscrape_is_down_and_i_have_made_m
 def giweaway_from_url_file(tweets_text,account_list):
     try:
         d = Data()
+        d = Data()
+        accounts_to_tag_ = d.accounts_to_tag_
+        accounts_to_tag_ = random.sample(accounts_to_tag_, len(accounts_to_tag_))
+        accounts_to_tag = []
+        if len(accounts_to_tag_) >= 3:
+            for i in range(3):
+                accounts_to_tag.append(accounts_to_tag_[i])
+        else:
+            accounts_to_tag = [' @Twitter ', '@X ', '@ElonMusk ']   
+        
         tweets_need_to_comment_or_not = []
         tweets_full_comment = []
         tweets_account_to_follow = []
@@ -329,13 +335,13 @@ def giweaway_from_url_file(tweets_text,account_list):
             hashtag = delete_hashtag_we_dont_want(result)
             if check_if_we_need_to_tag(t) == True:
                 if check_if_we_need_to_comment(t) == True:
-                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " " + hashtag
+                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
                     if d.add_sentence_to_tag == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " " + hashtag
+                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
                 else:
-                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
+                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
                     if d.add_sentence_to_tag == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t) + " "
+                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
             else:
                 full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
             
