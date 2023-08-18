@@ -89,6 +89,23 @@ def check_for_forbidden_word(sentence):
             return True
     return False
 
+def check_alpha_numeric(string):
+    string = string.lower()
+    alphanumeric = "abcdefghijklmnopqrstuvwxyz0123456789_@"
+    for elem in string:
+        if elem not in alphanumeric:
+            return False
+    return True
+
+def check_alpha_numeric_pos(string):
+    string = string.lower()
+    alphanumeric = "abcdefghijklmnopqrstuvwxyz0123456789_@"
+    for i in range(len(string)):
+        if string[i] not in alphanumeric:
+            return i
+    return 0
+
+
 def list_of_account_to_follow(maker_of_the_tweet,sentence):
     
     account_to_follow = [maker_of_the_tweet.replace("@","")]
@@ -96,6 +113,12 @@ def list_of_account_to_follow(maker_of_the_tweet,sentence):
     for word in s:
         try:
             if word[0] == "@" and word.replace("@","") != maker_of_the_tweet.replace("@",""):
+                if "." in  word:
+                    word = word.split(".")[0]
+                if "\n" in word:
+                    word = word.split("\n")[0]
+                if check_alpha_numeric(word) == False:
+                    word = word[0:check_alpha_numeric_pos(word) - 1]
                 account_to_follow.append(remove_non_alphanumeric(word.replace("@","")))
         except:
             pass
@@ -141,9 +164,17 @@ def get_a_better_list(l):
         line_f = l[i].split(" ")
         for j in range(len(line_f)):
             new_l.append(line_f[j])
-            if line_f[j].replace(",","").replace(";","") not in account_you_follow_from_file and line_f[j].replace(",","").replace(";","") not in account:
+            if line_f[j].replace(",","").replace(";","").replace("-","") not in account:
                 account.append(line_f[j].replace(",","").replace(";",""))
-                write_into_file("account.txt",line_f[j].replace(",","").replace(";","")+"\n")
+                if line_f[j].replace(",","").replace(";","").replace("-","") not in account_you_follow_from_file:
+                    write_into_file("account.txt",line_f[j].replace(",","").replace(";","").replace("-","")+"\n")
+            try:
+                if "." in line_f[j]:
+                    l = line_f[j].split(".")[0]
+                    account.append(l.replace(",","").replace(";","").replace("-","").replace("-",""))
+                    write_into_file("account.txt",l.replace(",","").replace(";","").replace("-","")+"\n")
+            except:
+                pass
     return (new_l)
 
 def check_if_we_need_to_comment(text):
@@ -310,7 +341,6 @@ def search_giveaway_not_working_anymore_since_snscrape_is_down_and_i_have_made_m
 
 def giweaway_from_url_file(tweets_text,account_list):
     try:
-        d = Data()
         d = Data()
         accounts_to_tag_ = d.accounts_to_tag_
         accounts_to_tag_ = random.sample(accounts_to_tag_, len(accounts_to_tag_))
