@@ -226,7 +226,7 @@ def search_tweet_for_better_rt(selenium_session):
     with open("configuration.yml", "r") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     nb = data["random_retweet_nb"]
-    tweet_found = search_tweet(selenium_session,str("lang:fr" + " " + get_trend(selenium_session)[0]),nb)
+    tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
     url_list = []
     for tweet in tweet_found:
         url_list.append(tweet["url"])
