@@ -291,7 +291,9 @@ def get_giveaway_url(selenium_session):
                         giveaway_foud_per_word+=1
                         if giveaway_foud_per_word >= int(len(giveaway)/3):
                             skip_text = True
-                if nb_of_tweet_to_search <= 100:
+                if nb_of_tweet_to_search < 10:
+                    time.sleep(10)
+                if nb_of_tweet_to_search <= 100 and nb_of_tweet_to_search >= 10:
                     time.sleep(120)
                 if nb_of_tweet_to_search > 100 and nb_of_tweet_to_search <= 300:
                     time.sleep(180)
