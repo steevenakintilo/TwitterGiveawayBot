@@ -607,7 +607,7 @@ def main_one():
                         if MINTIME > 30:
                             time.sleep(randint(MINTIME,MAXTIME))
                         else:
-                            time.sleep(30,45)
+                            time.sleep(40)
                     else:
                         time.sleep(randint(MINTIME,MAXTIME))
                 else:
@@ -708,7 +708,7 @@ def main_one():
                         if MINTIME > 30:
                             time.sleep(randint(MINTIME,MAXTIME))
                         else:
-                            time.sleep(30,45)
+                            time.sleep(40)
                     else:
                         time.sleep(randint(MINTIME,MAXTIME))
                 else:
