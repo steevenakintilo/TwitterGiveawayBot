@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from os import system
 import time
+import os.path
 
 import pickle
 from selenium.webdriver.common.action_chains import ActionChains
@@ -202,7 +203,7 @@ def like_a_tweet(S,url):
             return False
     except:
         print("Bref like" * 10)
-        return True
+        return None
 
 
 def reetweet_a_tweet(S,url):
@@ -230,80 +231,42 @@ def comment_a_tweet(S,url,text):
     try:
 
         S.driver.get(url)
-        element = WebDriverWait(S.driver, 30).until(
+        pos = 0
+        element = WebDriverWait(S.driver, 15).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')))
+        
+        tweet_info = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')
+        for i in range(len(tweet_info)):
+            r = tweet_info[i]
+            if url.split("twitter.com")[1] in str(r.get_attribute("outerHTML")):
+                pos = i
+                break
+        
+        element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="reply"]')))
-        
-        comment_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="reply"]')
-        comment_button.click()
-
-      #  print("coment part one")
-        time.sleep(15)
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
-        
-        textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
-        textbox.click()
-        time.sleep(S.wait_time)
-        textbox.send_keys(text)
-        
-     #   print("coment part two")
-        time.sleep(15)
-        
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
-
-        wait = WebDriverWait(S.driver, 10)
-        target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
-
-        S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
-
-        target_element.click()
-
-        time.sleep(20)
-    #    print("comment part three")
-        print("comment done")
-    except:
-        #print("Bref comment")    
-        comment_a_tweet_error(S,url,text)
-
-
-def comment_a_tweet_error(S, url, text):
-    try:
-        S.driver.get(url)
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="reply"]')))
-        
-        comment_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="reply"]')
-        comment_button.click()
-
-      #  print("coment part one")
-        time.sleep(15)
-        element = WebDriverWait(S.driver, 30).until(
+        comment_button = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="reply"]')
+        comment_button[pos].click()
+        time.sleep(10)
+        element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
         textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
         S.driver.execute_script("arguments[0].scrollIntoView();", textbox)
-        textbox.click()
         time.sleep(S.wait_time)
         textbox.send_keys(text)
+        textbox.click()
         
-     #   print("coment part two")
-        time.sleep(15)
-        
-        element = WebDriverWait(S.driver, 30).until(
+        time.sleep(10)
+        element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
-
         wait = WebDriverWait(S.driver, 10)
         target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
-
         S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
-
         target_element.click()
-
-        time.sleep(20)
-    #    print("comment part three")
+        time.sleep(10)
+        
         print("comment done")
     except:
-        print("Brief comment")
+        print("Bref comment")
 
 def make_a_tweet(S,text):
     try:
@@ -364,6 +327,7 @@ def follow_an_account(S,account,t):
             return (True)
         follow_button.click()
         time.sleep(randint(MINTIME,MAXTIME))
+        
         print("You've followed another account " + account)
         return True
     except Exception as e:
@@ -575,7 +539,7 @@ def main_one():
         time.sleep(S.wait_time)
         accept_coockie(S)
         time.sleep(S.wait_time)
-        
+
         giveaway_g = 0
         follow_nbr = 0
         nb_of_following_t1 = get_user_following_count(S,username_info[i])
@@ -592,11 +556,12 @@ def main_one():
             print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
 
         if crash_or_no == True:
+#            print("hellloooooooo ")
             if account_num == 1:
                 tweet_from_url = print_file_info("recent_url.txt").split("\n")
                 for t in tweet_from_url:
                     tweet_txt.append(get_tweet_text(S,t))
-                    time.sleep(5)
+                    time.sleep(1)
                     crash_follow.append(get_tweet_username(S,t))
                     for g in get_who_to_follow(S,t):
                         tt_follow.append(g)
@@ -638,7 +603,13 @@ def main_one():
                     #time.sleep(S.wait_time)        
                     if t_comment_or_not[idxx] == True:
                         comment_a_tweet(S,t,t_full_comment[idxx])
-                    time.sleep(randint(MINTIME,MAXTIME))
+                    if account_num == 1:
+                        if MINTIME > 30:
+                            time.sleep(randint(MINTIME,MAXTIME))
+                        else:
+                            time.sleep(30,45)
+                    else:
+                        time.sleep(randint(MINTIME,MAXTIME))
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
@@ -682,8 +653,7 @@ def main_one():
                         tt_follow.append(g)
                 for tt in tt_follow:
                     t_follow.append(tt)
-            
-                
+               
             else:
                 tweet_from_url = print_file_info("recent_url.txt").split("\n")
             
@@ -734,7 +704,13 @@ def main_one():
                     #time.sleep(S.wait_time)        
                     if t_comment_or_not[idxx] == True:
                         comment_a_tweet(S,t,t_full_comment[idxx])
-                    time.sleep(randint(MINTIME,MAXTIME))
+                    if account_num == 1:
+                        if MINTIME > 30:
+                            time.sleep(randint(MINTIME,MAXTIME))
+                        else:
+                            time.sleep(30,45)
+                    else:
+                        time.sleep(randint(MINTIME,MAXTIME))
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
