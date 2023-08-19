@@ -250,16 +250,19 @@ def comment_a_tweet(S,url,text):
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="reply"]')))
         comment_button = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="reply"]')
         comment_button[pos].click()
-        time.sleep(10)
+        time.sleep(5)
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
         textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
         S.driver.execute_script("arguments[0].scrollIntoView();", textbox)
         time.sleep(S.wait_time)
-        textbox.send_keys(text)
+        for t in text:
+            textbox.send_keys(t)
+            time.sleep(0.02)
+        textbox.send_keys(" ")
         textbox.click()
         
-        time.sleep(10)
+        time.sleep(5)
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
         wait = WebDriverWait(S.driver, 10)
