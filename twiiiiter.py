@@ -125,6 +125,10 @@ def login(S,_username,_password):
         return True
         #print("Closing Twitter")
     except:
+        time.sleep(5)
+        if check_login_good(S) == True:
+            return True
+        
         print("wrong username of password")
         print("skipping the account")
         return False
@@ -132,7 +136,7 @@ def login(S,_username,_password):
 def check_login_good(selenium_session):
     try:
         selenium_session.driver.get("https://twitter.com/home")
-        element = WebDriverWait(selenium_session.driver, 15).until(
+        element = WebDriverWait(selenium_session.driver, 60).until(
     EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="AppTabBar_Notifications_Link"]')))
         return True
     except Exception as e:
