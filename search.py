@@ -304,28 +304,7 @@ def get_giveaway_url(selenium_session):
                     if g["url"] not in tweets_url and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (list_inside_text(search_word.split(" ") , g["text"]) == True or skip_text == True) and nb_of_giveaway_found<d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
                         if nb_of_giveaway_found>=d.nb_of_giveaway:
                             break
-                        words = g["text"].split()
-                        result = [word for word in words if word.startswith(char)]
-                        hashtag = delete_hashtag_we_dont_want(result)
-                        if check_if_we_need_to_tag(g["text"]) == True:
-                            if check_if_we_need_to_comment(g["text"]) == True:
-                                full_phrase = delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " " + hashtag
-                                if d.add_sentence_to_tag == True:
-                                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " " + hashtag
-                            else:
-                                full_phrase = delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " "
-                                if d.add_sentence_to_tag == True:
-                                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(g["text"])) + who_many_people_to_tag(g["text"]) + " "
-                            full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(g["text"])) + " " + hashtag
-                        tweets_id.append(g["id"])
-                        tweets_text.append(g["text"])
                         tweets_url.append(g["url"])
-                        if check_if_we_need_to_tag(g["text"]) == True or check_if_we_need_to_tag_two(g["text"]) == True:
-                            tweets_need_to_comment_or_not.append(True)
-                        else:
-                            tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(g["text"]))
-                        tweets_account_to_follow.append(list_of_account_to_follow(g["username"] ,g["text"]))
-                        tweets_full_comment.append(remove_emojie(full_phrase))
                         nb_of_giveaway_found+=1
                     else:
                         doublon +=1
@@ -335,27 +314,22 @@ def get_giveaway_url(selenium_session):
             skip_text = False
         if len(tweets_id) > d.nb_of_giveaway:
             dif = len(tweets_id) - d.nb_of_giveaway
-            tweets_text = tweets_text[:dif]
             tweets_url = tweets_url[:dif]
-            tweets_full_comment = tweets_full_comment[:dif]
-            tweets_account_to_follow =tweets_account_to_follow[:dif]
-            tweets_need_to_comment_or_not = tweets_need_to_comment_or_not[:dif]
-
+            
         for url in tweets_url:
             write_into_file("url.txt",url+"\n")
             write_into_file("recent_url.txt",url+"\n")
                     
         tweets_account_to_follow = get_a_better_list(tweets_account_to_follow)
         if print_data == True:
-            print(tweets_text)
             print(tweets_url)
-            print(tweets_full_comment)
-            print(tweets_account_to_follow)
             print("Nb of doublon " + str(doublon))
         print("Number of giveaway found = " + str(nb_of_giveaway_found))
-        print("Ending giveaway search the bot will now start doing giveaways")
+        if nb_of_giveaway_found > 0:
+            print("Ending giveaway search the bot will now start doing giveaways")
         return (tweets_url)    
     except Exception as e:
         print("Error occured but we are still doing some giveaways")
+        traceback.print_exc()
         return (tweets_url)    
 
