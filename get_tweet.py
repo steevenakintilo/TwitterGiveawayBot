@@ -1,4 +1,3 @@
-#import snscrape.modules.twitter as sntwitter
 
 import yaml
 from random import randint
@@ -247,80 +246,6 @@ def check_blacklist(account):
         if account.lower() == backlist_account.lower().replace("@",""):
             return(True)
     return (False)
-
-
-# def search_giveaway_not_working_anymore_since_snscrape_is_down_and_i_have_made_my_own_function_who_work_well_too_so_i_keep_this_function_just_in_case_snscrape_will_work_again_and_also_for_the_big_name_of_the_function_which_is_funny_for_me_and_maybe_not_for_everyone():
-#     try:
-#         d = Data()
-#         reset_file("recent_url.txt")
-#         tweets_need_to_comment_or_not = []
-#         tweets_text = []
-#         tweets_id = []
-#         tweets_url = []
-#         tweets_full_comment = []
-#         tweets_account_to_follow = []
-#         nb_of_giveaway_found = 0
-#         char = '#'
-#         full_phrase = ""
-#         doublon = 0
-#         url_from_file = print_file_info("url.txt").split("\n")
-#         print_data = False
-#         date_ = ""
-#         date_format = "%Y-%m-%d"
-#         for search_word in d.word_to_search:
-#             text = search_word + ' lang:'+d.tweet_lang
-#             if d.tweet_lang == "any":
-#                 text = search_word 
-#             for i,tweet in enumerate(sntwitter.TwitterSearchScraper(text).get_items()):
-#                 date_ = str(tweet.date)
-#                 date_ = date_[0:10]
-#                 year, month, day = map(int, date_.split("-"))
-#                 ddate = date(year, month, day)
-#                 url =  f"https://twitter.com/user/status/{tweet.id}"
-#                 if tweet.id not in tweets_id and tweet.likeCount >= d.minimum_like and check_for_forbidden_word(tweet.rawContent) == False and check_blacklist(tweet.user.username) == False and url not in url_from_file and is_date_older_than_a_number_of_day(ddate) == False and tweet.retweetCount >= d.minimum_rt and nb_of_giveaway_found < d.nb_of_giveaway:
-#                     words = tweet.rawContent.split()
-#                     result = [word for word in words if word.startswith(char)]
-#                     hashtag = delete_hashtag_we_dont_want(result)
-#                     if check_if_we_need_to_tag(tweet.rawContent) == True:
-#                         if check_if_we_need_to_comment(tweet.rawContent) == True:
-#                             full_phrase = delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + " " + hashtag
-#                             if d.add_sentence_to_tag == True:
-#                                 full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + " " + hashtag
-#                         else:
-#                             full_phrase = delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + " "
-#                             if d.add_sentence_to_tag == True:
-#                                 full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + who_many_people_to_tag(tweet.rawContent) + " "
-#                     else:
-#                         full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(tweet.rawContent)) + " " + hashtag
-#                     tweets_id.append(tweet.id)
-#                     tweets_text.append(tweet.rawContent)
-#                     tweets_url.append(url)
-#                     if check_if_we_need_to_tag(tweet.rawContent) == True or check_if_we_need_to_tag_two(tweet.rawContent) == True:
-#                         tweets_need_to_comment_or_not.append(True)
-#                     else:
-#                         tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(tweet.rawContent))
-#                     tweets_account_to_follow.append(list_of_account_to_follow(tweet.user.username ,tweet.rawContent))
-#                     tweets_full_comment.append(remove_emojie(full_phrase))
-#                     write_into_file("url.txt",url+"\n")
-#                     write_into_file("recent_url.txt",url+"\n")
-#                     nb_of_giveaway_found+=1
-#                 else:
-#                     doublon +=1
-#                 if nb_of_giveaway_found>=d.nb_of_giveaway:
-#                     break
-#         tweets_account_to_follow = get_a_better_list(tweets_account_to_follow)
-#         if print_data == True:
-#             print(tweets_text)
-#             print(tweets_url)
-#             print(tweets_full_comment)
-#             print(tweets_account_to_follow)
-#             print("Nb of doublon " + str(doublon))
-#         print("Number of giveaway found = " + str(nb_of_giveaway_found))
-#         print("Ending giveaway search")
-#         return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)
-#     except Exception as e:
-#         print("SNSCRAPE ERROR")
-#         return (tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not)
 
 def giweaway_from_url_file(tweets_text,account_list):
     try:

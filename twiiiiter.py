@@ -271,7 +271,7 @@ def comment_a_tweet(S,url,text):
         target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
         S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
         target_element.click()
-        time.sleep(10)
+        time.sleep(5)
         print("comment done")
     except:
         print("Bref comment")
@@ -574,6 +574,7 @@ def main_one():
         print("Connecting to " + str(username_info[i]))
         time.sleep(1)
         S = Scraper()
+        
         if login(S,username_info[i],password_info[i]) == False:
             continue
         time.sleep(3)
@@ -587,7 +588,7 @@ def main_one():
         time.sleep(S.wait_time)
         accept_coockie(S)
         time.sleep(S.wait_time)
-
+        
         giveaway_g = 0
         follow_nbr = 0
         nb_of_following_t1 = get_user_following_count(S,username_info[i])
@@ -775,45 +776,6 @@ def main_one():
                         time.sleep(randint(MINTIME,MAXTIME))
                 except:
                     print("ok")
-        # if crash_or_no == None:
-        #     for i in range(len(tweets_url)):
-        #         print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweets_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
-        #         like = like_a_tweet(S,tweets_url[i])
-        #         time.sleep(S.wait_time)    
-                
-        #         if like == True:
-        #             giveaway_done  += 1
-        #             giveaway_g += 1
-        #             reetweet_a_tweet(S,tweets_url[i])
-        #             time.sleep(S.wait_time)        
-        #             if tweets_need_to_comment_or_not[i] == True:
-        #                 comment_a_tweet(S,tweets_url[i],tweets_full_comment[i])
-        #                 time.sleep(randint(MINTIME,MAXTIME))
-        #         else:
-        #             giveaway_done  += 1
-        #             print("You have already like the tweet")
-        #             time.sleep(5)
-        #         if giveaway_g % 10 == 0 and giveaway_g > 1 and human == True:
-        #             time.sleep(5400)
-
-        #     for account_to_follow in tweets_account_to_follow:
-        #         follow_nbr +=1
-        #         print("Account n " + str(follow_nbr) + " / " + str(len(tweets_account_to_follow)) + " account name: " + account_to_follow)
-        #         follow_an_account(S,account_to_follow,10)
-        #     if random_rt_and_tweet == True:
-        #         for i in range(random_tweet_nb):
-        #             info , info_link = get_news()
-        #             make_a_tweet(S,info+" "+info_link)
-        #             time.sleep(randint(MINTIME,MAXTIME))
-        #         make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
-                
-        #         rt_url = search_tweet_for_better_rt(S)
-                                
-        #         for i in range(len(rt_url)):
-        #             like = like_a_tweet(S,rt_url[i])
-        #             if like == True:            
-        #                 reetweet_a_tweet(S,rt_url[i])
-        #             time.sleep(randint(MINTIME,MAXTIME))
                 
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0

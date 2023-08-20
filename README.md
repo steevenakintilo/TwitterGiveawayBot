@@ -19,12 +19,6 @@ Download all the modules required for the bot to work using this command:
     pip install -r requirements.txt
 ```
 
-Then install snscrape like that:
-
-```bash
-    pip install --upgrade git+https://github.com/JustAnotherArchivist/snscrape.git
-```
-
 To start the bot just do
 
 ```bash
