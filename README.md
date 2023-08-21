@@ -41,7 +41,7 @@ If the bot failed to launch after several try set the headless to false on the c
 - The bot can work with 1,2,20 or even 100 accounts you just have to fill the configuration.yml file well
 - Unfollow account when the user have more than 4500 followings
 - The bot is flexible you can modify most of its features on the configuration.yml file
-- You can even add links to giveaways to the recent_url.txt to make this work you need to set the crash_or_true on the configuration.yml to True ,search giveaways on twitter, copy giveaways tweets urls, make sure the giveaways you are adding have a certain number of likes retweets and good limit date all linked to the configuration.yml settings and the bot will do the giveaways you added
+- You can even add links to giveaways to the recent_url.txt to make this work you need to set the crash_or_true on the configuration.yml to True ,search giveaways on twitter, copy giveaways tweets urls, and the bot will do the giveaways you added
 - If you want to see if you have won a giveaway download this bot: https://github.com/steevenakintilo/TwitterResultBot
 
 ## Configuration file
