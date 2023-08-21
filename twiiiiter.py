@@ -336,6 +336,8 @@ def follow_an_account(S,account,t):
             return (True)
         follow_button.click()
         time.sleep(randint(MINTIME,MAXTIME))
+        if MAXTIME < 4:
+            time.sleep(3)
         
         print("You've followed another account " + account)
         return True
