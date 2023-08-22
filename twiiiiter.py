@@ -534,6 +534,16 @@ def get_user_following_count(S,user):
         return(0)
 
 
+def check_if_good_account_login(S,account):
+    try:
+        S.driver.get("https://twitter.com/"+account)
+        element = WebDriverWait(S.driver, 3).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
+        print("Bot didn't log in to the right account let's retry login")
+        return False
+    except Exception as e:
+        return True
+
 def forever_loop():
     while True:
         try:
@@ -591,6 +601,24 @@ def main_one():
         accept_coockie(S)
         time.sleep(S.wait_time)
         
+        for i in range(3):
+            if check_if_good_account_login(S,username_info[i]) == False:
+                time.sleep(3)
+                S = Scraper()
+                if login(S,username_info[i],password_info[i]) == False:
+                    continue
+                time.sleep(3)
+                if check_login_good(S) == False:
+                    print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
+                    print("Skipping the account")
+                    continue
+                accept_coockie(S)
+                time.sleep(S.wait_time)    
+                accept_notification(S)
+                time.sleep(S.wait_time)
+                accept_coockie(S)
+                time.sleep(S.wait_time)
+                    
         giveaway_g = 0
         follow_nbr = 0
         nb_of_following_t1 = get_user_following_count(S,username_info[i])
