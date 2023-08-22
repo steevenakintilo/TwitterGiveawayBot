@@ -126,8 +126,9 @@ def login(S,_username,_password):
         #print("Closing Twitter")
     except:
         time.sleep(5)
-        if check_login_good(S) == True:
-            return True
+        for i in range(3):
+            if check_login_good(S) == True:
+                return True
         
         print("wrong username of password")
         print("skipping the account")
@@ -136,7 +137,7 @@ def login(S,_username,_password):
 def check_login_good(selenium_session):
     try:
         selenium_session.driver.get("https://twitter.com/home")
-        element = WebDriverWait(selenium_session.driver, 60).until(
+        element = WebDriverWait(selenium_session.driver, 10).until(
     EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="AppTabBar_Notifications_Link"]')))
         return True
     except Exception as e:
@@ -539,6 +540,9 @@ def check_if_good_account_login(S,account):
         S.driver.get("https://twitter.com/"+account)
         element = WebDriverWait(S.driver, 3).until(
         EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
+        follow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
+        if len(follow_button.text) == 0:
+            return True
         print("Bot didn't log in to the right account let's retry login")
         return False
     except Exception as e:
@@ -601,7 +605,7 @@ def main_one():
         accept_coockie(S)
         time.sleep(S.wait_time)
         
-        for i in range(3):
+        for w in range(3):
             if check_if_good_account_login(S,username_info[i]) == False:
                 time.sleep(3)
                 S = Scraper()
@@ -618,6 +622,8 @@ def main_one():
                 time.sleep(S.wait_time)
                 accept_coockie(S)
                 time.sleep(S.wait_time)
+            else:
+                break
                     
         giveaway_g = 0
         follow_nbr = 0
@@ -650,6 +656,26 @@ def main_one():
                     t_follow.append(tt)
             t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
             
+            if len(t_follow) == 0:
+                print("No giveaway found...")
+                if random_rt_and_tweet == True:
+                    for i in range(random_tweet_nb):
+                        info , info_link = get_news()
+                        make_a_tweet(S,info+" "+info_link)
+                        time.sleep(randint(MINTIME,MAXTIME))
+                    make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
+                    try:
+                        rt_url = search_tweet_for_better_rt(S)
+                    
+                        for i in range(len(rt_url)):
+                            like = like_a_tweet(S,rt_url[i])
+                            if like == True:            
+                                reetweet_a_tweet(S,rt_url[i])
+                            time.sleep(randint(MINTIME,MAXTIME))
+                    except:
+                        print("ok")
+                continue
+
             t_follows.remove("")
 
             for t in t_follows:
