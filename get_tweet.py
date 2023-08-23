@@ -283,8 +283,12 @@ def giweaway_from_url_file(tweets_text,account_list):
                     if d.add_sentence_to_tag == True:
                         full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
             else:
-                full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
-            
+                if delete_url(what_to_comment(t)) == "":
+                    full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
+                else:
+                    print(" c ici je crois")
+                    full_phrase = delete_url(what_to_comment(t)) + " " + hashtag
+                
             if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
                 tweets_need_to_comment_or_not.append(True)
             else:
