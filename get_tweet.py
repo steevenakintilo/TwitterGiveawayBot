@@ -72,9 +72,8 @@ def remove_emojie(text):
 def delete_hashtag_we_dont_want(l):
     d = Data()
     new_l = []
-
     for elem in l:
-        if elem.lower().replace("#","") not in d.hashtag_to_blacklist:
+        if elem.lower().replace("#","") not in d.hashtag_to_blacklist and len(new_l) <= 3:
             new_l.append(elem + " ")
     
     return (" ".join(new_l))
@@ -248,6 +247,17 @@ def check_blacklist(account):
             return(True)
     return (False)
 
+def return_only_hashtag(sentence):
+    sentence = sentence.split("\n")
+    sentence = " ".join(sentence)
+    sentence = sentence.split(" ")
+    new_l = []
+    for s in sentence:
+        if len(s) > 1:
+            if s[0] == "#":
+                new_l.append(s)
+    return (new_l)
+
 def giweaway_from_url_file(tweets_text,account_list):
     try:
         d = Data()
@@ -272,7 +282,7 @@ def giweaway_from_url_file(tweets_text,account_list):
         print_data = False
         for t in tweets_text:
             words = t.split(" ")
-            result = [word for word in words if word.startswith(char)]
+            result = return_only_hashtag(t)
             hashtag = delete_hashtag_we_dont_want(result)
             if check_if_we_need_to_tag(t) == True:
                 if check_if_we_need_to_comment(t) == True:

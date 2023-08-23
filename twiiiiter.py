@@ -127,11 +127,59 @@ def login(S,_username,_password):
     except:
         time.sleep(5)
         for i in range(3):
+            time.sleep(5)
             if check_login_good(S) == True:
                 return True
         
+        if retry_login(S,_username,_password) == True:
+            return True
+        
         print("wrong username of password")
         print("skipping the account")
+        return False
+
+def retry_login(S,_username,_password):
+
+    try:
+        S.driver.get("https://twitter.com/i/flow/login")
+        #USERNAME
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.username_xpath)))
+
+        username = S.driver.find_element(By.XPATH,S.username_xpath)
+        username.send_keys(_username)    
+        
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.button_xpath)))
+
+
+        #FIRST BUTTON
+
+        button = S.driver.find_element(By.XPATH,S.button_xpath)
+        button.click()
+
+
+        #PASSWORD
+
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.password_xpath)))
+        
+        password = S.driver.find_element(By.XPATH,S.password_xpath)
+        password.send_keys(_password)
+
+
+        #LOGIN BUTTON
+
+        element = WebDriverWait(S.driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
+        
+        login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
+        login_button.click()
+        return True
+        #print("Closing Twitter")
+    except:
+        time.sleep(5)        
+        print("reloging failed")
         return False
 
 def check_login_good(selenium_session):
@@ -518,18 +566,11 @@ def get_user_following_count(S,user):
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
         following_count = ""
-        try:
-            try:
-                f = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"abonnements").split(" "))
-            except:
-                f = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"followings").split(" "))
-            for n in f:
-                if n in num:
-                    following_count = following_count + n
-            return (int(following_count))
-        except:
-            following_count = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"Following").split(" ")[0])
-            return int(following_count)
+
+        following_count = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[5]/div[1]/a/span[1]/span")
+        following_count = following_count.text
+        following_count = parse_number(following_count)
+        return int(following_count)
     except Exception as e:
         print("Following count error")
         return(0)
@@ -592,11 +633,13 @@ def main_one():
         S = Scraper()
         
         if login(S,username_info[i],password_info[i]) == False:
+            account_num = 0
             continue
         time.sleep(3)
         if check_login_good(S) == False:
             print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
             print("Skipping the account")
+            account_num = 0
             continue
         accept_coockie(S)
         time.sleep(S.wait_time)    
@@ -605,16 +648,18 @@ def main_one():
         accept_coockie(S)
         time.sleep(S.wait_time)
         
-        for w in range(3):
+        for w in range(10):
             if check_if_good_account_login(S,username_info[i]) == False:
-                time.sleep(3)
+                time.sleep(5)
                 S = Scraper()
                 if login(S,username_info[i],password_info[i]) == False:
+                    account_num = 0
                     continue
                 time.sleep(3)
                 if check_login_good(S) == False:
                     print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
                     print("Skipping the account")
+                    account_num = 0
                     continue
                 accept_coockie(S)
                 time.sleep(S.wait_time)    
