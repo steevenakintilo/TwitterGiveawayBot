@@ -117,7 +117,8 @@ def list_of_account_to_follow(maker_of_the_tweet,sentence):
                 if "\n" in word:
                     word = word.split("\n")[0]
                 if check_alpha_numeric(word) == False:
-                    word = word[0:check_alpha_numeric_pos(word) - 1]
+                    word = word[0:check_alpha_numeric_pos(word)]
+                    print(word)
                 account_to_follow.append(remove_non_alphanumeric(word.replace("@","")))
         except:
             pass
@@ -286,7 +287,6 @@ def giweaway_from_url_file(tweets_text,account_list):
                 if delete_url(what_to_comment(t)) == "":
                     full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
                 else:
-                    print(" c ici je crois")
                     full_phrase = delete_url(what_to_comment(t)) + " " + hashtag
                 
             if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
