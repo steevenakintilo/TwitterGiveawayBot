@@ -34,6 +34,7 @@ class Data:
     one_poeple_list = data["one_poeple_list"]
     two_poeple_list = data["two_poeple_list"]
     three_or_more_poeple_list = data["three_or_more_poeple_list"]
+    random_action = data["random_action"]
 
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
@@ -288,10 +289,21 @@ def giweaway_from_url_file(tweets_text,account_list):
                     full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
                     if d.add_sentence_to_tag == True:
                         full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
+                    x = randint(0,1)
+                    if d.random_action == True:
+                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
+                        if x == 0:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
                 else:
                     full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
                     if d.add_sentence_to_tag == True:
                         full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                    x = randint(0,1)
+                    if d.random_action == True:
+                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                        if x == 0:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
+
             else:
                 if delete_url(what_to_comment(t)) == "":
                     full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag

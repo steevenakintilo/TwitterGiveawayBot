@@ -227,6 +227,10 @@ def search_tweet_for_better_rt(selenium_session):
     with open("configuration.yml", "r") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     nb = data["random_retweet_nb"]
+    random_action = data["random_action"]
+    if random_action == True:
+        nb = randint(1,nb)
+    
     tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
     if d.tweet_lang != "any":
         tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)

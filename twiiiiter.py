@@ -613,6 +613,7 @@ def main_one():
     random_tweet_nb = data["random_tweet_nb"]
     random_retweet_nb = data["random_retweet_nb"]
     crash_or_no = data["crash_or_no"]
+    random_action = data["random_action"]
     human = data["human"]
     idxx = 0
     account_num = 0
@@ -703,6 +704,8 @@ def main_one():
             if len(t_follow) == 0:
                 print("No giveaway found...")
                 if random_rt_and_tweet == True:
+                    if random_action == True:
+                        random_tweet_nb = randint(1,random_tweet_nb)
                     for i in range(random_tweet_nb):
                         info , info_link = get_news()
                         make_a_tweet(S,info+" "+info_link)
@@ -764,6 +767,8 @@ def main_one():
                 print(idxx)
                 idxx = idxx + 1
             if random_rt_and_tweet == True:
+                if random_action == True:
+                    random_tweet_nb = randint(1,random_tweet_nb)
                 for i in range(random_tweet_nb):
                     info , info_link = get_news()
                     make_a_tweet(S,info+" "+info_link)
@@ -800,6 +805,8 @@ def main_one():
             if len(t_follow) == 0:
                 print("No giveaway found...")
                 if random_rt_and_tweet == True:
+                    if random_action == True:
+                        random_tweet_nb = randint(1,random_tweet_nb)
                     for i in range(random_tweet_nb):
                         info , info_link = get_news()
                         make_a_tweet(S,info+" "+info_link)
@@ -861,6 +868,8 @@ def main_one():
                 follow_an_account(S,account_to_follow,5)
             
             if random_rt_and_tweet == True:
+                if random_action == True:
+                    random_tweet_nb = randint(1,random_tweet_nb)
                 for i in range(random_tweet_nb):
                     info , info_link = get_news()
                     make_a_tweet(S,info+" "+info_link)
