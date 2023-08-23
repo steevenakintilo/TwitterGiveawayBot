@@ -117,7 +117,6 @@ def list_of_account_to_follow(maker_of_the_tweet,sentence):
                     word = word.split("\n")[0]
                 if check_alpha_numeric(word) == False:
                     word = word[0:check_alpha_numeric_pos(word)]
-                    print(word)
                 account_to_follow.append(remove_non_alphanumeric(word.replace("@","")))
         except:
             pass

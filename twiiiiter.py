@@ -484,36 +484,35 @@ def get_elem_from_list(list_,elem_):
 
 def parse_number(num):
     num = str(num)
-    if "B" in num:
+    num = num.lower()
+    if "b" in num:
         if "." in num:
-            num  = num.replace(".","").replace("B","")
+            num  = num.replace(".","").replace("b","")
             num  = num + "00000000"
             
         else:
-            num = num.replace("B","")
+            num = num.replace("b","")
             num  = num + "000000000"
             
-    elif "M" in num:
+    elif "m" in num:
         if "." in num:
-            num  = num.replace(".","").replace("B","")
+            num  = num.replace(".","").replace("m","")
             num  = num + "00000"
 
         else:
-            num = num.replace("B","")
+            num = num.replace("m","")
             num  = num + "000000"
     
-    elif "K" in num:
+    elif "k" in num:
         if "." in num:
-            num  = num.replace(".","").replace("K","")
+            num  = num.replace(".","").replace("k","")
             num = num + "00"
         else:
-            num = num.replace("K","")
+            num = num.replace("k","")
             num = num + "000"
     else:
         if "." in num:
-            num  = num.replace(".","").replace("B","")
-        else:
-            num = num.replace("B","")
+            num  = num.replace(".","")
     if "," in num:
         num = num.replace(",","")
     return num
@@ -569,9 +568,11 @@ def get_user_following_count(S,user):
 
         following_count = S.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[5]/div[1]/a/span[1]/span")
         following_count = following_count.text
+        following_count=following_count.replace(" ","")
         following_count = parse_number(following_count)
         return int(following_count)
     except Exception as e:
+
         print("Following count error")
         return(0)
 
@@ -580,10 +581,8 @@ def check_if_good_account_login(S,account):
     try:
         S.driver.get("https://twitter.com/"+account)
         element = WebDriverWait(S.driver, 3).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
-        follow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
-        if len(follow_button.text) == 0:
-            return True
+        EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="userActions"]')))
+        u = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="userActions"]')
         print("Bot didn't log in to the right account let's retry login")
         return False
     except Exception as e:
@@ -650,7 +649,7 @@ def main_one():
         
         for w in range(10):
             if check_if_good_account_login(S,username_info[i]) == False:
-                time.sleep(5)
+                time.sleep(2)
                 S = Scraper()
                 if login(S,username_info[i],password_info[i]) == False:
                     account_num = 0
