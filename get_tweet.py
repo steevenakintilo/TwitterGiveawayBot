@@ -74,7 +74,7 @@ def delete_hashtag_we_dont_want(l):
     d = Data()
     new_l = []
     for elem in l:
-        if elem.lower().replace("#","") not in d.hashtag_to_blacklist and len(new_l) <= 2:
+        if elem.lower().replace("#","") not in d.hashtag_to_blacklist and len(new_l) <= 2 and elem not in new_l:
             new_l.append(elem + " ")
     
     return (" ".join(new_l))
@@ -151,7 +151,8 @@ def what_to_comment(sentences):
                     c = comment[1]
                 if '"' in c or '“' in c:
                     c = get_the_right_word(c)
-                return(c.replace('"',"").replace("“","").replace("«","").replace("»",""))
+                c = c.lower()
+                return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,""))
                 
     return ("")
 

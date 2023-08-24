@@ -271,7 +271,8 @@ def get_giveaway_url(selenium_session):
         ban_word = ""
         ban_word_list = []
         for banned_word in d.giveaway_to_blacklist:
-            ban_word += "-" + banned_word + " "
+            if "." not in banned_word:
+                ban_word += "-" + banned_word + " "
 
         if len(ban_word) <= len(d.giveaway_to_blacklist):
             ban_word = ""
