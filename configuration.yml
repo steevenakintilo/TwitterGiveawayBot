@@ -1,8 +1,7 @@
-# Account info write the username of all your account
+#Account info write the username of all your account
 account_username:
   - "a"
-
-# Account info write the password of all your account
+#Account info write the password of all your account
 account_password:
   - "z"
 
@@ -36,13 +35,18 @@ words_to_search:
 
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment one thing in particular
 word_list_to_check_for_special_comment:
+  - "commenter avec" 
   - "commenter"
   - "écrit"
   - "écrire"
+  - "commentez avec"
+  - "commentez"
+
 
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment random stuff
 word_list_to_check_for_comment:
-  - "comment"
+  - "commente"
+  - "commentaire"
   - "écrit"
   - "écrire"
   - "cite"
@@ -51,11 +55,14 @@ word_list_to_check_for_comment:
   - "tweet : avec"
   - "tweet #"
   - "hashtag"
+  - "répond"
+  - "indique"
 
 # The same as word_list_to_check_for_comment but for word shorter than 6 characters
 short_word_list_to_check_for_comment:
   - "dit"
   - "dis"
+  - "com"
 
 # Those are the word needed on the tweet for the bot to tag one or more account
 word_list_to_check_for_tag:
@@ -70,6 +77,8 @@ word_list_to_check_for_tag:
 
 # Word list to check if we need to tag 1 account
 one_poeple_list:
+  - "tag un"
+  - "tag 1"
   - "un ami"
   - "un copain"
   - "une personne"
@@ -83,6 +92,8 @@ one_poeple_list:
 
 # Word list to check if we need to tag 2 accounts
 two_poeple_list:
+  - "tag deux"
+  - "tag 2"
   - "2 amis"
   - "2 ami(e)s"
   - "2 ami"
@@ -111,12 +122,12 @@ three_or_more_poeple_list:
   - "tes potes"
   - "des potes"
 
-# Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
+# Accounts we want to invite you must but a space at the end of each account
 accounts_to_tag:
-  - " @Mediavenir "
+  - "@Mediavenir "
   - "@NetflixFR "
   - "@ActuFoot_ "
-
+  
 # Accounts that we don't want to follow
 accounts_to_blacklist:
   - "@RealB0tSpotter"
@@ -380,6 +391,7 @@ giveaway_to_blacklist:
   - "nude"
   - "sorare"
   - "freebet"
+  - "formation"
 
 
 # If headless is set to True the bot won't open a chrome windows while doing giveaways otherwise it will
@@ -407,6 +419,9 @@ min_time: 45
 
 #The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
 max_time: 300
+
+#If random is set to true the bot will do even more random action: It will do a random number of retweet and tweet beetween 1 and random_tweet_nb and random_retweet_nb and it will comment withouth sentence on random time
+random_action: False
 
 #If this option is set to true the bot will make a sleep of 1H30 every 10 giveaways to act more human
 human: False
@@ -439,7 +454,7 @@ minimum_like: 100
 minimum_rt: 200
 
 #Maximum day for a giveaway to be done
-maximum_day: 10
+maximum_day: 7
 
 #Number of giveaway the bot can do
 nb_of_giveaway: 30
