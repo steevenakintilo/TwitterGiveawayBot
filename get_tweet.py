@@ -76,7 +76,7 @@ def delete_hashtag_we_dont_want(l):
     for elem in l:
         if elem.lower().replace("#","") not in d.hashtag_to_blacklist and len(new_l) <= 2 and elem not in new_l:
             new_l.append(elem + " ")
-    
+    new_l = list(dict.fromkeys(new_l))
     return (" ".join(new_l))
 
 
@@ -186,7 +186,7 @@ def check_if_we_need_to_comment(text):
     
     for word_to_check in d.short_word_list_to_check_for_comment:
         for word in text.split():
-            if word.lower().startswith(word_to_check.lower()) and len(word) <= 6:
+            if word.lower().startswith(word_to_check.lower()) and len(word) <= len(word_to_check) + 2:
                 return True
 
     text = text.lower()

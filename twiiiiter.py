@@ -572,9 +572,25 @@ def get_user_following_count(S,user):
         following_count = parse_number(following_count)
         return int(following_count)
     except Exception as e:
-
-        print("Following count error")
-        return(0)
+        try:
+            num = "0123456789"
+            S.driver.get("https://twitter.com/"+user)
+            element = WebDriverWait(S.driver, 15).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
+            following_count = ""
+            try:
+                f = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"abonnements").split(" "))
+                for n in f:
+                    if n in num:
+                        following_count = following_count + n
+                return (int(following_count))
+            except:
+                following_count = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"Following").split(" ")[0])
+                return int(following_count)            
+        except:
+            print("Following count error")
+            traceback.print_exc()
+            return(0)
 
 
 def check_if_good_account_login(S,account):

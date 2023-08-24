@@ -33,15 +33,14 @@ words_to_search:
   - "tirage au sort concours"
   - "concours résultat le rt"
 
+
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment one thing in particular
 word_list_to_check_for_special_comment:
-  - "commenter avec" 
   - "commenter"
+  - "commentez"
   - "écrit"
   - "écrire"
-  - "commentez avec"
-  - "commentez"
-
+  - "dites"
 
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment random stuff
 word_list_to_check_for_comment:
@@ -58,6 +57,7 @@ word_list_to_check_for_comment:
   - "répond"
   - "indique"
 
+
 # The same as word_list_to_check_for_comment but for word shorter than 6 characters
 short_word_list_to_check_for_comment:
   - "dit"
@@ -65,6 +65,7 @@ short_word_list_to_check_for_comment:
   - "com"
 
 # Those are the word needed on the tweet for the bot to tag one or more account
+
 word_list_to_check_for_tag:
   - "invit"
   - "mention"
@@ -82,6 +83,7 @@ one_poeple_list:
   - "un ami"
   - "un copain"
   - "une personne"
+  - "la personne"
   - "un pote"
   - "1 pote"
   - "1 ami"
