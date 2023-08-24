@@ -228,7 +228,7 @@ def search_tweet_for_better_rt(selenium_session):
         data = yaml.load(file, Loader=yaml.FullLoader)
     nb = data["random_retweet_nb"]
     random_action = data["random_action"]
-    if random_action == True:
+    if random_action == True and nb > 0:
         nb = randint(1,nb)
     
     tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
@@ -285,9 +285,9 @@ def get_giveaway_url(selenium_session):
                 print("### " , search_word)
                 print("### nb of giveaway foud " , nb_of_giveaway_found)
             if nb_of_giveaway_found <d.nb_of_giveaway:
-                text = search_word + ' lang:'+d.tweet_lang + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day))
+                text = search_word + ' lang:'+d.tweet_lang + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
                 if d.tweet_lang == "any":
-                    text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) 
+                    text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
                 
                 giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search)
                 for g in giveaway:

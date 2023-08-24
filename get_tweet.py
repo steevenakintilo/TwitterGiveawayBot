@@ -74,7 +74,7 @@ def delete_hashtag_we_dont_want(l):
     d = Data()
     new_l = []
     for elem in l:
-        if elem.lower().replace("#","") not in d.hashtag_to_blacklist and len(new_l) <= 3:
+        if elem.lower().replace("#","") not in d.hashtag_to_blacklist and len(new_l) <= 2:
             new_l.append(elem + " ")
     
     return (" ".join(new_l))
