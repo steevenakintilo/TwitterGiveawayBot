@@ -284,7 +284,7 @@ def get_giveaway_url(selenium_session):
             if print_data == True:
                 print("### " , search_word)
                 print("### nb of giveaway foud " , nb_of_giveaway_found)
-            if nb_of_giveaway_found <d.nb_of_giveaway:
+            if nb_of_giveaway_found <d.nb_of_giveaway and "." not in search_word:
                 text = search_word + ' lang:'+d.tweet_lang + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
                 if d.tweet_lang == "any":
                     text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
