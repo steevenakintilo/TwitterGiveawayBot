@@ -324,7 +324,6 @@ def comment_a_tweet(S,url,text):
         print("comment done")
     except:
         print("Bref comment")
-        traceback.print_exc()
 
 def make_a_tweet(S,text):
     try:
@@ -589,7 +588,7 @@ def get_user_following_count(S,user):
                 return int(following_count)            
         except:
             print("Following count error")
-            traceback.print_exc()
+            #traceback.print_exc()
             return(0)
 
 

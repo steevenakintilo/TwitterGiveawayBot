@@ -334,6 +334,6 @@ def get_giveaway_url(selenium_session):
         return (tweets_url)    
     except Exception as e:
         print("Error occured but we are still doing some giveaways")
-        traceback.print_exc()
+        #traceback.print_exc()
         return (tweets_url)    
 
