@@ -27,9 +27,6 @@ To start the bot just do
 
 If the bot failed to launch after several try set the headless to false on the configuration.yml and if even after that the bot still don't work just make an issues I will help you make it work
 
-## Current Twitter situation
-- For about 1 month elon musk has making scrapping twitter harder so snscrape isn't working anymore so I've made my own searching giveaway function it work quite well you can now only do 100 giveaways per session to avoid twitter  rate limit otherwise it's still the same as before.
-
 ## Features
 - The bot can work in any language
 - Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
@@ -235,7 +232,7 @@ With all of that you will be able to do giveaway in english or any language you 
 
 ## Advices  
 - If you don't want to set forever_loop to True run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
-- Don't do more than 50 giveaways (well well you can't do more than 50 since new twitter/x update) per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
+- Don't do more than 50 giveaways (well well you can't do more than 100 since new twitter/x update) per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
 - If you want to add another account to the bot you have 2 options: 
   
   1) Either add it to the configuration.yml but you won't do all the giveaways you  have already done with the other account 
