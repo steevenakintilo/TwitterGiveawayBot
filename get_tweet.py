@@ -152,6 +152,9 @@ def what_to_comment(sentences):
                 if '"' in c or '“' in c:
                     c = get_the_right_word(c)
                 c = c.lower()
+                if "#" in word:
+                    c = "#" + c
+                    return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,""))
                 return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,""))
                 
     return ("")
@@ -186,7 +189,7 @@ def check_if_we_need_to_comment(text):
     
     for word_to_check in d.short_word_list_to_check_for_comment:
         for word in text.split():
-            if word.lower().startswith(word_to_check.lower()) and len(word) <= len(word_to_check) + 2:
+            if word.lower().startswith(word_to_check.lower()) and len(word) <= len(word_to_check):
                 return True
 
     text = text.lower()

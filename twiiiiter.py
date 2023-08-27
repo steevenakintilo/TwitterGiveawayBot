@@ -455,8 +455,8 @@ def get_tweet_info(selenium_session,url):
         return (tweet_info_dict)
     except Exception as e:
         print("Bref tweet info")
-        return({"username":"ok",
-    "text":"ok",})
+        return({"username":"x",
+    "text":"x",})
 
 def get_who_to_follow(S,url,text,username):
 
