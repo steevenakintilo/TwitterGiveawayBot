@@ -555,7 +555,7 @@ def get_list_of_my_followings(S,user):
         return(list_of_user)
     except Exception as e:
         print("Your following listing failed")
-        return([])
+        return(False)
 
 def get_user_following_count(S,user):
     try:
@@ -569,6 +569,7 @@ def get_user_following_count(S,user):
         following_count = following_count.text
         following_count=following_count.replace(" ","")
         following_count = parse_number(following_count)
+        print("salut a tous " , following_count)
         return int(following_count)
     except Exception as e:
         try:
@@ -582,9 +583,11 @@ def get_user_following_count(S,user):
                 for n in f:
                     if n in num:
                         following_count = following_count + n
+                print("salut a tous " , following_count)
                 return (int(following_count))
             except:
                 following_count = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"Following").split(" ")[0])
+                print("salut a tous " , following_count)
                 return int(following_count)            
         except:
             print("Following count error")
@@ -692,13 +695,14 @@ def main_one():
         if nb_of_following_t1 > 4500:
             print("You got to much following bot going to unfollow some people")
             all_my_following = get_list_of_my_followings(S,username_info[i])
-            for j in range(1000):
-                account_to_unfollow = all_my_following[len(all_my_following) - 1 - j]
-                #print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
-                unfollow_an_account(S,account_to_unfollow)
-                time.sleep(3)
-            nb_of_following_t2 = get_user_following_count(S,username_info[i])    
-            print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
+            if all_my_following != False:    
+                for j in range(1000):
+                    account_to_unfollow = all_my_following[len(all_my_following) - 1 - j]
+                    #print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
+                    unfollow_an_account(S,account_to_unfollow)
+                    time.sleep(3)
+                nb_of_following_t2 = get_user_following_count(S,username_info[i])    
+                print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
 
         if crash_or_no == True:
 #            print("hellloooooooo ")
