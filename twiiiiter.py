@@ -569,7 +569,6 @@ def get_user_following_count(S,user):
         following_count = following_count.text
         following_count=following_count.replace(" ","")
         following_count = parse_number(following_count)
-        print("salut a tous " , following_count)
         return int(following_count)
     except Exception as e:
         try:
@@ -583,11 +582,9 @@ def get_user_following_count(S,user):
                 for n in f:
                     if n in num:
                         following_count = following_count + n
-                print("salut a tous " , following_count)
                 return (int(following_count))
             except:
                 following_count = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"Following").split(" ")[0])
-                print("salut a tous " , following_count)
                 return int(following_count)            
         except:
             print("Following count error")
