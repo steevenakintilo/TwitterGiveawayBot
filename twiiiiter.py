@@ -690,9 +690,9 @@ def main_one():
         nb_of_following_t1 = get_user_following_count(S,username_info[i])
         account_to_unfollow = ""
         if nb_of_following_t1 > 4500:
-            print("You got to much following bot going to unfollow some people")
             all_my_following = get_list_of_my_followings(S,username_info[i])
             if all_my_following != False:    
+                print("You got to much following bot going to unfollow some people")
                 for j in range(1000):
                     account_to_unfollow = all_my_following[len(all_my_following) - 1 - j]
                     #print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
