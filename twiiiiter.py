@@ -612,7 +612,6 @@ def forever_loop():
             time.sleep(600)
         time.sleep(randint(86400,172800))
 
-
 def main_one():
     print("Inside main one")
     giveaway_done = 0
@@ -700,7 +699,8 @@ def main_one():
                     time.sleep(3)
                 nb_of_following_t2 = get_user_following_count(S,username_info[i])    
                 print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
-
+                print("Bot sleeping 20 minutes to avoid twitter rate limit")
+                time.sleep(60*20)
         if crash_or_no == True:
 #            print("hellloooooooo ")
             if account_num == 1:
