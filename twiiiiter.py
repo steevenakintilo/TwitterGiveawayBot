@@ -55,31 +55,34 @@ class Scraper:
     unfollow_nbr = 0
 
 def get_news():
-    with open("configuration.yml", "r") as file:
-        data = yaml.load(file, Loader=yaml.FullLoader)
-    url_list = data["flux_rss"]
-    
-    l = url_list[randint(0,len(url_list) - 1)]
-    news_feed = feedparser.parse(l)
-
-    news_title = []
-    news_link = []
-    idx = 0
-    for entry in news_feed.entries:
-        if idx != 0:
-            break
-        news_title.append(entry.title)
-        news_link.append(entry.link)
-        idx = idx + 1
-
     try:
-        rdm_news = randint(0,len(news_title)) - 1
-        return(news_title[rdm_news],news_link[rdm_news])
-    except:
+        with open("configuration.yml", "r") as file:
+            data = yaml.load(file, Loader=yaml.FullLoader)
+        url_list = data["flux_rss"]
+        
+        l = url_list[randint(0,len(url_list) - 1)]
+        news_feed = feedparser.parse(l)
+
+        news_title = []
+        news_link = []
+        idx = 0
+        for entry in news_feed.entries:
+            if idx != 0:
+                break
+            news_title.append(entry.title)
+            news_link.append(entry.link)
+            idx = idx + 1
+
         try:
-            return(news_title[0],news_link[0])
+            rdm_news = randint(0,len(news_title)) - 1
+            return(news_title[rdm_news],news_link[rdm_news])
         except:
-            return ("ok","ok")
+            try:
+                return(news_title[0],news_link[0])
+            except:
+                return ("ok","ok")
+    except:
+        return("ko ok ko ok ko")
 
 def login(S,_username,_password):
 
