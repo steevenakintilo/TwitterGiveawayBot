@@ -816,11 +816,12 @@ def main_one():
                         tt_follow.append(g)
                 for tt in tt_follow:
                     t_follow.append(tt)
-                t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
 
             else:
                 tweet_from_url = print_file_info("recent_url.txt").split("\n")
             
+            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
+
             if len(t_follow) == 0:
                 print("No giveaway found...")
                 if random_rt_and_tweet == True:

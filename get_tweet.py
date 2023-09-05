@@ -8,6 +8,8 @@ import traceback
 import random
 from datetime import datetime, timedelta, date
 
+import pickle
+
 class Data:
     with open("configuration.yml", "r",encoding="utf-8") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
@@ -262,6 +264,14 @@ def return_only_hashtag(sentence):
                 new_l.append(s)
     return (new_l)
 
+def remove_double_hashtag(string):
+    string = string.split(" ")
+    hashtag_list = []
+    for s in string:
+        if s.lower() not in hashtag_list:
+            hashtag_list.append(s.lower())
+    return (" ".join(hashtag_list))
+
 def giweaway_from_url_file(tweets_text,account_list):
     try:
         d = Data()
@@ -290,14 +300,14 @@ def giweaway_from_url_file(tweets_text,account_list):
             hashtag = delete_hashtag_we_dont_want(result)
             if check_if_we_need_to_tag(t) == True:
                 if check_if_we_need_to_comment(t) == True:
-                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
+                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
                     if d.add_sentence_to_tag == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
+                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
                     x = randint(0,1)
                     if d.random_action == True:
-                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
+                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
                         if x == 0:
-                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + hashtag
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
                 else:
                     full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
                     if d.add_sentence_to_tag == True:
@@ -310,15 +320,15 @@ def giweaway_from_url_file(tweets_text,account_list):
 
             else:
                 if delete_url(what_to_comment(t)) == "":
-                    full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + hashtag
+                    full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + remove_double_hashtag(hashtag)
                 else:
-                    full_phrase = delete_url(what_to_comment(t)) + " " + hashtag
+                    full_phrase = delete_url(what_to_comment(t)) + " " + remove_double_hashtag(hashtag)
                 
             if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
                 tweets_need_to_comment_or_not.append(True)
             else:
                 tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
-            tweets_full_comment.append(remove_emojie(full_phrase))
+            tweets_full_comment.append(remove_emojie(remove_double_hashtag(full_phrase)))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
         for a in account_list:
             if a not in tweets_account_to_follow and a != "f":
