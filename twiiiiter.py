@@ -251,7 +251,7 @@ def like_a_tweet(S,url):
         
         liked_or_not = like_button.get_attribute("aria-label")
 
-        if "likes" in liked_or_not.lower():
+        if "likes" in liked_or_not.lower() or "1 J'aime" in liked_or_not:
             like_button.click()
             return True
         else:
