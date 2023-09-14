@@ -242,7 +242,7 @@ def like_a_tweet(S,url):
 
     try:
         S.driver.get(url)
-        element = WebDriverWait(S.driver, 30).until(
+        element = WebDriverWait(S.driver, 5).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
         
         like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
@@ -251,15 +251,16 @@ def like_a_tweet(S,url):
         
         liked_or_not = like_button.get_attribute("aria-label")
 
-
-        if liked_or_not.lower() == "like" or liked_or_not.lower() == "aimer":
+        if "likes" in liked_or_not.lower():
             like_button.click()
             return True
-        if liked_or_not.lower() == "liked" or liked_or_not.lower() == "aimé":
+        else:
             return False
+
     except:
         print("Bref like" * 10)
         return None
+
 
 
 def reetweet_a_tweet(S,url):
