@@ -227,15 +227,37 @@ def search_tweet_for_better_rt(selenium_session):
         data = yaml.load(file, Loader=yaml.FullLoader)
     nb = data["random_retweet_nb"]
     random_action = data["random_action"]
+    tweet_found_ = []
     if random_action == True and nb > 0:
         nb = randint(1,nb)
     
-    tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
-    if d.tweet_lang != "any":
-        tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)
-    url_list = []
-    for tweet in tweet_found:
-        url_list.append(tweet["url"])
+    if random_action == False:
+        tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
+        if d.tweet_lang != "any":
+            tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)
+        url_list = []
+        for tweet in tweet_found:
+            url_list.append(tweet["url"])
+    else:
+        try:
+            trend = get_trend(selenium_session)
+            trend.append("a")
+            for i in range(nb):
+                tweet_found = search_tweet(selenium_session,str(trend[randint(0,len(trend) - 1)]),1)
+                if d.tweet_lang != "any":
+                    tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(trend[randint(0,len(trend) - 1)]),1)
+                for t in tweet_found:
+                    tweet_found_.append(t["url"])
+            url_list = []
+            for tweet in tweet_found_:
+                url_list.append(tweet)
+        except:
+            tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
+            if d.tweet_lang != "any":
+                tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)
+            url_list = []
+            for tweet in tweet_found:
+                url_list.append(tweet["url"])
     
     return url_list
 

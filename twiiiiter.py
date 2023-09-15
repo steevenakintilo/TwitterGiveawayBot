@@ -242,21 +242,19 @@ def like_a_tweet(S,url):
 
     try:
         S.driver.get(url)
-        element = WebDriverWait(S.driver, 5).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
-        
-        like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
-        #time.sleep(10000)
-        # check the "aria-pressed" attribute
-        
-        liked_or_not = like_button.get_attribute("aria-label")
-
-        if "likes" in liked_or_not.lower() or "1 J'aime" in liked_or_not:
-            like_button.click()
-            return True
-        else:
+        try:
+            element = WebDriverWait(S.driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="unlike"]')))
+            like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="unlike"]')
             return False
-
+        except:
+            element = WebDriverWait(S.driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
+        
+            like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
+            like_button.click()
+            return True 
+        
     except:
         print("Bref like" * 10)
         return None
@@ -835,7 +833,7 @@ def main_one():
                     make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                     try:
                         rt_url = search_tweet_for_better_rt(S)
-                    
+
                         for i in range(len(rt_url)):
                             like = like_a_tweet(S,rt_url[i])
                             if like == True:            
