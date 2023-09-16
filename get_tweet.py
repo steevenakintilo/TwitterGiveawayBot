@@ -201,8 +201,13 @@ def check_if_we_need_to_comment(text):
 def check_if_we_need_to_tag(text):
     d = Data()
     for elem in d.word_list_to_check_for_tag:
-        if elem.lower() in text.lower():
+        if elem.lower() in text.lower() and elem.lower() != "tag":
             return True
+    
+    for word_to_check in d.word_list_to_check_for_tag:
+        for word in text.split():
+            if word.lower().startswith(word_to_check.lower()) and "tag" in word.lower():
+                return True
     return False
 
 def delete_url(s):
