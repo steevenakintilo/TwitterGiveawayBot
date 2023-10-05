@@ -37,6 +37,7 @@ class Data:
     two_poeple_list = data["two_poeple_list"]
     three_or_more_poeple_list = data["three_or_more_poeple_list"]
     random_action = data["random_action"]
+    add_hashtag_to_comment = data["add_hashtag_to_comment"]
 
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
@@ -270,6 +271,9 @@ def return_only_hashtag(sentence):
     return (new_l)
 
 def remove_double_hashtag(string):
+    d = Data()
+    if d.add_hashtag_to_comment == False:
+        return(" ")
     string = string.split(" ")
     hashtag_list = []
     for s in string:

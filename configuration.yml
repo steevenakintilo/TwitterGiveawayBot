@@ -36,6 +36,7 @@ words_to_search:
 
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment one thing in particular
 word_list_to_check_for_special_comment:
+  - "avec #"
   - "commenter"
   - "commentez"
   - "écrit"
@@ -70,6 +71,7 @@ word_list_to_check_for_tag:
   - "invit"
   - "mention"
   - "tag"
+  - "#tag"
   - "identif"
   - "@ un"
   - "@ une"
@@ -433,6 +435,10 @@ crash_or_no: False
 
 #If the option is set to False the bot will only @ account withouth the sentence when he need to
 add_sentence_to_tag: True
+
+
+#If the option is set to True the bot will add # to comment other he won't
+add_hashtag_to_comment: True
 
 # If the value is set to true the bot will make random retweet and tweet
 random_retweet_and_tweet: True
