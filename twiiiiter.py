@@ -688,7 +688,24 @@ def main_one():
                     
         giveaway_g = 0
         follow_nbr = 0
-        nb_of_following_t1 = get_user_following_count(S,username_info[i])
+
+        nb_of_following_t1 = 0
+        less_than_4500 = 0
+        big_follow = 0
+        for j in range(5):
+            x = get_user_following_count(S,username_info[i])
+            if x < 4500:
+                less_than_4500+=1
+            else:
+                big_follow = x
+
+        
+        if less_than_4500 >= 3:
+            nb_of_following_t1 = 1
+        
+        else:
+            nb_of_following_t1 = big_follow + 1
+
         account_to_unfollow = ""
         if nb_of_following_t1 > 4500:
             all_my_following = get_list_of_my_followings(S,username_info[i])
