@@ -694,7 +694,7 @@ def main_one():
         big_follow = 0
         for j in range(5):
             x = get_user_following_count(S,username_info[i])
-            if x < 4500:
+            if x < 4500 or x > 9999:
                 less_than_4500+=1
             else:
                 big_follow = x
