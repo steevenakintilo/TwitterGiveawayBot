@@ -144,6 +144,7 @@ def get_the_right_word(sentence):
 def what_to_comment(sentences):
     s = sentences.split("\n")
     d = Data()
+    special_char = ",;.!?"
     for word in d.word_list_to_check_for_special_comment:
         for sentence in s:
             if word in sentence.lower():
@@ -155,6 +156,10 @@ def what_to_comment(sentences):
                 if '"' in c or '“' in c:
                     c = get_the_right_word(c)
                 c = c.lower()
+                for i in range(len(special_char)):
+                    if special_char[i] in c:
+                        c = c.split(special_char[i])[0]
+                        break
                 if "#" in word:
                     c = "#" + c
                     return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,""))
@@ -201,13 +206,17 @@ def check_if_we_need_to_comment(text):
 
 def check_if_we_need_to_tag(text):
     d = Data()
+    
+    if "-tag" in text.lower() or "#tag" in text.lower():
+        return True
+    
     for elem in d.word_list_to_check_for_tag:
         if elem.lower() in text.lower() and elem.lower() != "tag":
             return True
     
     for word_to_check in d.word_list_to_check_for_tag:
         for word in text.split():
-            if word.lower().startswith(word_to_check.lower()) and "tag" in word.lower():
+            if (word.lower().startswith(word_to_check.lower()) and "tag" in word.lower()):
                 return True
     return False
 
