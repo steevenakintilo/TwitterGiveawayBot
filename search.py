@@ -315,7 +315,7 @@ def get_giveaway_url(selenium_session):
                 for g in giveaway:
                     if list_inside_text(search_word.split(" ") , g["text"].lower()) == True:
                         giveaway_foud_per_word+=1
-                        if giveaway_foud_per_word >= int(len(giveaway)/3):
+                        if giveaway_foud_per_word >= int(len(giveaway)/5):
                             skip_text = True
                 if nb_of_tweet_to_search < 10:
                     time.sleep(10)
@@ -327,13 +327,14 @@ def get_giveaway_url(selenium_session):
                     time.sleep(300)
                 
                 for g in giveaway:
-                    if g["url"] not in tweets_url and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (list_inside_text(search_word.split(" ") , g["text"]) == True or skip_text == True) and nb_of_giveaway_found<d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
+                    if g["url"] not in tweets_url and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (skip_text == True) and nb_of_giveaway_found < d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
                         if nb_of_giveaway_found>=d.nb_of_giveaway:
                             break
                         tweets_url.append(g["url"])
                         nb_of_giveaway_found+=1
                     else:
                         doublon +=1
+
                     if nb_of_giveaway_found>=d.nb_of_giveaway:
                         break
             giveaway_foud_per_word = 0
@@ -351,11 +352,11 @@ def get_giveaway_url(selenium_session):
             print(tweets_url)
             print("Nb of doublon " + str(doublon))
         print("Number of giveaway found = " + str(nb_of_giveaway_found))
+        
         if nb_of_giveaway_found > 0:
             print("Ending giveaway search the bot will now start doing giveaways")
         return (tweets_url)    
     except Exception as e:
         print("Error occured but we are still doing some giveaways")
         #traceback.print_exc()
-        return (tweets_url)    
-
+        return (tweets_url)
