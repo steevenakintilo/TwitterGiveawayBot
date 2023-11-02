@@ -28,8 +28,8 @@ class Scraper:
     wait_time = 5
     headless = data["headless"]
     options = webdriver.ChromeOptions()
-    if headless == True:
-        options.add_argument('headless')
+    #if headless == True:
+    #    options.add_argument('headless')
     options.add_argument("--log-level=3")  # Suppress all logging levels
     
     driver = webdriver.Chrome(options=options)  # to open the chromedriver    
@@ -757,9 +757,10 @@ def main_one():
                     except:
                         print("ok")
                 continue
-
-            t_follows.remove("")
-
+            try:
+                t_follows.remove("")
+            except:
+                print("Something bad happend the program need to stop")
             for t in t_follows:
                 if t != "":
                     t_follow.append(t.replace(" ",""))

@@ -232,6 +232,7 @@ def delete_url(s):
     return(n)
 
 def who_many_people_to_tag(text,accounts_to_tag):
+    text = text.replace("\n", " ") 
     d = Data()
     
     for one in d.one_poeple_list:
@@ -245,6 +246,7 @@ def who_many_people_to_tag(text,accounts_to_tag):
     return(" ".join(accounts_to_tag))
     
 def check_if_we_need_to_tag_two(text):
+    text = text.replace("\n", " ") 
     d = Data()
     
     for one in d.one_poeple_list:
@@ -258,7 +260,6 @@ def check_if_we_need_to_tag_two(text):
     for other in d.three_or_more_poeple_list:
         if other.lower() in text.lower():
             return True
-    
     return False    
 
 def check_blacklist(account):
