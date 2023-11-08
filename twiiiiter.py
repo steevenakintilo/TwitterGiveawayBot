@@ -243,12 +243,12 @@ def like_a_tweet(S,url):
     try:
         S.driver.get(url)
         try:
-            element = WebDriverWait(S.driver, 5).until(
+            element = WebDriverWait(S.driver, 2).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="unlike"]')))
             like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="unlike"]')
             return False
         except:
-            element = WebDriverWait(S.driver, 5).until(
+            element = WebDriverWait(S.driver, 2).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
         
             like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
@@ -642,6 +642,7 @@ def main_one():
     tttt_follow = []
     tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = [] , [] , [] , [] , []
     t_comment_or_not , t_full_comment, t_follows = [] , [] , []
+    alph_follow = []
     for i in range(len(username_info)):
         account_num+=1
         print("Connecting to " + str(username_info[i]))
@@ -780,7 +781,7 @@ def main_one():
             for account_to_follow in tttt_follow:
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
-                follow_an_account(S,account_to_follow,5)
+                follow_an_account(S,account_to_follow,1.5)
             
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
@@ -877,7 +878,18 @@ def main_one():
                     if ttt_follow[i].lower().replace("@","") not in tttt_follow:
                         tttt_follow.append(ttt_follow[i])
                 
-                
+            
+            alph_list = int(len(tttt_follow)/2)
+
+            for i in range(alph_list):
+                follow_nbr +=1
+                print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
+                follow_an_account(S,tttt_follow[i],2)
+                alph_follow.append(tttt_follow[i].lower())
+
+            
+            time.sleep(120)
+
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
@@ -898,10 +910,12 @@ def main_one():
                     time.sleep(5400)
                 print(idxx)
                 idxx = idxx + 1
+            
             for account_to_follow in tttt_follow:
-                follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
-                follow_an_account(S,account_to_follow,5)
+                if account_to_follow.lower() not in alph_follow:
+                    follow_an_account(S,account_to_follow,2)
+                    follow_nbr +=1            
             
             if random_rt_and_tweet == True:
                 if random_action == True and random_tweet_nb > 0:

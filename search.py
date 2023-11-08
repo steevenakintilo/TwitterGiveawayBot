@@ -286,11 +286,11 @@ def get_giveaway_url(selenium_session):
         date_ = ""
         date_format = "%Y-%m-%d"
         check_ = []
-        MAX = 100
+        MAX = 1000
         giveaway_foud_per_word = 0
-        skip_text = False
         ban_word = ""
         ban_word_list = []
+        duplicated_url = []
         for banned_word in d.giveaway_to_blacklist:
             if "." not in banned_word:
                 ban_word += "-" + banned_word + " "
@@ -298,12 +298,12 @@ def get_giveaway_url(selenium_session):
         if len(ban_word) <= len(d.giveaway_to_blacklist):
             ban_word = ""
         nb_of_tweet_to_search = d.max_giveaway
-        if nb_of_tweet_to_search > 500:
-            nb_of_tweet_to_search = 500
+        if nb_of_tweet_to_search > 1000:
+            nb_of_tweet_to_search = 1000
         if d.nb_of_giveaway > MAX:
             d.nb_of_giveaway = MAX
         for search_word in d.word_to_search:
-            if print_data == True:
+            if print_data == False:
                 print("### " , search_word)
                 print("### nb of giveaway foud " , nb_of_giveaway_found)
             if nb_of_giveaway_found <d.nb_of_giveaway and "." not in search_word:
@@ -313,32 +313,36 @@ def get_giveaway_url(selenium_session):
                 
                 giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search)
                 for g in giveaway:
-                    if list_inside_text(search_word.split(" ") , g["text"].lower()) == True:
-                        giveaway_foud_per_word+=1
-                        if giveaway_foud_per_word >= int(len(giveaway)/5):
-                            skip_text = True
+                    giveaway_foud_per_word+=1
                 if nb_of_tweet_to_search < 10:
                     time.sleep(10)
                 if nb_of_tweet_to_search <= 100 and nb_of_tweet_to_search >= 10:
                     time.sleep(120)
                 if nb_of_tweet_to_search > 100 and nb_of_tweet_to_search <= 300:
                     time.sleep(180)
-                if nb_of_tweet_to_search > 300:
+                if nb_of_tweet_to_search > 300 and nb_of_tweet_to_search <= 999:
                     time.sleep(300)
+                if nb_of_tweet_to_search >= 1000:
+                    time.sleep(800)
                 
                 for g in giveaway:
-                    if g["url"] not in tweets_url and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and (skip_text == True) and nb_of_giveaway_found < d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
+                    if g["url"] not in tweets_url and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and nb_of_giveaway_found < d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
                         if nb_of_giveaway_found>=d.nb_of_giveaway:
                             break
                         tweets_url.append(g["url"])
                         nb_of_giveaway_found+=1
+                    elif list_inside_text(search_word.split(" "), g["text"]) == False and g["url"] not in url_from_file and g["url"] not in tweets_url and g["url"] not in duplicated_url:
+                        if nb_of_giveaway_found>=d.nb_of_giveaway:
+                            break
+                        tweets_url.append(g["url"])
+                        nb_of_giveaway_found+=1
+                        duplicated_url.append(g["url"])
                     else:
                         doublon +=1
 
                     if nb_of_giveaway_found>=d.nb_of_giveaway:
                         break
             giveaway_foud_per_word = 0
-            skip_text = False
         if len(tweets_id) > d.nb_of_giveaway:
             dif = len(tweets_id) - d.nb_of_giveaway
             tweets_url = tweets_url[:dif]
@@ -352,7 +356,6 @@ def get_giveaway_url(selenium_session):
             print(tweets_url)
             print("Nb of doublon " + str(doublon))
         print("Number of giveaway found = " + str(nb_of_giveaway_found))
-        
         if nb_of_giveaway_found > 0:
             print("Ending giveaway search the bot will now start doing giveaways")
         return (tweets_url)    
