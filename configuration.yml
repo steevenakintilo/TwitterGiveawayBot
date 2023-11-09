@@ -38,7 +38,7 @@ words_to_search:
   - "concours résultat le rt"
 
 
-# Those are the word needed on the tweet for the bot to comment but we won't lookup for a random comment comment to copy for those words:
+# Those are the word needed on the tweet for the bot to comment but we won't lookup for a random comment to copy for those words:
 word_list_to_not_check_for_copy:
   - "+ #"
   - "avec #"
