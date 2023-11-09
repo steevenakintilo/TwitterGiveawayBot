@@ -160,10 +160,13 @@ def what_to_comment(sentences,S,url):
     
     if forbiden == False:
         for word in d.word_list_to_check_for_special_comment:
-            if '"' not in sentences and '“' not in sentences and  "«" not in sentences and word in sentences.lower():
-                copied_comment = copy_a_comment(S,url)
-                if copied_comment != False:
-                    return copied_comment
+            s = sentences.lower()
+            if word in sentences.lower():
+                next_part = s.split(word)[1]
+                if '"' not in next_part and '“' not in next_part and  "«" not in next_part:
+                    copied_comment = copy_a_comment(S,url)
+                    if copied_comment != False:
+                        return copied_comment
     for word in d.word_list_to_check_for_special_comment:
         for sentence in s:
             if word in sentence.lower():
