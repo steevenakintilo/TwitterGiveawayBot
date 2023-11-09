@@ -565,15 +565,20 @@ def copy_a_comment(selenium_session,url):
                 final_list.append(z)
             elif len(z) >= 1 and len(z) <= 150:
                 final_list.append(t)
-               
+       
+
+        
         for t in final_list:
             if len(t.split()) <= 3:
                 single+=1
         
         for elem in final_list:
             if len(elem.split()) <= 3:
+                if hashtag == True and len(elem.split()) == 1:
+                    last_list.append(elem.lower())
+                    return elem.lower().replace("\n","")
                 last_list.append(elem.lower())
-        if single >= int((len(list_of_text)/3)):
+        if single >= int((len(list_of_text)/3)) or hashtag == True:
             return (last_list[randint(0,len(last_list) - 1)].replace("\n",""))
         else:                 
             return (final_list[randint(0,len(final_list) - 1)].replace("\n",""))
