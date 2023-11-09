@@ -735,7 +735,7 @@ def main_one():
                 
                 for tt in tt_follow:
                     t_follow.append(tt)
-            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
+            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow,S)
             
             if len(t_follow) == 0:
                 print("No giveaway found...")
@@ -777,12 +777,18 @@ def main_one():
                 if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
                     if ttt_follow[i].lower().replace("@","") not in tttt_follow:
                         tttt_follow.append(ttt_follow[i])
-                
-            for account_to_follow in tttt_follow:
+
+            alph_list = int(len(tttt_follow)/2)
+
+            for i in range(alph_list):
                 follow_nbr +=1
-                print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
-                follow_an_account(S,account_to_follow,1.5)
-            
+                print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
+                follow_an_account(S,tttt_follow[i],2)
+                alph_follow.append(tttt_follow[i].lower())
+
+            if len(tttt_follow) > 80:
+                time.sleep(120)
+
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
@@ -803,6 +809,13 @@ def main_one():
                     time.sleep(5400)
                 print(idxx)
                 idxx = idxx + 1
+            
+            for account_to_follow in tttt_follow:
+                print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
+                if account_to_follow.lower() not in alph_follow:
+                    follow_an_account(S,account_to_follow,2)
+                    follow_nbr +=1            
+            
             if random_rt_and_tweet == True:
                 if random_action == True and random_tweet_nb > 0:
                     random_tweet_nb = randint(1,random_tweet_nb)
@@ -838,7 +851,7 @@ def main_one():
             else:
                 tweet_from_url = print_file_info("recent_url.txt").split("\n")
             
-            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow)
+            t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow,S)
             if len(t_follow) == 0:
                 print("No giveaway found...")
                 if random_rt_and_tweet == True:
@@ -887,8 +900,8 @@ def main_one():
                 follow_an_account(S,tttt_follow[i],2)
                 alph_follow.append(tttt_follow[i].lower())
 
-            
-            time.sleep(120)
+            if len(tttt_follow) > 80:
+                time.sleep(120)
 
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))

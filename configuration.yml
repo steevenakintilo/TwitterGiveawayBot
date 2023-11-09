@@ -9,17 +9,21 @@ account_password:
 words_to_search:
   - "giveaway"
   - "#concours"
+  - "concours"
   - "#JeuConcours"
+  - "JeuConcours"
+  - "offre follow gagnant"
   - "concours pour gagner"
+  - "gagner rt"
   - "Gagnez rt + follow"
   - "RT & follow"
+  - "rt follow"
   - "concours rt like"
   - "concours rt fav"
   - "RT tweet Follow"
   - "concours rt follow"
   - "rt follow tas"
   - "rt follow tirage au sort"
-  - "rt follow t.a.s"
   - "rt follow gagner"
   - "rt follow commente"
   - "rt suivre concours"
@@ -34,24 +38,44 @@ words_to_search:
   - "concours résultat le rt"
 
 
+# Those are the word needed on the tweet for the bot to comment but we won't lookup for a random comment comment to copy for those words:
+word_list_to_not_check_for_copy:
+  - "+ #"
+  - "avec #"
+  - "le #"
+  
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment one thing in particular
 word_list_to_check_for_special_comment:
-  - "avec #"
-  - "commenter"
+  - "commenter avec"
+  - "commentez avec"
+  - "commente avec"
   - "commentez"
+  - "commenter"
+  - "commente"
   - "écrit"
   - "écrire"
   - "dites"
+  - "répondez"
+  - "réponder"
+  
 
 # Those are the word needed on the tweet for the bot to comment when the tweet ask to comment random stuff
 word_list_to_check_for_comment:
+  - "+ #"
+  - "avec #"
+  - "le #"
+  - "mentionnez #"
   - "commente"
   - "commentaire"
+  - "commentant"
   - "écrit"
   - "écrire"
+  - "dites"
   - "cite"
   - "donne"
   - "tweet avec"
+  - "tweetent avec"
+  - "tweetent : avec"
   - "tweet : avec"
   - "tweet #"
   - "hashtag"
@@ -66,7 +90,6 @@ short_word_list_to_check_for_comment:
   - "com"
 
 # Those are the word needed on the tweet for the bot to tag one or more account
-
 word_list_to_check_for_tag:
   - "invit"
   - "mention"
@@ -77,11 +100,22 @@ word_list_to_check_for_tag:
   - "@ une"
   - "@ des"
   - "@ tes"
-
+  - "@ 1"
+  - "@ deux"
+  - "@ 2"
+  - "@ plusieurs"
+  
 # Word list to check if we need to tag 1 account
 one_poeple_list:
+  
+  - "@ un"
+  - "@ 1"
   - "tag un"
   - "tag 1"
+  - "tag ton"
+  - "tag ton"
+  - "tag ta"
+  - "tag la"
   - "un ami"
   - "un copain"
   - "une personne"
@@ -93,11 +127,19 @@ one_poeple_list:
   - "1 personne"
   - "un(e) ami(e)"
   - "un.e ami.e"
+  - "quelqu'un"
+  - "un fan"
+  - "1 fan"
+  - "un(e) pote"
+  - "un(e) pote"
+
 
 # Word list to check if we need to tag 2 accounts
 two_poeple_list:
   - "tag deux"
   - "tag 2"
+  - "@ deux"
+  - "@ 2"
   - "2 amis"
   - "2 ami(e)s"
   - "2 ami"
@@ -126,12 +168,14 @@ three_or_more_poeple_list:
   - "tes potes"
   - "des potes"
 
-# Accounts we want to invite you must but a space at the end of each account
+# Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
 accounts_to_tag:
   - "@Mediavenir "
   - "@NetflixFR "
   - "@ActuFoot_ "
   
+  
+
 # Accounts that we don't want to follow
 accounts_to_blacklist:
   - "@RealB0tSpotter"
@@ -197,7 +241,9 @@ accounts_to_blacklist:
   - "@pormakino"
   - "@WRN2006FRR"
   - "@wrn2006fr"
+  - "@AsyaGiveaway"
   - "0xNFTgiveaway"
+  - "@cineplus"
 
 # Sentences that the bot will say to act not like a bot
 setence_to_tweet:
@@ -393,10 +439,19 @@ hashtag_to_blacklist:
 # We don't want to participate in giveaway with these words
 giveaway_to_blacklist:
   - "nude"
+  - "anal"
+  - "sex"
   - "sorare"
   - "freebet"
   - "formation"
-
+  - "dvd"
+  - "mint"
+  - "freemint"
+  - "film"
+  - "cinéma"
+  - "ebook"
+  - "gode"
+  
 
 # If headless is set to True the bot won't open a chrome windows while doing giveaways otherwise it will
 headless: True
@@ -420,22 +475,22 @@ forever_loop: False
 
 #The minimum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
 min_time: 45
-
-#The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
-max_time: 300
-
-#If random is set to true the bot will do even more random action: It will do a random number of retweet and tweet beetween 1 and random_tweet_nb and random_retweet_nb and it will comment withouth sentence on random time
-random_action: False
-
 #If this option is set to true the bot will make a sleep of 1H30 every 10 giveaways to act more human
 human: False
 
-#If the bot crashed and you want to redo the giveaway you where doing  or you just want to do your own giveaway you put on the recen_url.txt file just set the value to true
+#The maximum time to wait in second beetween each follow, giveaway done (Like,Retweet,Comment if needed) , random tweet, random retweet the bot will choose a random time beetween min and max time
+max_time: 300
+#If the bot crashed and you want to redo the giveaway you where doing just set the value to true
 crash_or_no: False
 
 #If the option is set to False the bot will only @ account withouth the sentence when he need to
 add_sentence_to_tag: True
 
+#If random is set to true the bot will do even more random action: It will do a random number of retweet and tweet beetween 1 and random_tweet_nb and random_retweet_nb and it will comment withouth sentence on random time
+random_action: False
+
+# If the value is set to true the bot will make random retweet and tweet
+random_retweet_and_tweet: False
 
 #If the option is set to True the bot will add # to comment other he won't
 add_hashtag_to_comment: True

@@ -7,8 +7,15 @@ import time
 import traceback
 import random
 from datetime import datetime, timedelta, date
-
 import pickle
+
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 
 class Data:
     with open("configuration.yml", "r",encoding="utf-8") as file:
@@ -38,6 +45,7 @@ class Data:
     three_or_more_poeple_list = data["three_or_more_poeple_list"]
     random_action = data["random_action"]
     add_hashtag_to_comment = data["add_hashtag_to_comment"]
+    word_list_to_not_check_for_copy = data["word_list_to_not_check_for_copy"]
 
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
@@ -141,10 +149,22 @@ def get_the_right_word(sentence):
     
     return (new_sentence.replace('"',"").replace("“","").replace("«","").replace("»",""))
 
-def what_to_comment(sentences):
+def what_to_comment(sentences,S,url):
     s = sentences.split("\n")
     d = Data()
     special_char = ",;.!?"
+    forbiden = False
+    
+    for word in d.word_list_to_not_check_for_copy:
+        if word.lower() in sentences.lower():
+            forbiden = True
+    
+    if forbiden == False:
+        for word in d.word_list_to_check_for_special_comment:
+            if '"' not in sentences and '“' not in sentences and  "«" not in sentences and word in sentences.lower():
+                copied_comment = copy_a_comment(S,url)
+                if copied_comment != False:
+                    return copied_comment
     for word in d.word_list_to_check_for_special_comment:
         for sentence in s:
             if word in sentence.lower():
@@ -153,7 +173,7 @@ def what_to_comment(sentences):
                     c = comment[0]
                 else:
                     c = comment[1]
-                if '"' in c or '“' in c:
+                if '"' in c or '“' in c or "«" in c:
                     c = get_the_right_word(c)
                 c = c.lower()
                 for i in range(len(special_char)):
@@ -291,7 +311,7 @@ def remove_double_hashtag(string):
             hashtag_list.append(s.lower())
     return (" ".join(hashtag_list))
 
-def giweaway_from_url_file(tweets_text,account_list):
+def giweaway_from_url_file(tweets_text,account_list,S):
     try:
         d = Data()
         accounts_to_tag_ = d.accounts_to_tag_
@@ -305,6 +325,14 @@ def giweaway_from_url_file(tweets_text,account_list):
                     accounts_to_tag.append(accounts_to_tag_[i])
         else:
             accounts_to_tag = [' @Twitter ', '@X ', '@ElonMusk ']   
+        tweet_from_url = print_file_info("recent_url.txt").split("\n")
+        tweet_from_url_ = []
+        if len(tweet_from_url) > len(tweets_text):
+            for i in range(len(tweets_text)):
+                tweet_from_url_.append(tweet_from_url[i])
+        else:
+            for i in range(len(tweet_from_url)):
+                tweet_from_url_.append(tweet_from_url[i])
         tweets_need_to_comment_or_not = []
         tweets_full_comment = []
         tweets_account_to_follow = []
@@ -313,51 +341,237 @@ def giweaway_from_url_file(tweets_text,account_list):
         full_phrase = ""
         url_from_file = print_file_info("url.txt").split("\n")
         print_data = False
+        idxx = 0
         for t in tweets_text:
+            current_url = tweet_from_url_[idxx]
             words = t.split(" ")
             result = return_only_hashtag(t)
             hashtag = delete_hashtag_we_dont_want(result)
             if check_if_we_need_to_tag(t) == True:
                 if check_if_we_need_to_comment(t) == True:
-                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
-                    if d.add_sentence_to_tag == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                    what_to_cmt = what_to_comment(t,S,current_url)
+                    nb_word = what_to_cmt.split()
+                    if "#" not in what_to_cmt:
+                        full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                    else:
+                        full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                    if d.add_sentence_to_tag == True and len(nb_word) >= 5:
+                        if "#" not in what_to_cmt:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                        else:
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                     x = randint(0,1)
                     if d.random_action == True:
-                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                        if "#" not in what_to_cmt:
+                            full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                        else:
+                            full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                         if x == 0:
-                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                            if "#" not in what_to_cmt:
+                                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                            else:
+                                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                 else:
-                    full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
-                    if d.add_sentence_to_tag == True:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                    what_to_cmt = what_to_comment(t,S,current_url)
+                    nb_word = what_to_cmt.split()
+                    full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                    if d.add_sentence_to_tag == True and len(nb_word) >= 5:
+                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                     x = randint(0,1)
                     if d.random_action == True:
-                        full_phrase = delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                        full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                         if x == 0:
-                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_comment(t)) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
 
             else:
-                if delete_url(what_to_comment(t)) == "":
-                    full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_comment(t)) + " " + remove_double_hashtag(hashtag)
+                what_to_cmt = what_to_comment(t,S,current_url)
+                if delete_url(what_to_cmt) == "":
+                    if "#" not in what_to_cmt:
+                        full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_cmt) + " " + remove_double_hashtag(hashtag)
+                    else:
+                        full_phrase = d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)] + " " + delete_url(what_to_cmt) + " "
                 else:
-                    full_phrase = delete_url(what_to_comment(t)) + " " + remove_double_hashtag(hashtag)
-                
+                    if "#" not in what_to_cmt:
+                        full_phrase = delete_url(what_to_cmt) + " " + remove_double_hashtag(hashtag)
+                    else:
+                        full_phrase = delete_url(what_to_cmt) + " "
             if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
                 tweets_need_to_comment_or_not.append(True)
             else:
                 tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
             tweets_full_comment.append(remove_emojie(remove_double_hashtag(full_phrase)))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
+            idxx+=1
         for a in account_list:
             if a not in tweets_account_to_follow and a != "f":
                 tweets_account_to_follow.append(a)
         if print_data == True:
             print(tweets_full_comment)
-            print(tweets_need_to_comment_or_not)
+            #print(tweets_need_to_comment_or_not)
         print(tweets_need_to_comment_or_not)
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
     except Exception as e:
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
+
+
+
+def check_elem_on_a_list(elem_, list_):
+    return next((l for l in list_ if elem_ in l.lower()), elem_)
+
+def are_last_x_elements_same(lst,x):
+    lst_2 = []
+    if len(lst) < x:
+        return False
+    if len(lst) >= x:
+        lst.reverse()
+        for i in range(0,x):
+            l = lst[i]
+            if l not in lst_2 and len(lst_2) != 0:
+                return False
+            else:
+                lst_2.append(l)
+    return True
+
+def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
+    try:
+        nb = 0
+        if nb_of_comment > 0:
+            nb_of_comment = nb_of_comment + 1
+        selenium_session.driver.get(url)
+        time.sleep(1)
+        run  = True
+        selenium_data = []
+        list_of_comment_url = []
+        list_of_tweet_url_ = []
+        list_len = []
+        data_list = []
+        text_list = []
+        tweet_info_dict = {"username":"",
+        "text":""}
+        
+        p = '"'
+        account = ""
+        list_len = []
+        if nb_of_comment > 50:
+            nb_of_comment = 50
+
+        while run:
+            try:
+                element = WebDriverWait(selenium_session.driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweet"]')))
+                tweets_info = selenium_session.driver.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
+                tweets_username = selenium_session.driver.find_elements(By.CSS_SELECTOR, '[data-testid="User-Name"]')
+                tweets_text = selenium_session.driver.find_elements(By.CSS_SELECTOR, '[data-testid="tweetText"]')
+                last_tweet = tweets_info[len(tweets_info) - 1]
+                for tweet_info, tweet_username, tweet_text in zip(tweets_info, tweets_username,tweets_text):
+                    if are_last_x_elements_same(list_len,200) == True:
+                        run = False
+                    list_len.append(len(data_list))
+                    if tweet_info not in selenium_data:
+                        try:
+                            account = str(str(tweet_username.text).split("\n")[1]).replace("@","")
+                            account = str(account).lower()
+                            lower_data = str(tweet_info.get_property('outerHTML')).lower()
+                            
+                            text_ = tweet_text.text.replace("Show more","")
+                            if "@" in text_:
+                                get_text = str(tweet_info.get_property('outerHTML')).lower().split("css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0")
+                                get_text = get_text[4].split("<")
+                                get_text = get_text[0].replace("\n"," ")
+                                get_text = get_text[2:len(get_text)]
+                                text_list = [text.text.replace("\n"," ").lower() for text in tweets_text]
+                                text_ = check_elem_on_a_list(get_text,text_list)
+                            
+                            splinter = "href="+p+"/"+account+"/status"
+                            splinter = splinter.replace("\\","/")                    
+                            lower_data = lower_data.split(splinter)
+                            lower_data = str(lower_data[1])
+                            lower_data = lower_data.split(" ")
+                            tweet_id = lower_data[0].replace("/","").replace(p,"")
+                            tweet_link = "https://twitter.com/" + account + "/status/" + tweet_id
+                            ussr = str(url.split("https://twitter.com/")[1]).split("/")[0]
+                            if "photo1" in tweet_link and "/photo" not in tweet_link:
+                                tweet_link = tweet_link.replace("photo1","/photo1")
+                            if tweet_link not in list_of_comment_url:
+                                if tweet_link[len(tweet_link) - 1] in "0123456789" and "status" in tweet_link:
+                                    if account.lower() != ussr.lower():
+                                        tweet_info_dict = {"username":account,"text":text_,"url":tweet_link}
+                                        data_list.append(tweet_info_dict)
+                            if account.lower() != ussr.lower():
+                                selenium_data.append(tweet_info)
+                            selenium_session.driver.execute_script("arguments[0].scrollIntoView();", last_tweet)
+                            time.sleep(0.025)
+                        except:
+                            selenium_session.driver.execute_script("arguments[0].scrollIntoView();", last_tweet)
+                            time.sleep(0.1)
+                        
+                        if len(data_list) >= nb_of_comment:
+                            run = False
+                            return(data_list)
+                if len(data_list) > 0:
+                    data_list = data_list[1:]
+                if len(data_list) > nb_of_comment:
+                    for i in range(0,nb_of_comment):
+                        list_of_tweet_url_.append(data_list[i])
+                
+                    return(list_of_tweet_url_)
+        
+            except Exception as e:
+                return (data_list)
+        return(data_list)
+    except Exception as e:
+        return (False)
+    
+def copy_a_comment(selenium_session,url):
+    try:
+        list_of_comment_of_a_tweet = get_list_of_comment_of_a_tweet(selenium_session,url,20)
+        if list_of_comment_of_a_tweet == False:
+            return False
+        list_of_text = []
+        final_list = []
+        last_list = []
+        if len(list_of_comment_of_a_tweet) == 0:
+            quit()
+        for l in list_of_comment_of_a_tweet:
+            if "@" not in l["text"] and "text-overflow:" not in l["text"]:
+                list_of_text.append(l["text"])
+        nb_nbr , nb_hashtag = 0 , 0
+        nb = True
+        hashtag = True
+        single = 0
+        for t in list_of_text:
+            if any(char.isdigit() for char in t):
+                nb_nbr+=1
+            if "#" in t:
+                nb_hashtag+=1
+        if nb_nbr >= int((len(list_of_text)/3)*2) and len(list_of_text) >= 5:
+            nb = True
+        
+        if nb_hashtag >= int((len(list_of_text)/3)*2) and len(list_of_text) >= 5:
+            hashtag = True
+        
+        for t in list_of_text:
+            z = remove_emojie(t)
+            if nb == True and hashtag == True and len(z) >= 1:
+                final_list.append(z)
+            elif nb == True and hashtag == False and len(z) >= 1:
+                final_list.append(z)
+            elif nb == False and hashtag == True and len(z) >= 1:
+                final_list.append(z)
+            elif len(z) >= 1:
+                final_list.append(t)
+        for t in final_list:
+            if len(t.split()) <= 3:
+                single+=1
+        
+        for elem in final_list:
+            if len(elem.split()) <= 3:
+                last_list.append(elem.lower())
+        if single >= int((len(list_of_text)/3)):
+            return (last_list[randint(0,len(last_list) - 1)])
+        else:                 
+            return (final_list[randint(0,len(final_list) - 1)])
+    except:
+        return False
