@@ -154,7 +154,6 @@ def what_to_comment(sentences,S,url):
     d = Data()
     special_char = ",;.!?"
     forbiden = False
-    
     for word in d.word_list_to_not_check_for_copy:
         if word.lower() in sentences.lower():
             forbiden = True
@@ -182,8 +181,8 @@ def what_to_comment(sentences,S,url):
                         break
                 if "#" in word:
                     c = "#" + c
-                    return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,""))
-                return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,""))
+                    return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
+                return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
                 
     return ("")
 
@@ -538,8 +537,8 @@ def copy_a_comment(selenium_session,url):
             if "@" not in l["text"] and "text-overflow:" not in l["text"]:
                 list_of_text.append(l["text"])
         nb_nbr , nb_hashtag = 0 , 0
-        nb = True
-        hashtag = True
+        nb = False
+        hashtag = False
         single = 0
         for t in list_of_text:
             if any(char.isdigit() for char in t):
