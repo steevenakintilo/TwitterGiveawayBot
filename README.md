@@ -173,6 +173,15 @@ word_list_to_check_for_special_comment:
   - "comments"
 ```
 
+```yml
+On this list add the same word as word_list_to_check_for_special_comment but only add words that will be skip if the bot need to check for a random comment
+
+# Those are the word needed on the tweet for the bot to comment but we won't lookup for a random comment to copy for those words:
+word_list_to_not_check_for_copy:
+  - "+ #"
+  - "with #"
+  - "add #"
+````yml
 On this list add the word that are asked when you need to comment on the giveaway but not necessarily anything special like if the giveaway says "comments to enter the giveaway" then add the words comments to the list
 
 ```yml
@@ -242,6 +251,7 @@ With all of that you will be able to do giveaway in english or any language you 
 
 - Don't put a min_time and max_time too low otherwise you will be locked then ban for spamming I think 45 seconds for min_time and 300 seconds for max_time is good but you can still but the time you want
 - To avoid getting blocked for ban it's better to do giveaways during day time and not the night to act more human
-- Fell free to modify as you wish the configuration.yml file to have the best giveaway bot you wantFell free to update the code or even add more features to it.
+- Fell free to modify as you wish the configuration.yml file to have the best giveaway bot you want
+- Fell free to update the code or even add more features to it.
 
 Hope this code will help you win more giveaways on twitter.
