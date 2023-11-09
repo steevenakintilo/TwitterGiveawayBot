@@ -167,6 +167,7 @@ def what_to_comment(sentences,S,url):
                     copied_comment = copy_a_comment(S,url)
                     if copied_comment != False:
                         return copied_comment
+    
     for word in d.word_list_to_check_for_special_comment:
         for sentence in s:
             if word in sentence.lower():
@@ -556,14 +557,15 @@ def copy_a_comment(selenium_session,url):
         
         for t in list_of_text:
             z = remove_emojie(t)
-            if nb == True and hashtag == True and len(z) >= 1:
+            if nb == True and hashtag == True and len(z) >= 1 and len(z) <= 150:
                 final_list.append(z)
-            elif nb == True and hashtag == False and len(z) >= 1:
+            elif nb == True and hashtag == False and len(z) >= 1 and len(z) <= 150:
                 final_list.append(z)
-            elif nb == False and hashtag == True and len(z) >= 1:
+            elif nb == False and hashtag == True and len(z) >= 1 and len(z) <= 150:
                 final_list.append(z)
-            elif len(z) >= 1:
+            elif len(z) >= 1 and len(z) <= 150:
                 final_list.append(t)
+               
         for t in final_list:
             if len(t.split()) <= 3:
                 single+=1
@@ -572,8 +574,8 @@ def copy_a_comment(selenium_session,url):
             if len(elem.split()) <= 3:
                 last_list.append(elem.lower())
         if single >= int((len(list_of_text)/3)):
-            return (last_list[randint(0,len(last_list) - 1)])
+            return (last_list[randint(0,len(last_list) - 1)].replace("\n",""))
         else:                 
-            return (final_list[randint(0,len(final_list) - 1)])
+            return (final_list[randint(0,len(final_list) - 1)].replace("\n",""))
     except:
         return False
