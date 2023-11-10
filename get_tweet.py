@@ -169,25 +169,24 @@ def what_to_comment(sentences,S,url):
                         return copied_comment
     
     for word in d.word_list_to_check_for_special_comment:
-        for sentence in s:
-            if word in sentence.lower():
-                comment = sentence.split(word)
-                if len(comment) == 1:
-                    c = comment[0]
-                else:
-                    c = comment[1]
-                if '"' in c or '“' in c or "«" in c:
-                    c = get_the_right_word(c)
-                c = c.lower()
-                for i in range(len(special_char)):
-                    if special_char[i] in c:
-                        c = c.split(special_char[i])[0]
-                        break
-                if "#" in word:
-                    c = "#" + c
-                    return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
+        if word in s.lower():
+            comment = s.split(word)
+            if len(comment) == 1:
+                c = comment[0]
+            else:
+                c = comment[1]
+            if '"' in c or '“' in c or "«" in c:
+                c = get_the_right_word(c)
+            c = c.lower()
+            for i in range(len(special_char)):
+                if special_char[i] in c:
+                    c = c.split(special_char[i])[0]
+                    break
+            if "#" in word:
+                c = "#" + c
                 return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
-                
+            return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
+            
     return ("")
 
 def get_a_better_list(l):
@@ -402,7 +401,7 @@ def giweaway_from_url_file(tweets_text,account_list,S):
                 tweets_need_to_comment_or_not.append(True)
             else:
                 tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
-            tweets_full_comment.append(remove_emojie(remove_double_hashtag(full_phrase)))
+            tweets_full_comment.append(remove_emojie(remove_double_hashtag(full_phrase)).replace('"',"").replace("“","").replace("«","").replace("»","").replace("”",""))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
             idxx+=1
         for a in account_list:
@@ -565,9 +564,7 @@ def copy_a_comment(selenium_session,url):
                 final_list.append(z)
             elif len(z) >= 1 and len(z) <= 150:
                 final_list.append(t)
-       
-
-        
+               
         for t in final_list:
             if len(t.split()) <= 3:
                 single+=1
