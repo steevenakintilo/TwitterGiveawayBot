@@ -556,13 +556,13 @@ def copy_a_comment(selenium_session,url):
         
         for t in list_of_text:
             z = remove_emojie(t)
-            if nb == True and hashtag == True and len(z) >= 1 and len(z) <= 150:
+            if nb == True and hashtag == True and len(z) >= 1 and len(z) <= 150 and any(char.isdigit() for char in t) and "#" in z:
                 final_list.append(z)
-            elif nb == True and hashtag == False and len(z) >= 1 and len(z) <= 150:
+            elif nb == True and hashtag == False and len(z) >= 1 and len(z) <= 150 and any(char.isdigit() for char in t):
                 final_list.append(z)
-            elif nb == False and hashtag == True and len(z) >= 1 and len(z) <= 150:
+            elif nb == False and hashtag == True and len(z) >= 1 and len(z) <= 150 and "#" in z:
                 final_list.append(z)
-            elif len(z) >= 1 and len(z) <= 150:
+            elif len(z) >= 1 and len(z) <= 150 and nb == False and hashtag == False:
                 final_list.append(t)
                
         for t in final_list:
