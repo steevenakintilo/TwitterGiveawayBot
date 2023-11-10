@@ -569,6 +569,15 @@ def copy_a_comment(selenium_session,url):
             if len(t.split()) <= 3:
                 single+=1
         
+        average_sentence_lenght = 0
+
+        for elem in final_list:
+            average_sentence_lenght+=len(elem)
+        average_sentence_lenght = int(average_sentence_lenght/len(final_list))
+        
+        if average_sentence_lenght > 90:
+            return False
+        
         for elem in final_list:
             if len(elem.split()) <= 3:
                 if hashtag == True and len(elem.split()) == 1:
