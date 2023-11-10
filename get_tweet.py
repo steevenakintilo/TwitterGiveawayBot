@@ -163,7 +163,7 @@ def what_to_comment(sentences,S,url):
             s = sentences.lower()
             if word in sentences.lower():
                 next_part = s.split(word)[1]
-                if '"' not in next_part and '“' not in next_part and  "«" not in next_part:
+                if '"' not in next_part and '“' not in next_part and  "«" not in next_part and "”" not in next_part and "»" not in next_part:
                     copied_comment = copy_a_comment(S,url)
                     if copied_comment != False:
                         return copied_comment
@@ -526,7 +526,7 @@ def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
         return(data_list)
     except Exception as e:
         return (False)
-    
+
 def copy_a_comment(selenium_session,url):
     try:
         list_of_comment_of_a_tweet = get_list_of_comment_of_a_tweet(selenium_session,url,20)
