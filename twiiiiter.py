@@ -798,9 +798,12 @@ def main_one():
                     giveaway_g += 1
                     reetweet_a_tweet(S,t)
                     #time.sleep(S.wait_time)        
-                    if t_comment_or_not[idxx] == True:
-                        comment_a_tweet(S,t,t_full_comment[idxx])
-                    time.sleep(randint(MINTIME,MAXTIME))
+                    try:       
+                        if t_comment_or_not[idxx] == True:
+                            comment_a_tweet(S,t,t_full_comment[idxx])
+                        time.sleep(randint(MINTIME,MAXTIME))
+                    except:
+                        print("An error happend skiping this comment")
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
@@ -912,9 +915,12 @@ def main_one():
                     giveaway_g += 1
                     reetweet_a_tweet(S,t)
                     #time.sleep(S.wait_time)        
-                    if t_comment_or_not[idxx] == True:
-                        comment_a_tweet(S,t,t_full_comment[idxx])
-                    time.sleep(randint(MINTIME,MAXTIME))
+                    try:       
+                        if t_comment_or_not[idxx] == True:
+                            comment_a_tweet(S,t,t_full_comment[idxx])
+                        time.sleep(randint(MINTIME,MAXTIME))
+                    except:
+                        print("An error happend skiping this comment")
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
