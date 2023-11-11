@@ -547,6 +547,7 @@ def copy_a_comment(selenium_session,url):
         nb = False
         hashtag = False
         single = 0
+        d = Data()
         for t in list_of_text:
             if any(char.isdigit() for char in t):
                 nb_nbr+=1
@@ -579,7 +580,6 @@ def copy_a_comment(selenium_session,url):
             average_sentence_lenght+=len(elem)
         average_sentence_lenght = int(average_sentence_lenght/len(final_list))
         if average_sentence_lenght > 90:
-            d = Data()
             return (d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)])
         
         for elem in final_list:
@@ -591,4 +591,4 @@ def copy_a_comment(selenium_session,url):
             return (final_list[randint(0,len(final_list) - 1)].replace("\n","") + " ")
             
     except:
-        return False
+        return (d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)])
