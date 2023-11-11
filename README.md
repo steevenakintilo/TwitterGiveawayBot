@@ -25,12 +25,12 @@ To start the bot just do
     python main.py
 ```
 
-If the bot failed to launch after several try set the headless to false on the configuration.yml and if even after that the bot still don't work just make an issues I will help you make it work
+If the bot failed to launch after several try set the headless to false on the configuration.yml and if even after that the bot still don't work just make an issues I will help you make it work / or dm me on my discord: "sangokuhomer"
 
 ## Features
 - The bot can work in any language
 - Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
-- The bot work with 3 txt files: account.txt url.txt and recent_url.txt , account.txt file list all the account you have followed since using the bot, url.txt file list all the giweaway (their links) you have done sice using the bot and recent_url.txt file list all the giweaway (their links) you have done on the last time you used the bot
+- The bot work with 3 txt files: account.txt url.txt and recent_url.txt , account.txt file list all the account you have followed since using the bot, url.txt file list all the giweaway (their links/urls) you have done sice using the bot and recent_url.txt file list all the giweaway (their links/urls) you have done on the last time you used the bot
 - Like Retweet and Comment a tweet link to a giveaway
 - Follow all the person asked for the giveaway
 - It can @ people when needed, comment with # when needed and make no comment when we don't need to
@@ -38,7 +38,7 @@ If the bot failed to launch after several try set the headless to false on the c
 - The bot can work with 1,2,20 or even 100 accounts you just have to fill the configuration.yml file well
 - Unfollow account when the user have more than 4500 followings
 - The bot is flexible you can modify most of its features on the configuration.yml file
-- You can even add links to giveaways to the recent_url.txt to make this work you need to set the crash_or_true on the configuration.yml to True ,search giveaways on twitter, copy and paste giveaways tweets urls to the recent_url.txt file, and the bot will do the giveaways you added
+- You can even add links/urls to giveaways to the recent_url.txt to make the giveaways of your choice to make this work you need to set the crash_or_true on the configuration.yml to True ,search giveaways on twitter, copy and paste giveaways tweets urls to the recent_url.txt file, and the bot will do the giveaways you added
 - If you want to see if you have won a giveaway download this bot: https://github.com/steevenakintilo/TwitterResultBot
 
 ## Configuration file
@@ -241,11 +241,12 @@ With all of that you will be able to do giveaway in english or any language you 
 
 ## Advices  
 - If you don't want to set forever_loop to True run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
-- Don't do more than 50 giveaways (well well you can't do more than 100 since new twitter/x update) per session otherwise you will probably reach twitter daily limits for tweet comment like retweet and follow
-- If you want to add another account to the bot you have 2 options: 
+- Don't do more than 50 giveaways otherwise this could get your account locked for doing to much likes and retweets in short time
+
+- If you want to add other accounts to the bot you have 2 options: 
   
-  1) Either add it to the configuration.yml but you won't do all the giveaways you  have already done with the other account 
-  2) Make a copy of the folder remove everything stored on the url.txt recent_url.txt and account.txt files and store your account information to the configuration.yml and start the bot to make giveaways even the one your other accounts did
+  1) Either add them to the configuration.yml but you won't do all the giveaways you have already done with the other accounts 
+  2) Make a copy of the folder remove everything stored on the url.txt and account.txt files and store your accounts information to the configuration.yml and start the bot to make giveaways even the one your other accounts did
 
 - If the bot crash during the run don't panic and just set the crash_or_no value to True on the configuration.yml file and restart the bot it will redo the giveaways you couldn't do because of the crash
 

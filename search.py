@@ -286,7 +286,7 @@ def get_giveaway_url(selenium_session):
         date_ = ""
         date_format = "%Y-%m-%d"
         check_ = []
-        MAX = 1000
+        MAX = 250
         giveaway_foud_per_word = 0
         ban_word = ""
         ban_word_list = []
