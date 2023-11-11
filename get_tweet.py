@@ -361,10 +361,17 @@ def giweaway_from_url_file(tweets_text,account_list,S):
                     else:
                         full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                     if d.add_sentence_to_tag == True and len(nb_word) >= 5:
-                        if "#" not in what_to_cmt:
-                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                        if what_to_cmt == "":
+                            if "#" not in what_to_cmt:
+                                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                            else:
+                                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                         else:
-                            full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                            if "#" not in what_to_cmt:
+                                full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                            else:
+                                full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                        
                     x = randint(0,1)
                     if d.random_action == True:
                         if "#" not in what_to_cmt:
@@ -372,22 +379,37 @@ def giweaway_from_url_file(tweets_text,account_list,S):
                         else:
                             full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                         if x == 0:
-                            if "#" not in what_to_cmt:
-                                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                            if what_to_cmt == "":
+                                if "#" not in what_to_cmt:
+                                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                                else:
+                                    full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                             else:
-                                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                                if "#" not in what_to_cmt:
+                                    full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " " + remove_double_hashtag(hashtag)
+                                else:
+                                    full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
                 else:
                     what_to_cmt = what_to_comment(t,S,current_url)
                     nb_word = what_to_cmt.split()
                     full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
-                    if d.add_sentence_to_tag == True and len(nb_word) >= 5:
-                        full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
-                    x = randint(0,1)
-                    if d.random_action == True:
-                        full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
-                        if x == 0:
+                    if what_to_cmt == "":
+                        if d.add_sentence_to_tag == True and len(nb_word) >= 5:
                             full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
-
+                    else:
+                        if d.add_sentence_to_tag == True and len(nb_word) >= 5:
+                            full_phrase = " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                    x = randint(0,1)
+                    if what_to_cmt == "":
+                        if d.random_action == True:
+                            full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                            if x == 0:
+                                full_phrase = d.sentence_for_tag[randint(0,len(d.sentence_for_tag) - 1)] + " " + delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                    else:
+                        if d.random_action == True:
+                            full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
+                            if x == 0:
+                                full_phrase = delete_url(what_to_cmt) + who_many_people_to_tag(t,accounts_to_tag) + " "
             else:
                 what_to_cmt = what_to_comment(t,S,current_url)
                 if delete_url(what_to_cmt) == "":
@@ -418,6 +440,7 @@ def giweaway_from_url_file(tweets_text,account_list,S):
     except Exception as e:
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
+        traceback.print_exc()
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
 
 
@@ -591,4 +614,5 @@ def copy_a_comment(selenium_session,url):
             return (final_list[randint(0,len(final_list) - 1)].replace("\n","") + " ")
             
     except:
+        d = Data()
         return (d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)])
