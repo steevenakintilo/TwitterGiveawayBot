@@ -194,20 +194,23 @@ def get_a_better_list(l):
     new_l = []
     account = []
     for i in range(len(l)):
-        line_f = l[i].split(" ")
-        for j in range(len(line_f)):
-            new_l.append(line_f[j])
-            if line_f[j].replace(",","").replace(";","").replace("-","") not in account:
-                account.append(line_f[j].replace(",","").replace(";",""))
-                if line_f[j].replace(",","").replace(";","").replace("-","") not in account_you_follow_from_file:
-                    write_into_file("account.txt",line_f[j].replace(",","").replace(";","").replace("-","")+"\n")
-            try:
-                if "." in line_f[j]:
-                    l = line_f[j].split(".")[0]
-                    account.append(l.replace(",","").replace(";","").replace("-","").replace("-",""))
-                    write_into_file("account.txt",l.replace(",","").replace(";","").replace("-","")+"\n")
-            except:
-                pass
+        try:
+            line_f = l[i].split(" ")
+            for j in range(len(line_f)):
+                new_l.append(line_f[j])
+                if line_f[j].replace(",","").replace(";","").replace("-","") not in account:
+                    account.append(line_f[j].replace(",","").replace(";",""))
+                    if line_f[j].replace(",","").replace(";","").replace("-","") not in account_you_follow_from_file:
+                        write_into_file("account.txt",line_f[j].replace(",","").replace(";","").replace("-","")+"\n")
+                try:
+                    if "." in line_f[j]:
+                        l = line_f[j].split(".")[0]
+                        account.append(l.replace(",","").replace(";","").replace("-","").replace("-",""))
+                        write_into_file("account.txt",l.replace(",","").replace(";","").replace("-","")+"\n")
+                except:
+                    pass
+        except:
+            pass
     return (new_l)
 
 def check_if_we_need_to_comment(text):

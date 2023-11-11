@@ -771,7 +771,12 @@ def main_one():
                 if c.lower() not in ttt_follow:
                     ttt_follow.append(c.lower())
             ttt_follow = list(dict.fromkeys(ttt_follow))
-            ttt_follow = get_a_better_list(t_follow)
+            
+            try:
+                ttt_follow = get_a_better_list(t_follow)
+            except:
+                pass
+            
             
             for i in range(len(ttt_follow)):
                 if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
@@ -887,8 +892,13 @@ def main_one():
                 if c.lower() not in ttt_follow:
                     ttt_follow.append(c.lower())
             ttt_follow = list(dict.fromkeys(ttt_follow))
-            ttt_follow = get_a_better_list(t_follow)
+
+            try:
+                ttt_follow = get_a_better_list(t_follow)
+            except:
+                pass
             
+                        
             for i in range(len(ttt_follow)):
                 if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
                     if ttt_follow[i].lower().replace("@","") not in tttt_follow:
