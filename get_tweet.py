@@ -186,7 +186,7 @@ def what_to_comment(sentences,S,url):
                 c = "#" + c
                 return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
             return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
-            
+
     return ("")
 
 def get_a_better_list(l):
@@ -288,7 +288,7 @@ def check_if_we_need_to_tag_two(text):
     return False    
 
 def check_blacklist(account):
-    d = Data
+    d = Data()
     for backlist_account in d.accounts_to_blacklist:
         if account.lower() == backlist_account.lower().replace("@",""):
             return(True)
@@ -542,6 +542,7 @@ def copy_a_comment(selenium_session,url):
         for l in list_of_comment_of_a_tweet:
             if "@" not in l["text"] and "text-overflow:" not in l["text"]:
                 list_of_text.append(l["text"])
+        
         nb_nbr , nb_hashtag = 0 , 0
         nb = False
         hashtag = False
@@ -577,16 +578,17 @@ def copy_a_comment(selenium_session,url):
         for elem in final_list:
             average_sentence_lenght+=len(elem)
         average_sentence_lenght = int(average_sentence_lenght/len(final_list))
-        
         if average_sentence_lenght > 90:
-            return False
+            d = Data()
+            return (d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)])
         
         for elem in final_list:
             if len(elem.split()) <= 3:
                 last_list.append(elem.lower())
         if (single >= int((len(list_of_text)/3)) or hashtag == True) and len(last_list) > 0:
             return (last_list[randint(0,len(last_list) - 1)].replace("\n","") + " ")
-        else:                 
+        else:
             return (final_list[randint(0,len(final_list) - 1)].replace("\n","") + " ")
+            
     except:
         return False
