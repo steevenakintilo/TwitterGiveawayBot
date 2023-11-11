@@ -169,8 +169,8 @@ def what_to_comment(sentences,S,url):
                         return copied_comment
     
     for word in d.word_list_to_check_for_special_comment:
-        if word in s.lower():
-            comment = s.split(word)
+        if word in sentences.lower():
+            comment = sentences.split(word)
             if len(comment) == 1:
                 c = comment[0]
             else:
