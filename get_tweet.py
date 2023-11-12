@@ -557,7 +557,7 @@ def copy_a_comment(selenium_session,url):
         d = Data()
         list_of_comment_of_a_tweet = get_list_of_comment_of_a_tweet(selenium_session,url,20)
         if list_of_comment_of_a_tweet == False:
-            return (final_list[randint(0,len(final_list) - 1)].replace("\n","") + " ")
+            return (d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)])
         list_of_text = []
         final_list = []
         last_list = []
@@ -610,9 +610,9 @@ def copy_a_comment(selenium_session,url):
             if len(elem.split()) <= 3:
                 last_list.append(elem.lower())
         if (single >= int((len(list_of_text)/3)) or hashtag == True) and len(last_list) > 0:
-            return (last_list[randint(0,len(last_list) - 1)].replace("\n","") + " ")
+            return (last_list[randint(0,len(last_list) - 1)].replace("\n"," ") + " ")
         else:
-            return (final_list[randint(0,len(final_list) - 1)].replace("\n","") + " ")
+            return (final_list[randint(0,len(final_list) - 1)].replace("\n"," ") + " ")
             
     except:
         d = Data()
