@@ -59,6 +59,7 @@ def get_news():
         with open("configuration.yml", "r") as file:
             data = yaml.load(file, Loader=yaml.FullLoader)
         url_list = data["flux_rss"]
+        sentence_to_tweet = data["setence_to_tweet"]
         
         l = url_list[randint(0,len(url_list) - 1)]
         news_feed = feedparser.parse(l)
@@ -80,9 +81,9 @@ def get_news():
             try:
                 return(news_title[0],news_link[0])
             except:
-                return ("ok","ok")
+                return (sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)], "")
     except:
-        return("ko ok ko ok ko")
+        return(sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)] , "")
 
 def login(S,_username,_password):
 
@@ -452,7 +453,10 @@ def get_tweet_info(selenium_session,url):
         tweet_data = str(_tweet_data[pos].text).split("\n")
         tweet_text = str(_tweet_text[pos].text)
         
-        tweet_info_dict = {"username":tweet_data[1],
+        usr = tweet_data[1]
+        if "@" not in usr:
+            usr = tweet_data[0]
+        tweet_info_dict = {"username":usr,
         "text":tweet_text,}
         return (tweet_info_dict)
     except Exception as e:
@@ -881,8 +885,10 @@ def main_one():
                     except:
                         print("ok")
                 continue
-            t_follows.remove("")
-
+            try:
+                t_follows.remove("")
+            except:
+                print("Something bad happend the program need to stop")
             for t in t_follows:
                 if t != "":
                     t_follow.append(t.replace(" ",""))

@@ -554,9 +554,10 @@ def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
 
 def copy_a_comment(selenium_session,url):
     try:
+        d = Data()
         list_of_comment_of_a_tweet = get_list_of_comment_of_a_tweet(selenium_session,url,20)
         if list_of_comment_of_a_tweet == False:
-            return False
+            return (final_list[randint(0,len(final_list) - 1)].replace("\n","") + " ")
         list_of_text = []
         final_list = []
         last_list = []
