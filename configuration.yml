@@ -492,7 +492,7 @@ random_action: False
 random_retweet_and_tweet: True
 
 # If the value is set to true the bot will search and rt random tweet based on word_to_rt list
-rt_your_word: True
+rt_your_word: False
 
 # Word to this list will be used to rt random tweet
 word_to_rt:
