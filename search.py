@@ -220,44 +220,88 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
     except Exception as e:
         print("Error searching " + query + " tweet")
         return(data_list)
-
+            
 def search_tweet_for_better_rt(selenium_session):
     d = Data()
     with open("configuration.yml", "r") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
     nb = data["random_retweet_nb"]
     random_action = data["random_action"]
+    word_to_rt = data["word_to_rt"]
+    rt_your_word = data["rt_your_word"]
+    rt_to_blacklist = data["rt_to_blacklist"]
+    blacklist = False
     tweet_found_ = []
+    url_list = []
     if random_action == True and nb > 0:
         nb = randint(1,nb)
     
     if random_action == False:
-        tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
-        if d.tweet_lang != "any":
-            tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)
-        url_list = []
-        for tweet in tweet_found:
-            url_list.append(tweet["url"])
+        if rt_your_word == False:
+            
+            tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
+            if d.tweet_lang != "any":
+                tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)
+            for tweet in tweet_found:
+                if tweet["url"] not in url_list:
+                    for r in rt_to_blacklist:
+                        if r in tweet["url"]:
+                            blacklist == True
+                    if blacklist == False:
+                        url_list.append(tweet["url"])
+                    blacklist == False
+        else:
+            tweet_found = search_tweet(selenium_session,str(word_to_rt[randint(0,len(word_to_rt) - 1)]),nb)
+            if d.tweet_lang != "any":
+                tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(word_to_rt[randint(0,len(word_to_rt) - 1)]),nb)
+            for tweet in tweet_found:
+                #print(tweet["text"] , tweet["url"])
+                if tweet["url"] not in url_list:
+                    for r in rt_to_blacklist:
+                        if r in tweet["url"]:
+                            blacklist == True
+                    if blacklist == False:
+                        url_list.append(tweet["url"])
+                    blacklist == False
+
     else:
         try:
             trend = get_trend(selenium_session)
             trend.append("a")
+            if word_to_rt == True:
+                trend = word_to_rt
+                if len(trend) == 0:
+                    trend = get_trend(selenium_session)
+                    trend.append("a")
+                print("hello")   
             for i in range(nb):
                 tweet_found = search_tweet(selenium_session,str(trend[randint(0,len(trend) - 1)]),1)
                 if d.tweet_lang != "any":
                     tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(trend[randint(0,len(trend) - 1)]),1)
                 for t in tweet_found:
-                    tweet_found_.append(t["url"])
-            url_list = []
-            for tweet in tweet_found_:
-                url_list.append(tweet)
+                    if t["url"] not in url_list:
+                        for r in rt_to_blacklist:
+                            if r in tweet["url"]:
+                                blacklist == True
+                    if blacklist == False:
+                        url_list.append(tweet["url"])
+                    blacklist == False
+            
+            #url_list = []
+            #for tweet in tweet_found_:
+            #    url_list.append(tweet)
         except:
             tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
             if d.tweet_lang != "any":
                 tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)
-            url_list = []
             for tweet in tweet_found:
-                url_list.append(tweet["url"])
+                if tweet["url"] not in url_list:
+                    for r in rt_to_blacklist:
+                        if r in tweet["url"]:
+                            blacklist == True
+                    if blacklist == False:
+                        url_list.append(tweet["url"])
+                    blacklist == False
     
     return url_list
 
@@ -310,6 +354,7 @@ def get_giveaway_url(selenium_session):
                 text = search_word + ' lang:'+d.tweet_lang + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
                 if d.tweet_lang == "any":
                     text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
+                
                 
                 giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search)
                 for g in giveaway:

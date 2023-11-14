@@ -152,7 +152,7 @@ def get_the_right_word(sentence):
 def what_to_comment(sentences,S,url):
     s = sentences.split("\n")
     d = Data()
-    special_char = ",;.!?"
+    special_char = ",;.!?\n"
     forbiden = False
     for word in d.word_list_to_not_check_for_copy:
         if word.lower() in sentences.lower():
@@ -178,10 +178,13 @@ def what_to_comment(sentences,S,url):
             if '"' in c or '“' in c or "«" in c:
                 c = get_the_right_word(c)
             c = c.lower()
-            for i in range(len(special_char)):
-                if special_char[i] in c:
-                    c = c.split(special_char[i])[0]
-                    break
+            if "@" in c:
+                c = c.split("@")[0]
+            if "@" not in c:
+                for i in range(len(special_char)):
+                    if special_char[i] in c:
+                        c = c.split(special_char[i])[0]
+                        break
             if "#" in word:
                 c = "#" + c
                 return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
