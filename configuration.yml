@@ -244,7 +244,6 @@ accounts_to_blacklist:
   - "@AsyaGiveaway"
   - "0xNFTgiveaway"
   - "@cineplus"
-
 # Sentences that the bot will say to act not like a bot
 setence_to_tweet:
   - "L'avenir appartient à ceux qui croient en la beauté de leurs rêves."
@@ -490,7 +489,22 @@ add_sentence_to_tag: True
 random_action: False
 
 # If the value is set to true the bot will make random retweet and tweet
-random_retweet_and_tweet: False
+random_retweet_and_tweet: True
+
+# If the value is set to true the bot will search and rt random tweet based on word_to_rt list
+rt_your_word: True
+
+# Word to this list will be used to rt random tweet
+word_to_rt:
+  - "football"
+  - "musique"
+  - "cinema"
+  
+# If those words are on the tweet to rt the bot won't rt the tweet
+
+rt_to_blacklist:
+  - "jeuxconcours"
+  - "concours"
 
 #If the option is set to True the bot will add # to comment other he won't
 add_hashtag_to_comment: True
