@@ -765,7 +765,7 @@ def main_one():
             try:
                 t_follows.remove("")
             except:
-                print("Something bad happend the program need to stop")
+                print("")
             for t in t_follows:
                 if t != "":
                     t_follow.append(t.replace(" ",""))
@@ -812,7 +812,7 @@ def main_one():
                             comment_a_tweet(S,t,t_full_comment[idxx])
                         time.sleep(randint(MINTIME,MAXTIME))
                     except:
-                        print("An error happend skiping this comment")
+                        print("")
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
@@ -883,12 +883,12 @@ def main_one():
                                 reetweet_a_tweet(S,rt_url[i])
                             time.sleep(randint(MINTIME,MAXTIME))
                     except:
-                        print("ok")
+                        print("")
                 continue
             try:
                 t_follows.remove("")
             except:
-                print("Something bad happend the program need to stop")
+                print("")
             for t in t_follows:
                 if t != "":
                     t_follow.append(t.replace(" ",""))
@@ -936,7 +936,7 @@ def main_one():
                             comment_a_tweet(S,t,t_full_comment[idxx])
                         time.sleep(randint(MINTIME,MAXTIME))
                     except:
-                        print("An error happend skiping this comment")
+                        print("")
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")

@@ -469,6 +469,9 @@ flux_rss:
   - "https://www.france24.com/fr/culture/rss"
   - "https://www.france24.com/fr/plan%C3%A8te/rss"
 
+# If copy is set to True the bot will copy comment to have way better comment overall
+copy: True
+
 #If forever_loop is set to true the bot will run forever otherwise it will run once
 forever_loop: False
 

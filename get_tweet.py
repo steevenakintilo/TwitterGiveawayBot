@@ -46,6 +46,7 @@ class Data:
     random_action = data["random_action"]
     add_hashtag_to_comment = data["add_hashtag_to_comment"]
     word_list_to_not_check_for_copy = data["word_list_to_not_check_for_copy"]
+    copy = data["copy"]
 
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
@@ -558,6 +559,8 @@ def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
 def copy_a_comment(selenium_session,url):
     try:
         d = Data()
+        if d.copy == False:
+            return False
         list_of_comment_of_a_tweet = get_list_of_comment_of_a_tweet(selenium_session,url,20)
         if list_of_comment_of_a_tweet == False:
             return (d.sentence_for_random_comment[randint(0,len(d.sentence_for_random_comment) - 1)])
