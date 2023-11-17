@@ -220,7 +220,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
     except Exception as e:
         print("Error searching " + query + " tweet")
         return(data_list)
-            
+     
 def search_tweet_for_better_rt(selenium_session):
     d = Data()
     with open("configuration.yml", "r") as file:
@@ -376,7 +376,7 @@ def get_giveaway_url(selenium_session):
                             break
                         tweets_url.append(g["url"])
                         nb_of_giveaway_found+=1
-                    elif list_inside_text(search_word.split(" "), g["text"]) == False and g["url"] not in url_from_file and g["url"] not in tweets_url and g["url"] not in duplicated_url:
+                    elif list_inside_text(search_word.split(" "), g["text"]) == False and g["url"] not in url_from_file and g["url"] not in tweets_url and g["url"] not in duplicated_url and check_blacklist(g["username"]) == False:
                         if nb_of_giveaway_found>=d.nb_of_giveaway:
                             break
                         tweets_url.append(g["url"])
