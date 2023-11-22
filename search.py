@@ -96,13 +96,14 @@ def are_last_x_elements_same(lst,x):
 def check_elem_on_a_list(elem_, list_):
     return next((l for l in list_ if elem_ in l.lower()), elem_)
 
+
 def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
     list_of_tweet_url = []
     selenium_data = []
     list_of_tweet_url_ = []
     list_len = []
     data_list = []
-    text_list = []
+    text_list = []    
     tweet_info_dict = {"username":"",
     "text":"",
     "id":0,
@@ -140,21 +141,6 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                 if tweet_info not in selenium_data:
                     try:
                         lower_data = str(tweet_info.get_property('outerHTML')).lower()
-                        text_ = tweet_text.text.replace("Show more","")
-                        if "@" in text_:
-                            get_text = str(tweet_info.get_property('outerHTML')).lower().split("css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0")
-                            get_text = get_text[4].split("<")
-                            get_text = get_text[0].replace("\n"," ")
-                            get_text = get_text[2:len(get_text)]
-                            for i in range(len(tweets_text)):
-                                try:
-                                    text_list.append(tweets_text[i].text)
-                                except:
-                                    pass
-                                
-                            text_ = check_elem_on_a_list(get_text,text_list)
-                            text_list = []
-
                         splinter = "href=" + p + "/"
                         
                         lower_data = lower_data.split(splinter)
@@ -164,6 +150,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                         tweet_link = "https://twitter.com/" + tweet_stuff
                         user = tweet_stuff.split("/")[0]
                         tweet_link = tweet_link.replace("/analytics","")
+                        text_ = "o"
                         if "/status" in tweet_link:
                             get_date = str(str(str(str(str(tweet_info.get_property('outerHTML')).lower()).split("datetime")[1]).split(" ")[0]).split(".000z")[0]).replace("t"," ").replace("=","")
                             tweet_info_dict = {"username":user,"text":text_,"id":int(str(tweet_link.split("status/")[1]).replace("/photo/1","")),"url":tweet_link,"date":str(convert_string_to_date(get_date.replace(p,""))),}
@@ -175,22 +162,6 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                     except:
                         try:
                             lower_data = str(tweet_info.get_property('outerHTML')).lower()
-                            text_ = tweet_text.text.replace("Show more","")
-                            text_ = tweet_text.text.replace("Show more","")
-                            if "@" in text_:
-                                get_text = str(tweet_info.get_property('outerHTML')).lower().split("css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0")
-                                get_text = get_text[4].split("<")
-                                get_text = get_text[0].replace("\n"," ")
-                                get_text = get_text[2:len(get_text)]
-                                for i in range(len(tweets_text)):
-                                    try:                                    
-                                        text_list.append(tweets_text[i].text)
-                                    except:
-                                        pass
-                                    
-                                text_ = check_elem_on_a_list(get_text,text_list)
-                                text_list = []
-                            
                             splinter = "href=" + p + "/"
                             lower_data = lower_data.split(splinter)
                             user = lower_data[5]
@@ -198,6 +169,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                             tweet_stuff = user[0]
                             tweet_link = "https://twitter.com/" + tweet_stuff
                             user = tweet_stuff.split("/")[0]
+                            text_ = "o"
                             if tweet_link[len(tweet_link) - 1] in "0123456789" and "status" in tweet_link:
                                 get_date = str(str(str(str(str(tweet_info.get_property('outerHTML')).lower()).split("datetime")[1]).split(" ")[0]).split(".000z")[0]).replace("t"," ").replace("=","")
                                 tweet_info_dict = {"username":user,"text":text_,"id":int(str(tweet_link.split("status/")[1]).replace("/photo/1","")),"url":tweet_link,"date":str(convert_string_to_date(get_date.replace(p,""))),}
@@ -354,7 +326,6 @@ def get_giveaway_url(selenium_session):
                 text = search_word + ' lang:'+d.tweet_lang + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
                 if d.tweet_lang == "any":
                     text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
-                
                 
                 giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search)
                 for g in giveaway:
