@@ -320,6 +320,41 @@ def remove_double_hashtag(string):
             hashtag_list.append(s.lower())
     return (" ".join(hashtag_list))
 
+def check_if_there_is_enough_rt_to_comment(S,url):
+    a = "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/article/div/div/div[3]/div[5]/div/div"
+    try:
+        S.driver.get(url)
+        element = WebDriverWait(S.driver, 2).until(
+        EC.presence_of_element_located((By.XPATH,a)))
+        u = S.driver.find_element(By.XPATH,a)
+        data = u.text.split()
+        comment_nb = data[0]
+        rt_nb = data[1]
+        res = 0
+
+        if "K" in data[0]:
+            comment_nb = comment_nb + "00"
+            comment_nb = comment_nb.replace("K","")
+        if "." in comment_nb:
+            comment_nb = comment_nb.replace(".","")
+        
+        if "K" in data[1]:
+            rt_nb = rt_nb + "00"
+            rt_nb = rt_nb.replace("K","")
+        if "." in rt_nb:
+            rt_nb = rt_nb.replace(".","")
+        comment_nb = int(comment_nb)
+        rt_nb = int(rt_nb)
+        if int((comment_nb/rt_nb) * 100) >= 33:
+            time.sleep(2)
+            return False
+        else:
+            time.sleep(2)
+            return True
+    except Exception as e:
+        time.sleep(2)
+        return False
+
 def giweaway_from_url_file(tweets_text,account_list,S):
     try:
         d = Data()
@@ -429,7 +464,11 @@ def giweaway_from_url_file(tweets_text,account_list,S):
             if check_if_we_need_to_tag(t) == True or check_if_we_need_to_tag_two(t) == True:
                 tweets_need_to_comment_or_not.append(True)
             else:
-                tweets_need_to_comment_or_not.append(check_if_we_need_to_comment(t))
+                if check_if_we_need_to_comment(t) == True:
+                    if check_if_there_is_enough_rt_to_comment(S,current_url) == False:
+                        tweets_need_to_comment_or_not.append(True)
+                    else:
+                        tweets_need_to_comment_or_not.append(False)
             tweets_full_comment.append(remove_emojie(remove_double_hashtag(full_phrase)).replace('"',"").replace("“","").replace("«","").replace("»","").replace("”",""))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
             idxx+=1
@@ -444,9 +483,7 @@ def giweaway_from_url_file(tweets_text,account_list,S):
     except Exception as e:
         print("YOLO YOLO BANG BANG")
         print("Error " + str(e))
-        traceback.print_exc()
         return (tweets_need_to_comment_or_not,tweets_full_comment,tweets_account_to_follow)
-
 
 
 def check_elem_on_a_list(elem_, list_):
