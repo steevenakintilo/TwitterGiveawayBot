@@ -469,6 +469,8 @@ def giweaway_from_url_file(tweets_text,account_list,S):
                         tweets_need_to_comment_or_not.append(True)
                     else:
                         tweets_need_to_comment_or_not.append(False)
+                else:
+                    tweets_need_to_comment_or_not.append(False)    
             tweets_full_comment.append(remove_emojie(remove_double_hashtag(full_phrase)).replace('"',"").replace("“","").replace("«","").replace("»","").replace("”",""))
             tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
             idxx+=1
