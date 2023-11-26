@@ -319,7 +319,6 @@ def remove_double_hashtag(string):
         if s.lower() not in hashtag_list:
             hashtag_list.append(s.lower())
     return (" ".join(hashtag_list))
-
 def check_if_there_is_enough_rt_to_comment(S,url):
     a = "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/article/div/div/div[3]/div[5]/div/div"
     try:
@@ -328,39 +327,54 @@ def check_if_there_is_enough_rt_to_comment(S,url):
         EC.presence_of_element_located((By.XPATH,a)))
         u = S.driver.find_element(By.XPATH,a)
         data = u.text.split()
+        new_lst = []
         comment_nb = data[0]
         rt_nb = data[1]
         res = 0
 
-        if "K" in data[0]:
+        if len(data) <= 4:
+            if "K" in data[0]:
+                if "." not in comment_nb:
+                    comment_nb = comment_nb + "000"
+                else:
+                    comment_nb = comment_nb + "00"
+                comment_nb = comment_nb.replace("K","").replace("k","")
             if "." in comment_nb:
-                comment_nb = comment_nb + "00"
-            else:
-                comment_nb = comment_nb + "000"
-            comment_nb = comment_nb.replace("K","").replace("k","")
-        if "." in comment_nb:
-            comment_nb = comment_nb.replace(".","")
-        
-        if "K" in data[1]:
+                comment_nb = comment_nb.replace(".","")
+
+            if "K" in data[1]:
+                if "." not in rt_nb:
+                    rt_nb = rt_nb + "000"
+                else:
+                    rt_nb = rt_nb + "00"
+                rt_nb = rt_nb.replace("K","").replace("k","")
             if "." in rt_nb:
-                rt_nb = rt_nb + "00"
+                rt_nb = rt_nb.replace(".","")
+            comment_nb = int(comment_nb)
+            rt_nb = int(rt_nb)
+            
+            if int((comment_nb/rt_nb) * 100) >= 33:
+                time.sleep(2)
+                return False
             else:
-                rt_nb = rt_nb + "000"
-            rt_nb = rt_nb.replace("K","").replace("k","")
-        if "." in rt_nb:
-            rt_nb = rt_nb.replace(".","")
-        
-        comment_nb = int(comment_nb)
-        rt_nb = int(rt_nb)
-        if int((comment_nb/rt_nb) * 100) >= 33:
-            time.sleep(2)
-            return False
+                time.sleep(2)
+                return True
         else:
-            time.sleep(2)
-            return True
+            for i in range(len(data)):
+                if "k" not in data[i].lower():
+                    new_lst.append(data[i])
+            comment_nb = int(new_lst[0])
+            rt_nb = int(new_lst[1])
+            if int((comment_nb/rt_nb) * 100) >= 33:
+                time.sleep(2)
+                return False
+            else:
+                time.sleep(2)
+                return True
     except Exception as e:
         time.sleep(2)
         return False
+
 
 def giweaway_from_url_file(tweets_text,account_list,S):
     try:
