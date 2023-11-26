@@ -333,16 +333,23 @@ def check_if_there_is_enough_rt_to_comment(S,url):
         res = 0
 
         if "K" in data[0]:
-            comment_nb = comment_nb + "000"
-            comment_nb = comment_nb.replace("K","")
+            if "." in comment_nb:
+                comment_nb = comment_nb + "00"
+            else:
+                comment_nb = comment_nb + "000"
+            comment_nb = comment_nb.replace("K","").replace("k","")
         if "." in comment_nb:
             comment_nb = comment_nb.replace(".","")
         
         if "K" in data[1]:
-            rt_nb = rt_nb + "000"
-            rt_nb = rt_nb.replace("K","")
+            if "." in rt_nb:
+                rt_nb = rt_nb + "00"
+            else:
+                rt_nb = rt_nb + "000"
+            rt_nb = rt_nb.replace("K","").replace("k","")
         if "." in rt_nb:
             rt_nb = rt_nb.replace(".","")
+        
         comment_nb = int(comment_nb)
         rt_nb = int(rt_nb)
         if int((comment_nb/rt_nb) * 100) >= 33:
