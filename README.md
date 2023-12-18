@@ -243,6 +243,8 @@ With all of that you will be able to do giveaway in english or any language you 
 - If you don't want to set forever_loop to True run the bot once every 2 days if you run it every day or even twice a day your account may be locked then ban
 - Don't do more than 50 giveaways otherwise this could get your account locked for doing to much likes and retweets in short time
 
+- To have the answer possible when the bot need to comment you have to add as many keywords as possible in word_list_to_check_for_special_comment,word_list_to_check_for_comment,short_word_list_to_check_for_comment list
+
 - If you want to add other accounts to the bot you have 2 options: 
   
   1) Either add them to the configuration.yml but you won't do all the giveaways you have already done with the other accounts 

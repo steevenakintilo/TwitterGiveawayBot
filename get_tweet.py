@@ -630,8 +630,12 @@ def copy_a_comment(selenium_session,url):
         if len(list_of_comment_of_a_tweet) == 0:
             quit()
         for l in list_of_comment_of_a_tweet:
-            if "@" not in l["text"] and "text-overflow:" not in l["text"]:
-                list_of_text.append(l["text"])
+           if "text-overflow:" not in l["text"]:
+                if "@" in l["text"]:
+                    result = re.sub(r'@\w+\s*', '', l["text"])
+                    list_of_text.append(result)
+                else:
+                    list_of_text.append(l["text"])
         
         nb_nbr , nb_hashtag = 0 , 0
         nb = False
@@ -665,7 +669,7 @@ def copy_a_comment(selenium_session,url):
                 single+=1
         
         average_sentence_lenght = 0
-
+        
         for elem in final_list:
             average_sentence_lenght+=len(elem)
         average_sentence_lenght = int(average_sentence_lenght/len(final_list))
@@ -675,7 +679,7 @@ def copy_a_comment(selenium_session,url):
         for elem in final_list:
             if len(elem.split()) <= 3:
                 last_list.append(elem.lower())
-        if (single >= int((len(list_of_text)/3)) or hashtag == True) and len(last_list) > 0:
+        if (single >= int((len(list_of_text)/3)) or hashtag == True) and len(last_list) > 0 and average_sentence_lenght < 75:
             return (last_list[randint(0,len(last_list) - 1)].replace("\n"," ") + " ")
         else:
             return (final_list[randint(0,len(final_list) - 1)].replace("\n"," ") + " ")
