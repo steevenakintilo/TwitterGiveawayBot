@@ -188,7 +188,15 @@ def what_to_comment(sentences,S,url):
                         break
             if "#" in word:
                 c = "#" + c
+                if "\n" in c:
+                    slash = c.split("\n")
+                    if len(slash) > 2:
+                        return ("")
                 return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
+            if "\n" in c:
+                slash = c.split("\n")
+                if len(slash) > 2:
+                    return ("")
             return(c.replace('"',"").replace("“","").replace("«","").replace("»","").replace(word,"").replace("”",""))
 
     return ("")
@@ -408,6 +416,8 @@ def giweaway_from_url_file(tweets_text,account_list,S):
         print_data = False
         idxx = 0
         for t in tweets_text:
+            if idxx % 24 == 0:
+                time.sleep(6)
             current_url = tweet_from_url_[idxx]
             words = t.split(" ")
             result = return_only_hashtag(t)
