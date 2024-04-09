@@ -22,8 +22,10 @@ def remove_days(days_to_remove):
     
     return(new_date.strftime(date_format))
 
+
 def get_trend(selenium_session):
     try:
+      selenium_session.driver.implicitly_wait(15)
       selenium_session.driver.get("https://twitter.com/explore")
       element = WebDriverWait(selenium_session.driver, 15).until(
       EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="trend"]')))

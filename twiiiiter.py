@@ -239,94 +239,167 @@ def accept_notification(S):
     print("notification done")
     
  
+
 def like_a_tweet(S,url):
-
-    try:
-        S.driver.get(url)
+    stop = True
+    while stop:
         try:
-            element = WebDriverWait(S.driver, 2).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="unlike"]')))
-            like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="unlike"]')
-            return False
-        except:
-            element = WebDriverWait(S.driver, 2).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
-        
-            like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
-            like_button.click()
-            return True 
-        
-    except:
-        print("Bref like" * 10)
-        return None
+            S.driver.implicitly_wait(15)
+            S.driver.get(url)
+            time.sleep(0.001)
+            try:
+                element = WebDriverWait(S.driver, 2).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="unlike"]')))
+                like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="unlike"]')
+                return False
+            except:
+                element = WebDriverWait(S.driver, 1).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
 
+                like_button = S.driver.find_element(By.XPATH, "//div[@data-testid='like']")
+                S.driver.execute_script("arguments[0].click();", like_button)
+                time.sleep(2)
+                return True 
+            
+        except Exception as e:
+            if "KeyboardInterrupt" in str(e):
+                traceback.print_exc()
+            print("Bref like" * 10)
+            #S.driver.refresh()
+            time.sleep(0.5)
+            return None
 
 
 def reetweet_a_tweet(S,url):
+    stop = True
+    while stop:
+        try:
+            S.driver.implicitly_wait(15)
+            S.driver.get(url)
+            time.sleep(0.001)
+            element = WebDriverWait(S.driver,5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweet"]')))
+            reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweet"]')
+            S.driver.execute_script("arguments[0].click();", reetweet_button)
+            #reetweet_button.click()
 
-    try:
-        S.driver.get(url)
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweet"]')))
+            try:
+                element = WebDriverWait(S.driver,5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')))
+            except:
+                time.sleep(1)    
+                return False
+            reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')
+            #reetweet_button.click()
+            S.driver.execute_script("arguments[0].click();", reetweet_button)
+            print("reetweet done")
+            return True
         
-        reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweet"]')
-        reetweet_button.click()
-
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')))
-        
-        reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')
-        reetweet_button.click()
-        
-        print("reetweet done")
-    except:
-        print("Bref rt")
+        except Exception as e:
+            if "KeyboardInterrupt" in str(e):
+                traceback.print_exc()
+            if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+                print("Wifi error sleeping 3 minutes")
+                time.sleep(180)
+                return True
+            #traceback.print_exc()
+            print("Bref rt")
+            #S.driver.refresh()
+            time.sleep(0.5)
+            return False
 
 def comment_a_tweet(S,url,text):
-
-    try:
-
-        S.driver.get(url)
-        pos = 0
-        element = WebDriverWait(S.driver, 15).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')))
+    stop = True
+    while stop:
         
-        tweet_info = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')
-        for i in range(len(tweet_info)):
-            r = tweet_info[i]
-            if url.split("twitter.com")[1] in str(r.get_attribute("outerHTML")):
-                pos = i
-                break
+        try:
+            S.driver.implicitly_wait(15)
+            S.driver.get(url)
+            time.sleep(0.001)
+            pos = 0
+            try:
+                element = WebDriverWait(S.driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')))
+            except:
+                print("cell innder div not here")
+                time.sleep(1)
+                
+            tweet_info = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')
+            for i in range(len(tweet_info)):
+                r = tweet_info[i]
+                if url.split("twitter.com")[1] in str(r.get_attribute("outerHTML")):
+                    pos = i
+                    break
+            
+            try:
+                element = WebDriverWait(S.driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="reply"]')))
+            except:
+                
+                print("reply div not here")
+                time.sleep(1)
+
+            comment_button = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="reply"]')
+            time.sleep(0.25)
+            #comment_button[pos].click()
+            try:
+                S.driver.execute_script("arguments[0].click();", comment_button[pos])
+            except:
+                try:
+                    S.driver.execute_script("arguments[0].click();", comment_button[0])
+                    print("comment bug hehehe 1")
+                except:
+                    try:
+                        comment_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="reply"]')
+                        S.driver.execute_script("arguments[0].click();", comment_button)
+                    except:
+                        return False
+
+            time.sleep(2)
+            try:
+                element = WebDriverWait(S.driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
+            except:
+                
+                time.sleep(1)
+            
+            textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
+            S.driver.execute_script("arguments[0].scrollIntoView();", textbox)
+            time.sleep(2)
+            for t in text:
+                textbox.send_keys(t)
+                #time.sleep(0.02)
+            textbox.send_keys(" ")
+            textbox.send_keys(Keys.RETURN)
+            time.sleep(1)
+            #textbox.click()
+            #print("ok 2")
+            time.sleep(2)
+            try:
+                element = WebDriverWait(S.driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
+            except:
+                
+                time.sleep(1)
+            
+            wait = WebDriverWait(S.driver, 10)
+            target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
+            S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
+            time.sleep(0.25)
+            S.driver.execute_script("arguments[0].click();", target_element)
+            
+            #target_element.click()
+            time.sleep(5)
+            print("comment done")
+            return True
         
-        element = WebDriverWait(S.driver, 15).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="reply"]')))
-        comment_button = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="reply"]')
-        comment_button[pos].click()
-        time.sleep(5)
-        element = WebDriverWait(S.driver, 15).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
-        textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
-        S.driver.execute_script("arguments[0].scrollIntoView();", textbox)
-        time.sleep(S.wait_time)
-        for t in text:
-            textbox.send_keys(t)
-            #time.sleep(0.02)
-        textbox.send_keys(" ")
-        textbox.send_keys(Keys.RETURN)
-        time.sleep(1)
-        #textbox.click()
-        #print("ok 2")
-        time.sleep(2)
-        element = WebDriverWait(S.driver, 15).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
-        wait = WebDriverWait(S.driver, 10)
-        target_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
-        S.driver.execute_script("arguments[0].scrollIntoView();", target_element)
-        target_element.click()
-        time.sleep(5)
-        print("comment done")
-    except:
-        print("Bref comment")
+        except Exception as e:
+            if "KeyboardInterrupt" in str(e):
+                traceback.print_exc()
+            print("Bref comment")
+            #S.driver.refresh()
+            time.sleep(0.5)
+            return False
 
 def make_a_tweet(S,text):
     try:
@@ -526,18 +599,23 @@ def parse_number(num):
 def get_list_of_my_followings(S,user):
     try:
         nb_of_followings = get_user_following_count(S,user)
+        S.driver.implicitly_wait(15)
         S.driver.get("https://twitter.com/"+user+"/following")
         run  = True
         list_of_user = []
         selenium_data = []
         account = ""
         nb = 0
+        data_list = []
         while run:
             try:
                 element = WebDriverWait(S.driver, 15).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserCell"]')))
                 tweets_username = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="UserCell"]')
                 last_user = tweets_username[len(tweets_username) - 1]
+                if nb >= nb_of_followings or are_last_x_elements_same(data_list,350) == True or nb > 1000:
+                    return(list_of_user)
+                
                 for tweet_username in tweets_username:
                 
                     if tweet_username not in selenium_data:
@@ -548,19 +626,19 @@ def get_list_of_my_followings(S,user):
                             selenium_data.append(tweet_username)
                             S.driver.execute_script("arguments[0].scrollIntoView();", tweet_username)
                             nb+=1
-                            time.sleep(0.025)
+                            time.sleep(0.010)
+                            data_list.append(len(list_of_user))
                         except:
-                            time.sleep(0.025)
+                            time.sleep(0.020)
                             pass
-                        if nb >= nb_of_followings:
-                            print("Your following listing done")
-                            return(list_of_user)
             except Exception as e:
                 print("Your following listing failed")
+                traceback.print_exc()
                 return (list_of_user)
         return(list_of_user)
     except Exception as e:
         print("Your following listing failed")
+        traceback.print_exc()
         return(False)
 
 def get_user_following_count(S,user):
@@ -712,19 +790,33 @@ def main_one():
             nb_of_following_t1 = big_follow + 1
 
         account_to_unfollow = ""
-        if nb_of_following_t1 > 4500:
+        if nb_of_following_t1 >= 4500:
             all_my_following = get_list_of_my_followings(S,username_info[i])
+            time.sleep(300)
+            toto_follow = len(all_my_following) - 1
+            tototo_follow = 90
+            if toto_follow < 90:
+                tototo_follow = toto_follow - 1
+            print("len toto follow")
             if all_my_following != False:    
                 print("You got to much following bot going to unfollow some people")
-                for j in range(1000):
+                for j in range(tototo_follow):
                     account_to_unfollow = all_my_following[len(all_my_following) - 1 - j]
                     #print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
-                    unfollow_an_account(S,account_to_unfollow)
-                    time.sleep(3)
+                    uf = unfollow_an_account(S,account_to_unfollow)
+                    eeeu +=1
+                    if uf == False:
+                        error_uf+= 1
+                    else:
+                        error_uf = 0
+                    if error_uf > 9:
+                        skip_un = True
+                    time.sleep(3.1)
                 nb_of_following_t2 = get_user_following_count(S,username_info[i])    
                 print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
-                print("Bot sleeping 20 minutes to avoid twitter rate limit")
-                time.sleep(60*20)
+                print("Bot sleeping 5 minutes to avoid twitter rate limit")
+                time.sleep(60*5)
+        
         if crash_or_no == True:
 #            print("hellloooooooo ")
             if account_num == 1:
@@ -750,7 +842,8 @@ def main_one():
                         info , info_link = get_news()
                         make_a_tweet(S,info+" "+info_link)
                         time.sleep(randint(MINTIME,MAXTIME))
-                    make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
+                    if random_tweet_nb > 0:
+                        make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                     try:
                         rt_url = search_tweet_for_better_rt(S)
                     
@@ -873,7 +966,8 @@ def main_one():
                         info , info_link = get_news()
                         make_a_tweet(S,info+" "+info_link)
                         time.sleep(randint(MINTIME,MAXTIME))
-                    make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
+                    if random_retweet_nb > 0:
+                        make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                     try:
                         rt_url = search_tweet_for_better_rt(S)
 
