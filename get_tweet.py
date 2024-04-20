@@ -117,9 +117,11 @@ def check_alpha_numeric_pos(string):
     return 0
 
 
+
 def list_of_account_to_follow(maker_of_the_tweet,sentence):
     
     account_to_follow = [maker_of_the_tweet.replace("@","")]
+    sentence = remove_emojie(sentence).replace("\n"," ")
     s = sentence.split(" ")
     for word in s:
         try:
