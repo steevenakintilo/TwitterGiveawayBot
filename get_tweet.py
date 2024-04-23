@@ -120,19 +120,13 @@ def check_alpha_numeric_pos(string):
 
 def list_of_account_to_follow(maker_of_the_tweet,sentence):
     
-    account_to_follow = [maker_of_the_tweet.replace("@","")]
-    sentence = remove_emojie(sentence).replace("\n"," ")
-    s = sentence.split(" ")
+    account_to_follow = [maker_of_the_tweet.replace("@","").lower()]
+    sentence = str(sentence).replace("\n"," ").replace("\n\n"," ").replace("\n\n\n"," ").replace("\n\n\n\n"," ")
+    s = sentence.split()
     for word in s:
         try:
-            if word[0] == "@" and word.replace("@","") != maker_of_the_tweet.replace("@",""):
-                if "." in  word:
-                    word = word.split(".")[0]
-                if "\n" in word:
-                    word = word.split("\n")[0]
-                if check_alpha_numeric(word) == False:
-                    word = word[0:check_alpha_numeric_pos(word)]
-                account_to_follow.append(remove_non_alphanumeric(word.replace("@","")))
+            if word[0] == "@" and word.lower() not in maker_of_the_tweet and word.lower() != maker_of_the_tweet:
+                account_to_follow.append(word.replace("@","").lower())
         except:
             pass
     account_to_follow = list(dict.fromkeys(account_to_follow))
@@ -505,11 +499,16 @@ def giweaway_from_url_file(tweets_text,account_list,S):
                 else:
                     tweets_need_to_comment_or_not.append(False)    
             tweets_full_comment.append(remove_emojie(remove_double_hashtag(full_phrase)).replace('"',"").replace("“","").replace("«","").replace("»","").replace("”",""))
-            tweets_account_to_follow.append(list_of_account_to_follow("" ,t))
+            try:
+                maker_of_the_tweet = current_url.replace("//","").split("/")[1]
+            except:
+                maker_of_the_tweet = "x"
+            tweets_account_to_follow.append(list_of_account_to_follow(maker_of_the_tweet ,t))
             idxx+=1
         for a in account_list:
             if a not in tweets_account_to_follow and a != "f":
                 tweets_account_to_follow.append(a)
+        
         if print_data == True:
             print(tweets_full_comment)
             #print(tweets_need_to_comment_or_not)
