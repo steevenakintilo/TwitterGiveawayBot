@@ -687,6 +687,25 @@ def check_if_good_account_login(S,account):
     except Exception as e:
         return True
 
+def is_account_log_out(S):
+    try:
+        S.driver.implicitly_wait(15)
+        S.driver.get("https://twitter.com/compose/post")
+        time.sleep(10)
+        try:
+            element = WebDriverWait(S.driver,15).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
+            return True
+        except:
+            time.sleep(1)
+            print("Account got log out sleep between 30 minutes and 1 hour")
+            time.sleep(randint(1800,3600))
+            return False
+    except:
+        print("Account got log out sleep between 30 minutes and 1 hour")
+        time.sleep(randint(1800,3600))
+        return False
+
 def forever_loop():
     while True:
         try:
@@ -695,6 +714,15 @@ def forever_loop():
             print("Flop " + str(e))
             time.sleep(600)
         time.sleep(randint(86400,172800))
+
+def try_login_again(S,u,p):
+    login(S,u,p)
+    accept_coockie(S)
+    time.sleep(S.wait_time)    
+    accept_notification(S)
+    time.sleep(S.wait_time)
+    accept_coockie(S)
+    time.sleep(S.wait_time)
 
 def main_one():
     print("Inside main one")
@@ -883,6 +911,10 @@ def main_one():
             alph_list = int(len(tttt_follow)/2)
 
             for i in range(alph_list):
+                if i % 6 == 0:
+                    if is_account_log_out(S) == False:
+                        try_login_again(S,username_info[i],password_info[i])
+                        
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
                 follow_an_account(S,tttt_follow[i],2)
@@ -1009,6 +1041,9 @@ def main_one():
 
             for i in range(alph_list):
                 follow_nbr +=1
+                if i % 6 == 0:
+                    if is_account_log_out(S) == False:
+                        try_login_again(S,username_info[i],password_info[i])
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
                 follow_an_account(S,tttt_follow[i],2)
                 alph_follow.append(tttt_follow[i].lower())
