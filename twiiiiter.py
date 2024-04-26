@@ -759,6 +759,8 @@ def main_one():
         time.sleep(1)
         S = Scraper()
         
+        current_user = username_info[i]
+        current_pass = password_info[i]
         if login(S,username_info[i],password_info[i]) == False:
             account_num = 0
             continue
@@ -913,7 +915,7 @@ def main_one():
             for i in range(alph_list):
                 if i % 6 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,username_info[i],password_info[i])
+                        try_login_again(S,current_user,current_pass)
                         
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
@@ -1043,7 +1045,7 @@ def main_one():
                 follow_nbr +=1
                 if i % 6 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,username_info[i],password_info[i])
+                        try_login_again(S,current_user,current_pass)
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
                 follow_an_account(S,tttt_follow[i],2)
                 alph_follow.append(tttt_follow[i].lower())
