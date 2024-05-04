@@ -691,7 +691,12 @@ def is_account_log_out(S):
     try:
         S.driver.implicitly_wait(15)
         S.driver.get("https://twitter.com/compose/post")
-        time.sleep(10)
+
+        time.sleep(2)
+        for i in range(2):
+            S.driver.refresh()
+            time.sleep(0.5)
+        time.sleep(8)
         try:
             element = WebDriverWait(S.driver,15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
