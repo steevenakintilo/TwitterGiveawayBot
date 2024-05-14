@@ -38,14 +38,14 @@ class Scraper:
 
     #driver = webdriver.Firefox(options=options)
 
-    username_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input'
+    username_xpath = '/html/body/div/div/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[4]/label/div/div[2]/div/input'
     
-    button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[6]/div'
+    button_xpath = '/html/body/div/div/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/button[2]/div'
     password_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input'
-    login_button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div'
+    login_button_xpath = '/html/body/div/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/button/div'
     test_tweet = 'https://twitter.com/Twitter/status/1580661436132757506'
     like_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[3]/div'
-    cookie_button_xpath = '//*[@id="layers"]/div/div/div/div/div/div[2]/div[1]/div/span/span'
+    cookie_button_xpath = '/html/body/div[1]/div/div/div[1]/div[1]/div/div/div/div/div[2]/button[1]/div'
     notification_button_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/span/span'
     reetweet_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[2]/div'
     reetweet_confirm_button_xpath = '/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/div/div/div/div/div[2]/div/span'
@@ -53,7 +53,7 @@ class Scraper:
     textbox_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[2]/div/div/div/div/div[2]/div[1]/div/div/div/div/div/div/div/div/div/div/label/div[1]/div/div/div/div/div/div[2]/div/div/div/div'
     follow_button_xpath = "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div"
     unfollow_nbr = 0
-
+    
 def get_news():
     try:
         with open("configuration.yml", "r") as file:
@@ -120,10 +120,10 @@ def login(S,_username,_password):
 
         #LOGIN BUTTON
 
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
+        element = WebDriverWait(S.driver,5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="LoginForm_Login_Button"]')))
         
-        login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
+        login_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="LoginForm_Login_Button"]')
         login_button.click()
         print("login done")
         return True
@@ -174,11 +174,12 @@ def retry_login(S,_username,_password):
 
         #LOGIN BUTTON
 
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
+        element = WebDriverWait(S.driver,5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="LoginForm_Login_Button"]')))
         
-        login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
+        login_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="LoginForm_Login_Button"]')
         login_button.click()
+        print("login done")
         return True
         #print("Closing Twitter")
     except:
@@ -214,6 +215,7 @@ def accept_coockie(S):
 
 
 def accept_notification(S):
+    return("")
     try:
         S.driver.get(S.test_tweet)
 
