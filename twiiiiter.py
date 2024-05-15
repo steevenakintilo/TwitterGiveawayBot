@@ -258,7 +258,8 @@ def like_a_tweet(S,url):
                 element = WebDriverWait(S.driver, 1).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
 
-                like_button = S.driver.find_element(By.XPATH, "//div[@data-testid='like']")
+                like_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="like"]')
+                
                 S.driver.execute_script("arguments[0].click();", like_button)
                 time.sleep(2)
                 return True 
