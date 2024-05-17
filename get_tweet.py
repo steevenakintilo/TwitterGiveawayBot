@@ -593,8 +593,8 @@ def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
                             lower_data = str(lower_data[1])
                             lower_data = lower_data.split(" ")
                             tweet_id = lower_data[0].replace("/","").replace(p,"")
-                            tweet_link = "https://twitter.com/" + account + "/status/" + tweet_id
-                            ussr = str(url.split("https://twitter.com/")[1]).split("/")[0]
+                            tweet_link = "https://x.com/" + account + "/status/" + tweet_id
+                            ussr = str(url.split("https://x.com/")[1]).split("/")[0]
                             if "photo1" in tweet_link and "/photo" not in tweet_link:
                                 tweet_link = tweet_link.replace("photo1","/photo1")
                             if tweet_link not in list_of_comment_url:

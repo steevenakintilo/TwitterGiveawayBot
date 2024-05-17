@@ -26,7 +26,7 @@ def remove_days(days_to_remove):
 def get_trend(selenium_session):
     try:
       selenium_session.driver.implicitly_wait(15)
-      selenium_session.driver.get("https://twitter.com/explore")
+      selenium_session.driver.get("https://x.com/explore")
       element = WebDriverWait(selenium_session.driver, 15).until(
       EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="trend"]')))
       trends = selenium_session.driver.find_elements(By.CSS_SELECTOR, '[data-testid="trend"]')
@@ -117,7 +117,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
     p = '"'
     nb = 0
     try:
-        selenium_session.driver.get("https://twitter.com/explore")
+        selenium_session.driver.get("https://x.com/explore")
         run  = True
         p = '"'
         time.sleep(1)
@@ -149,7 +149,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                         user = lower_data[4]
                         user = user.split(p)
                         tweet_stuff = user[0]
-                        tweet_link = "https://twitter.com/" + tweet_stuff
+                        tweet_link = "https://x.com/" + tweet_stuff
                         user = tweet_stuff.split("/")[0]
                         tweet_link = tweet_link.replace("/analytics","")
                         text_ = "o"
@@ -169,7 +169,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                             user = lower_data[5]
                             user = user.split(p)
                             tweet_stuff = user[0]
-                            tweet_link = "https://twitter.com/" + tweet_stuff
+                            tweet_link = "https://x.com/" + tweet_stuff
                             user = tweet_stuff.split("/")[0]
                             text_ = "o"
                             if tweet_link[len(tweet_link) - 1] in "0123456789" and "status" in tweet_link:

@@ -43,7 +43,7 @@ class Scraper:
     button_xpath = '/html/body/div/div/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/button[2]/div'
     password_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input'
     login_button_xpath = '/html/body/div/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/button/div'
-    test_tweet = 'https://twitter.com/Twitter/status/1580661436132757506'
+    test_tweet = 'https://x.com/Twitter/status/1580661436132757506'
     like_button_xpath = '/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/div[1]/article/div/div/div/div[3]/div[7]/div/div[3]/div'
     cookie_button_xpath = '/html/body/div[1]/div/div/div[1]/div[1]/div/div/div/div/div[2]/button[1]/div'
     notification_button_xpath = '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/span/span'
@@ -88,7 +88,7 @@ def get_news():
 def login(S,_username,_password):
 
     try:
-        S.driver.get("https://twitter.com/i/flow/login")
+        S.driver.get("https://x.com/i/flow/login")
         print("Starting Twitter")
         #USERNAME
         element = WebDriverWait(S.driver, 30).until(
@@ -145,7 +145,7 @@ def login(S,_username,_password):
 def retry_login(S,_username,_password):
 
     try:
-        S.driver.get("https://twitter.com/i/flow/login")
+        S.driver.get("https://x.com/i/flow/login")
         #USERNAME
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.username_xpath)))
@@ -189,7 +189,7 @@ def retry_login(S,_username,_password):
 
 def check_login_good(selenium_session):
     try:
-        selenium_session.driver.get("https://twitter.com/home")
+        selenium_session.driver.get("https://x.com/home")
         element = WebDriverWait(selenium_session.driver, 10).until(
     EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="AppTabBar_Notifications_Link"]')))
         return True
@@ -330,7 +330,7 @@ def comment_a_tweet(S,url,text):
             tweet_info = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')
             for i in range(len(tweet_info)):
                 r = tweet_info[i]
-                if url.split("twitter.com")[1] in str(r.get_attribute("outerHTML")):
+                if url.split("x.com")[1] in str(r.get_attribute("outerHTML")):
                     pos = i
                     break
             
@@ -406,7 +406,7 @@ def comment_a_tweet(S,url,text):
 
 def make_a_tweet(S,text):
     try:
-        S.driver.get("https://twitter.com/compose/tweet")
+        S.driver.get("https://x.com/compose/tweet")
         time.sleep(10)
         #print("coment part one")
         
@@ -438,7 +438,7 @@ def make_a_tweet(S,text):
 
 def unfollow_an_account(S,account):
     try:
-        S.driver.get("https://twitter.com/"+account)
+        S.driver.get("https://x.com/"+account)
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
         unfollow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
@@ -454,7 +454,7 @@ def unfollow_an_account(S,account):
 
 def follow_an_account(S,account,t):
     try:
-        S.driver.get("https://twitter.com/"+account)
+        S.driver.get("https://x.com/"+account)
         element = WebDriverWait(S.driver, t).until(
         EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
         follow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
@@ -515,7 +515,7 @@ def get_tweet_info(selenium_session,url):
         pos = 0
         for i in range(len(tweet_info)):
             r = tweet_info[i]
-            if url.split("twitter.com")[1] in str(r.get_attribute("outerHTML")):
+            if url.split("x.com")[1] in str(r.get_attribute("outerHTML")):
                 pos = i
                 break
         
@@ -603,7 +603,7 @@ def get_list_of_my_followings(S,user):
     try:
         nb_of_followings = get_user_following_count(S,user)
         S.driver.implicitly_wait(15)
-        S.driver.get("https://twitter.com/"+user+"/following")
+        S.driver.get("https://x.com/"+user+"/following")
         run  = True
         list_of_user = []
         selenium_data = []
@@ -647,7 +647,7 @@ def get_list_of_my_followings(S,user):
 def get_user_following_count(S,user):
     try:
         num = "0123456789"
-        S.driver.get("https://twitter.com/"+user)
+        S.driver.get("https://x.com/"+user)
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
         following_count = ""
@@ -660,7 +660,7 @@ def get_user_following_count(S,user):
     except Exception as e:
         try:
             num = "0123456789"
-            S.driver.get("https://twitter.com/"+user)
+            S.driver.get("https://x.com/"+user)
             element = WebDriverWait(S.driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
             following_count = ""
@@ -681,7 +681,7 @@ def get_user_following_count(S,user):
 
 def check_if_good_account_login(S,account):
     try:
-        S.driver.get("https://twitter.com/"+account)
+        S.driver.get("https://x.com/"+account)
         element = WebDriverWait(S.driver, 3).until(
         EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="userActions"]')))
         u = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="userActions"]')
@@ -693,7 +693,7 @@ def check_if_good_account_login(S,account):
 def is_account_log_out(S):
     try:
         S.driver.implicitly_wait(15)
-        S.driver.get("https://twitter.com/compose/post")
+        S.driver.get("https://x.com/compose/post")
 
         time.sleep(2)
         for i in range(2):
