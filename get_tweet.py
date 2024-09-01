@@ -539,6 +539,7 @@ def are_last_x_elements_same(lst,x):
 
 def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
     try:
+        start_time = time.time()  # Start the timer
         nb = 0
         if nb_of_comment > 0:
             nb_of_comment = nb_of_comment + 1
@@ -560,8 +561,15 @@ def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
         if nb_of_comment > 50:
             nb_of_comment = 50
 
+        timeout = 500
+        
         while run:
             try:
+                elapsed_time = time.time() - start_time
+                if elapsed_time > timeout:
+                    print("Timeout reached. Exiting search.")
+                    return data_list
+                
                 element = WebDriverWait(selenium_session.driver, 15).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweet"]')))
                 tweets_info = selenium_session.driver.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
