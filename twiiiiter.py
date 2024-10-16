@@ -437,6 +437,9 @@ def make_a_tweet(S,text):
         print("Bref tweet")    
 
 def unfollow_an_account(S,account):
+    if len(account) > 15:
+        print("Username is too long account doesn't exist")
+        return True
     try:
         S.driver.get("https://x.com/"+account)
         element = WebDriverWait(S.driver, 15).until(
@@ -647,6 +650,7 @@ def get_list_of_my_followings(S,user):
 def get_user_following_count(S,user):
     try:
         num = "0123456789"
+        S.driver.implicitly_wait(15)
         S.driver.get("https://x.com/"+user)
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
@@ -660,6 +664,7 @@ def get_user_following_count(S,user):
     except Exception as e:
         try:
             num = "0123456789"
+            S.driver.implicitly_wait(15)
             S.driver.get("https://x.com/"+user)
             element = WebDriverWait(S.driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="UserName"]')))
@@ -676,7 +681,7 @@ def get_user_following_count(S,user):
         except:
             print("Following count error")
             #traceback.print_exc()
-            return(0)
+            return(-1)
 
 
 def check_if_good_account_login(S,account):
@@ -815,11 +820,17 @@ def main_one():
         big_follow = 0
         for j in range(5):
             x = get_user_following_count(S,username_info[i])
-            if x < 4500 or x > 9999:
+            if x == -1:
+                big_follow += 10000
+            elif x < 4500 or x > 9999:
                 less_than_4500+=1
             else:
                 big_follow = x
 
+        if big_follow >= 10000 * 5:
+            print(f"{username_info[i]} got problem skipping the account")
+            return
+            
         
         if less_than_4500 >= 3:
             nb_of_following_t1 = 1

@@ -37,7 +37,6 @@ def get_trend(selenium_session):
           trends_list.append(r.text.split("\n")[1])
       return(trends_list)
     except Exception as e:
-        print("Bref trend")
         return ("a")
 
 def parse_number(num):
