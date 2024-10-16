@@ -11,6 +11,7 @@ import os
 import traceback
 import time
 
+
 def remove_days(days_to_remove):
     if days_to_remove < 0:
         days_to_remove = 0
@@ -98,7 +99,8 @@ def check_elem_on_a_list(elem_, list_):
     return next((l for l in list_ if elem_ in l.lower()), elem_)
 
 
-def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
+def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10,latest=False):
+    start_time = time.time()  # Start the timer
     list_of_tweet_url = []
     selenium_data = []
     list_of_tweet_url_ = []
@@ -127,7 +129,17 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
         input_box.send_keys(query)
         input_box.send_keys(Keys.ENTER)
         time.sleep(5)
+        if latest == True:
+            current_url = selenium_session.driver.current_url
+            selenium_session.driver.get(current_url+"&f=live")
+            time.sleep(5)
+
+        timeout = 300
         while run:
+            elapsed_time = time.time() - start_time
+            if elapsed_time > timeout:
+                print("Timeout reached. Exiting search.")
+                return data_list
             element = WebDriverWait(selenium_session.driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweet"]')))
             tweets_info = selenium_session.driver.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
@@ -328,7 +340,7 @@ def get_giveaway_url(selenium_session):
                 if d.tweet_lang == "any":
                     text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
                 
-                giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search)
+                giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search,True)
                 for g in giveaway:
                     giveaway_foud_per_word+=1
                 if nb_of_tweet_to_search < 10:

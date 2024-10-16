@@ -456,6 +456,9 @@ def unfollow_an_account(S,account):
 
 
 def follow_an_account(S,account,t):
+    if len(account) > 15:
+        print("Username is too long account doesn't exist")
+        return True
     try:
         S.driver.get("https://x.com/"+account)
         element = WebDriverWait(S.driver, t).until(

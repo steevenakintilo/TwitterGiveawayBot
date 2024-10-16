@@ -561,7 +561,7 @@ def get_list_of_comment_of_a_tweet(selenium_session,url,nb_of_comment=10):
         if nb_of_comment > 50:
             nb_of_comment = 50
 
-        timeout = 500
+        timeout = 120
         
         while run:
             try:
