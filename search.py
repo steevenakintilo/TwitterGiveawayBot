@@ -134,7 +134,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10,latest=
             selenium_session.driver.get(current_url+"&f=live")
             time.sleep(5)
 
-        timeout = 300
+        timeout = 120
         while run:
             elapsed_time = time.time() - start_time
             if elapsed_time > timeout:
