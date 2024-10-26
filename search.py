@@ -149,7 +149,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10,latest=
                 if len(data_list) >= nb_of_tweet_to_search:
                     run = False
                 list_len.append(len(data_list))
-                if are_last_x_elements_same(list_len,250) == True:
+                if are_last_x_elements_same(list_len,300) == True:
                     run = False
                 if tweet_info not in selenium_data:
                     try:
@@ -331,6 +331,7 @@ def get_giveaway_url(selenium_session):
             nb_of_tweet_to_search = 1000
         if d.nb_of_giveaway > MAX:
             d.nb_of_giveaway = MAX
+        d.nb_of_giveaway = 10000
         for search_word in d.word_to_search:
             if print_data == False:
                 print("### " , search_word)
