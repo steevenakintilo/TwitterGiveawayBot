@@ -464,9 +464,51 @@ def follow_an_account(S,account,t):
         element = WebDriverWait(S.driver, t).until(
         EC.presence_of_element_located((By.CSS_SELECTOR,'[data-testid="placementTracking"]')))
         follow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
-        if follow_button.text != "Follow" and follow_button.text != "Suivre":
+
+        follow_texts = [
+                "follow",      # English
+                "suivre",      # French
+                "seguir",      # Spanish/Portuguese
+                "フォローする",  # Japanese
+                "팔로우",       # Korean
+                "следить",      # Russian
+                "folgen",      # German
+                "segui",       # Italian
+                "seguir+",     # Catalan
+                "siga",        # Galician
+                "sledovať",    # Slovak
+                "takip et",    # Turkish
+                "takip etmeyi bırak",  # Turkish (alternative phrasing)
+                "folowă",      # Romanian
+                "अनुसरण करें",  # Hindi
+                "ikuti",       # Indonesian/Malay
+                "متابعة",
+                "متابعة",       # Arabic ("Follow" in Arabic)
+                "متابعة",       # Arabic ("Follow" in Arabic)
+                "关注",            # Simplified Chinese ("Follow")  
+                "關注",         # Traditional Chinese ("Follow")  
+                "следите",          # Serbian/Bulgarian
+                "śledź",           # Polish
+                "seguir",          # Galician
+                "seguí",           # Argentine Spanish
+                "तलाशें",          # Hindi (alternative phrasing)
+                "siguir",          # Galician (regional variant)
+                "フォロー",         # Japanese (shortened)
+                "segui-la",        # Occitan
+                "sígueme",         # Spanish ("Follow me")
+                "следи за",         # Russian ("Follow along")
+                "siga-me",         # Portuguese ("Follow me")
+                "följa",           # Swedish
+                "seuraa",          # Finnish
+                "følge",           # Norwegian/Danish
+                "segura",          # Tagalog
+                "跟隨"
+            ]
+            
+        if follow_button.text.lower() not in follow_texts:
             print("You already follow the account")
-            return (True)
+            return True
+        
         follow_button.click()
         time.sleep(randint(MINTIME,MAXTIME))
         if MAXTIME < 4:
