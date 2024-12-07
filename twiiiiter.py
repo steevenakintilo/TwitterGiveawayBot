@@ -947,7 +947,7 @@ def main_one():
                                 reetweet_a_tweet(S,rt_url[i])
                             time.sleep(randint(MINTIME,MAXTIME))
                     except:
-                        print("ok")
+                        print("random rt error")
                 continue
             try:
                 t_follows.remove("")
@@ -1036,7 +1036,7 @@ def main_one():
                             reetweet_a_tweet(S,rt_url[i])
                         time.sleep(randint(MINTIME,MAXTIME))
                 except:
-                    print("ok")
+                    print("random rt error")
         
         if crash_or_no == False:
             if account_num == 1:
@@ -1164,7 +1164,7 @@ def main_one():
                             reetweet_a_tweet(S,rt_url[i])
                         time.sleep(randint(MINTIME,MAXTIME))
                 except:
-                    print("ok")
+                    print("random rt error")
                 
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0
