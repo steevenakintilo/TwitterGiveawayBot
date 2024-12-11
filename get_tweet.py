@@ -279,6 +279,10 @@ def who_many_people_to_tag(text,accounts_to_tag):
         if two.lower() in text.lower():
             return(accounts_to_tag[0]+" "+accounts_to_tag[1])
     
+    for three in d.three_or_more_poeple_list:
+        if three.lower() in text.lower():
+            return(accounts_to_tag[0]+" "+accounts_to_tag[1]+" "+accounts_to_tag[2])
+    
     if d.tag_more_than_three == True:
         for acc in d.accounts_to_tag_more:
             accounts_to_tag.append(acc)
