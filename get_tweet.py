@@ -47,6 +47,9 @@ class Data:
     add_hashtag_to_comment = data["add_hashtag_to_comment"]
     word_list_to_not_check_for_copy = data["word_list_to_not_check_for_copy"]
     copy = data["copy"]
+    tag_more_than_three = data["tag_more_than_three"]
+    accounts_to_tag_more = data["accounts_to_tag_more"]
+
 
 def is_date_older_than_a_number_of_day(date_str):
     d = Data()
@@ -276,6 +279,9 @@ def who_many_people_to_tag(text,accounts_to_tag):
         if two.lower() in text.lower():
             return(accounts_to_tag[0]+" "+accounts_to_tag[1])
     
+    if d.tag_more_than_three == True:
+        for acc in d.accounts_to_tag_more:
+            accounts_to_tag.append(acc)
     return(" ".join(accounts_to_tag))
     
 def check_if_we_need_to_tag_two(text):

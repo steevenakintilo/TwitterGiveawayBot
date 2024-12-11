@@ -173,8 +173,17 @@ accounts_to_tag:
   - "@Mediavenir "
   - "@NetflixFR "
   - "@ActuFoot_ "
+
   
-  
+tag_more_than_three: False
+
+# Accounts we want to invite if tag more than three is true you must but a space at the end of each account and a space at the	start of the first account
+accounts_to_tag_more:
+  - "@Pediavenir "
+  - "@CerfiaFR "
+  - "@Arkunir "
+
+
 
 # Accounts that we don't want to follow
 accounts_to_blacklist:
