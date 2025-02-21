@@ -466,45 +466,58 @@ def follow_an_account(S,account,t):
         follow_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="placementTracking"]')
 
         follow_texts = [
-                "follow",      # English
-                "suivre",      # French
-                "seguir",      # Spanish/Portuguese
-                "フォローする",  # Japanese
-                "팔로우",       # Korean
-                "следить",      # Russian
-                "folgen",      # German
-                "segui",       # Italian
-                "seguir+",     # Catalan
-                "siga",        # Galician
-                "sledovať",    # Slovak
-                "takip et",    # Turkish
-                "takip etmeyi bırak",  # Turkish (alternative phrasing)
-                "folowă",      # Romanian
-                "अनुसरण करें",  # Hindi
-                "ikuti",       # Indonesian/Malay
-                "متابعة",
-                "متابعة",       # Arabic ("Follow" in Arabic)
-                "متابعة",       # Arabic ("Follow" in Arabic)
-                "关注",            # Simplified Chinese ("Follow")  
-                "關注",         # Traditional Chinese ("Follow")  
-                "следите",          # Serbian/Bulgarian
-                "śledź",           # Polish
-                "seguir",          # Galician
-                "seguí",           # Argentine Spanish
-                "तलाशें",          # Hindi (alternative phrasing)
-                "siguir",          # Galician (regional variant)
-                "フォロー",         # Japanese (shortened)
-                "segui-la",        # Occitan
-                "sígueme",         # Spanish ("Follow me")
-                "следи за",         # Russian ("Follow along")
-                "siga-me",         # Portuguese ("Follow me")
-                "följa",           # Swedish
-                "seuraa",          # Finnish
-                "følge",           # Norwegian/Danish
-                "segura",          # Tagalog
-                "跟隨"
+            "follow",      # English
+            "suivre",      # French
+            "seguir",      # Spanish/Portuguese
+            "フォローする",  # Japanese
+            "팔로우",       # Korean
+            "следить",      # Russian
+            "folgen",      # German
+            "segui",       # Italian
+            "seguir+",     # Catalan
+            "siga",        # Galician
+            "sledovať",    # Slovak
+            "takip et",    # Turkish
+            "folowă",      # Romanian
+            "अनुसरण करें",  # Hindi
+            "ikuti",       # Indonesian/Malay
+            "متابعة",       # Arabic
+            "关注",        # Simplified Chinese
+            "關注",        # Traditional Chinese
+            "следите",      # Serbian/Bulgarian
+            "śledź",       # Polish
+            "seguí",       # Argentine Spanish
+            "siguir",      # Galician (regional variant)
+            "フォロー",     # Japanese (shortened)
+            "segui-la",    # Occitan
+            "sígueme",     # Spanish ("Follow me")
+            "следи за",     # Russian ("Follow along")
+            "siga-me",     # Portuguese ("Follow me")
+            "följa",       # Swedish
+            "seuraa",      # Finnish
+            "følge",       # Norwegian/Danish
+            "segura",      # Tagalog
+            "跟隨",        # Chinese (alternative)
+            "বাংলা অনুসরণ করুন",  # Bangla (Bengali)
+            "euskarari jarraitu", # Basque
+            "hrvati pratite",  # Croatian
+            "čeština sledovat", # Czech
+            "dansk følge",  # Danish
+            "Nederlands volgen", # Dutch
+            "Ελληνικά ακολουθήστε", # Greek
+            "ગુજરાતી અનુસરો", # Gujarati
+            "עברית עקוב",  # Hebrew
+            "magyar követés", # Hungarian
+            "Gaeilge lean", # Irish
+            "italiano segui", # Italian
+            "ಕನ್ನಡ ಅನುಸರಿಸು", # Kannada
+            "मराठी अनुसरण करा", # Marathi
+            "فارسی دنبال کنید", # Persian
+            "Tiếng Việt theo dõi", # Vietnamese
+            "اردو پیروی کریں", # Urdu
+            "ไทย ติดตาม", # Thai
+            "Українська слідкуйте" # Ukrainian
             ]
-            
         if follow_button.text.lower() not in follow_texts:
             print("You already follow the account")
             return True
