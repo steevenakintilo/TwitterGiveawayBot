@@ -17,6 +17,9 @@ import traceback
 import feedparser
 from random import randint
 
+import undetected_chromedriver as uc
+from selenium.webdriver.chrome.options import Options
+
 with open("configuration.yml", "r") as file:
     data = yaml.load(file, Loader=yaml.FullLoader)
     
@@ -27,12 +30,14 @@ class Scraper:
     
     wait_time = 5
     headless = data["headless"]
-    options = webdriver.ChromeOptions()
-    if headless == True:
-        options.add_argument('headless')
+    #options = webdriver.ChromeOptions()
+    options = uc.ChromeOptions()
+    options.add_argument('--incognito')
+
     options.add_argument("--log-level=3")  # Suppress all logging levels
     
-    driver = webdriver.Chrome(options=options)  # to open the chromedriver    
+    driver = uc.Chrome(options=options)  # to open the  
+    #driver = webdriver.Chrome(options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
     #options.headless = False
 
@@ -85,17 +90,25 @@ def get_news():
     except:
         return(sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)] , "")
 
-def login(S,_username,_password):
+def login(S,_username,_password,reloging=False):
 
     try:
         S.driver.get("https://x.com/i/flow/login")
+        if reloging:
+            S.driver.get("https://x.com/i/flow/login")
+            time.sleep(5)
+            S.driver.refresh()
+            time.sleep(15)
         print("Starting Twitter")
         #USERNAME
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.username_xpath)))
 
         username = S.driver.find_element(By.XPATH,S.username_xpath)
-        username.send_keys(_username)    
+        
+        for u in _username:
+            username.send_keys(u)
+            time.sleep(0.2)
         
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.button_xpath)))
@@ -114,7 +127,9 @@ def login(S,_username,_password):
         EC.presence_of_element_located((By.XPATH, S.password_xpath)))
         
         password = S.driver.find_element(By.XPATH,S.password_xpath)
-        password.send_keys(_password)
+        for p in _password:
+            password.send_keys(p)
+            time.sleep(0.2)
         print("password done")
 
 
@@ -130,6 +145,9 @@ def login(S,_username,_password):
         #print("Closing Twitter")
     except:
         time.sleep(5)
+        import traceback
+        traceback.print_exc()
+
         for i in range(3):
             time.sleep(5)
             if check_login_good(S) == True:
@@ -151,7 +169,9 @@ def retry_login(S,_username,_password):
         EC.presence_of_element_located((By.XPATH, S.username_xpath)))
 
         username = S.driver.find_element(By.XPATH,S.username_xpath)
-        username.send_keys(_username)    
+        for u in _username:
+            username.send_keys(u)
+            time.sleep(0.2)
         
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.button_xpath)))
@@ -169,8 +189,10 @@ def retry_login(S,_username,_password):
         EC.presence_of_element_located((By.XPATH, S.password_xpath)))
         
         password = S.driver.find_element(By.XPATH,S.password_xpath)
-        password.send_keys(_password)
-
+        for p in _password:
+            password.send_keys(p)
+            time.sleep(0.2)
+        
 
         #LOGIN BUTTON
 
@@ -774,7 +796,7 @@ def forever_loop():
         time.sleep(randint(86400,172800))
 
 def try_login_again(S,u,p):
-    login(S,u,p)
+    login(S,u,p,True)
     accept_coockie(S)
     time.sleep(S.wait_time)    
     accept_notification(S)
@@ -990,6 +1012,10 @@ def main_one():
                 time.sleep(120)
 
             for t in tweet_from_url:
+                if giveaway_done % 5 == 0:
+                    if is_account_log_out(S) == False:
+                        try_login_again(S,current_user,current_pass)
+
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
                 time.sleep(S.wait_time)    
@@ -1015,6 +1041,9 @@ def main_one():
             
             for account_to_follow in tttt_follow:
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
+                if follow_nbr % 5 == 0:
+                    if is_account_log_out(S) == False:
+                        try_login_again(S,current_user,current_pass)
                 if account_to_follow.lower() not in alph_follow:
                     follow_an_account(S,account_to_follow,2)
                     follow_nbr +=1            
@@ -1120,7 +1149,11 @@ def main_one():
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
-                time.sleep(S.wait_time)    
+                time.sleep(S.wait_time)
+                if giveaway_done % 5 == 0:
+                    if is_account_log_out(S) == False:
+                        try_login_again(S,current_user,current_pass)
+                
                 if like == True:
                     giveaway_done  += 1
                     giveaway_g += 1
@@ -1143,6 +1176,10 @@ def main_one():
             
             for account_to_follow in tttt_follow:
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
+                if follow_nbr % 5 == 0:
+                    if is_account_log_out(S) == False:
+                        try_login_again(S,current_user,current_pass)
+                
                 if account_to_follow.lower() not in alph_follow:
                     follow_an_account(S,account_to_follow,2)
                     follow_nbr +=1            

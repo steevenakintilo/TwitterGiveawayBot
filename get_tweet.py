@@ -43,6 +43,7 @@ class Data:
     one_poeple_list = data["one_poeple_list"]
     two_poeple_list = data["two_poeple_list"]
     three_or_more_poeple_list = data["three_or_more_poeple_list"]
+    four_or_more_poeple_list = data["four_or_more_poeple_list"]
     random_action = data["random_action"]
     add_hashtag_to_comment = data["add_hashtag_to_comment"]
     word_list_to_not_check_for_copy = data["word_list_to_not_check_for_copy"]
@@ -283,6 +284,13 @@ def who_many_people_to_tag(text,accounts_to_tag):
         if three.lower() in text.lower():
             return(accounts_to_tag[0]+" "+accounts_to_tag[1]+" "+accounts_to_tag[2])
     
+    # IF YOU WANT TO DO A FUNCTION THAT CHECK 4 PEOPLE TO TAG DO THIS
+
+    for four in d.four_or_more_poeple_list:
+        if four.lower() in text.lower():
+            return(accounts_to_tag[0]+" "+accounts_to_tag[1]+" "+accounts_to_tag[2]+" "+accounts_to_tag[3])
+    
+
     if d.tag_more_than_three == True:
         for acc in d.accounts_to_tag_more:
             accounts_to_tag.append(acc)
