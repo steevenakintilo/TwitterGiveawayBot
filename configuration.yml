@@ -168,6 +168,15 @@ three_or_more_poeple_list:
   - "tes potes"
   - "des potes"
 
+# Word list to check if we need to tag 4 accounts or more
+four_or_more_poeple_list:
+  - "4 amis"
+  - "4 ami(e)s"
+  - "1 ami"
+  - "4 personnes"
+  - "4 potes"
+  - "quatre amis"
+
 # Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
 accounts_to_tag:
   - "@Mediavenir "
