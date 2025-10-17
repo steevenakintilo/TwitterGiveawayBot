@@ -1,16 +1,21 @@
-from twiiiiter import *
 import traceback
+from os import system
+import yaml
+import time
+
 
 if __name__ == "__main__":
+    index = 0
     try:
         with open("configuration.yml", "r") as file:
             data = yaml.load(file, Loader=yaml.FullLoader)
-        forever_looop = data["forever_loop"]
-        print("Hello world")
-        if forever_looop == True:
-            forever_loop()
-        else:    
-            main_one()
+        for username,password in zip(data["account_username"],data["account_password"]):
+            if index == 0:
+                system(f"python launch.py {username} {password} {False} {index}")
+            else:
+                system(f"python launch.py {username} {password} {True} {index}")
+            index+=1
+            time.sleep(10)
     except Exception as e:
         print("Bip Bip Elon Musk")
         if "Message: unknown error: net::ERR_INTERNET_DISCONNECTED" in str(e):

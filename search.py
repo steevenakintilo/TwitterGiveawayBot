@@ -203,7 +203,10 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10,latest=
         else:
             return (data_list)
     except Exception as e:
-        print("Error searching " + query + " tweet")
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            search_tweet(selenium_session,query,nb_of_tweet_to_search,latest)
+        #print("Error searching " + query + " tweet")
         return(data_list)
      
 def search_tweet_for_better_rt(selenium_session):

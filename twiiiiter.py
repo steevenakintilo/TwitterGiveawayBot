@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from os import system
 import time
 import os.path
+import os, shutil
 
 import pickle
 from selenium.webdriver.common.action_chains import ActionChains
@@ -12,11 +13,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 from search import search_tweet_for_better_rt ,  get_giveaway_url
 from selenium.webdriver.common.by import By
 from get_tweet import *
+from save_cookies import *
 import traceback
 
 import feedparser
 from random import randint
 
+from save_cookies import get_and_save_cookie
 import undetected_chromedriver as uc
 from selenium.webdriver.chrome.options import Options
 
@@ -30,14 +33,17 @@ class Scraper:
     
     wait_time = 5
     headless = data["headless"]
-    #options = webdriver.ChromeOptions()
-    options = uc.ChromeOptions()
-    options.add_argument('--incognito')
+    options = webdriver.ChromeOptions()
+    # options = uc.ChromeOptions()
+    # options.add_argument('--incognito')
 
+    if headless == True:
+        options.add_argument('headless')
+    
     options.add_argument("--log-level=3")  # Suppress all logging levels
     
-    driver = uc.Chrome(options=options)  # to open the  
-    #driver = webdriver.Chrome(options=options)  # to open the chromedriver    
+    #driver = uc.Chrome(options=options)  # to open the  
+    driver = webdriver.Chrome(options=options)  # to open the chromedriver    
     #options = webdriver.FirefoxOptions()
     #options.headless = False
 
@@ -102,6 +108,7 @@ def login(S,_username,_password,reloging=False):
         print("Starting Twitter")
         #USERNAME
         element = WebDriverWait(S.driver, 30).until(
+        
         EC.presence_of_element_located((By.XPATH, S.username_xpath)))
 
         username = S.driver.find_element(By.XPATH,S.username_xpath)
@@ -143,7 +150,10 @@ def login(S,_username,_password,reloging=False):
         print("login done")
         return True
         #print("Closing Twitter")
-    except:
+    except Exception as e:
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            login(S,_username,_password)
         time.sleep(5)
         import traceback
         traceback.print_exc()
@@ -204,7 +214,10 @@ def retry_login(S,_username,_password):
         print("login done")
         return True
         #print("Closing Twitter")
-    except:
+    except Exception as e:
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            retry_login(S,_username,_password)
         time.sleep(5)        
         print("reloging failed")
         return False
@@ -216,7 +229,9 @@ def check_login_good(selenium_session):
     EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="AppTabBar_Notifications_Link"]')))
         return True
     except Exception as e:
-        
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            check_login_good(selenium_session)    
         return False
  
 def accept_coockie(S):
@@ -229,7 +244,10 @@ def accept_coockie(S):
         cookie_button = S.driver.find_element(By.XPATH,S.cookie_button_xpath)
         cookie_button.click()
 
-    except:
+    except Exception as e:
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            accept_coockie(S)
         pass    
     
     
@@ -287,6 +305,9 @@ def like_a_tweet(S,url):
                 return True 
             
         except Exception as e:
+            if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+                time.sleep(60*20)
+                like_a_tweet(S,url)
             if "KeyboardInterrupt" in str(e):
                 traceback.print_exc()
             print("Bref like" * 10)
@@ -324,8 +345,8 @@ def reetweet_a_tweet(S,url):
             if "KeyboardInterrupt" in str(e):
                 traceback.print_exc()
             if "net::ERR_NAME_NOT_RESOLVED" in str(e):
-                print("Wifi error sleeping 3 minutes")
-                time.sleep(180)
+                time.sleep(60*20)
+                reetweet_a_tweet(S,url)
                 return True
             #traceback.print_exc()
             print("Bref rt")
@@ -419,6 +440,9 @@ def comment_a_tweet(S,url,text):
             return True
         
         except Exception as e:
+            if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+                time.sleep(60*20)
+                comment_a_tweet(S,url,text)
             if "KeyboardInterrupt" in str(e):
                 traceback.print_exc()
             print("Bref comment")
@@ -455,7 +479,10 @@ def make_a_tweet(S,text):
 
         #print("comment part three")
         print("Tweet done")
-    except:
+    except Exception as e:
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            make_a_tweet(S,text)
         print("Bref tweet")    
 
 def unfollow_an_account(S,account):
@@ -473,6 +500,9 @@ def unfollow_an_account(S,account):
         click_confirm = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="confirmationSheetConfirm"]')
         click_confirm.click()
     except Exception as e:
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            unfollow_an_account(S,account)
         #print("Unfollow account error")
         return (False)
 
@@ -552,6 +582,9 @@ def follow_an_account(S,account,t):
         print("You've followed another account " + account)
         return True
     except Exception as e:
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            follow_an_account(S,account,t)
         print("Bref follow")
         return (False)
 
@@ -619,6 +652,9 @@ def get_tweet_info(selenium_session,url):
         "text":tweet_text,}
         return (tweet_info_dict)
     except Exception as e:
+        if "net::ERR_NAME_NOT_RESOLVED" in str(e):
+            time.sleep(60*20)
+            get_tweet_info(selenium_session,url)
         print("Bref tweet info")
         return({"username":"x",
     "text":"x",})
@@ -775,7 +811,7 @@ def check_if_good_account_login(S,account):
     except Exception as e:
         return True
 
-def is_account_log_out(S):
+def is_account_log_out(S,no_sleep=False):
     try:
         S.driver.implicitly_wait(15)
         S.driver.get("https://x.com/compose/post")
@@ -791,13 +827,36 @@ def is_account_log_out(S):
             return True
         except:
             time.sleep(1)
-            print("Account got log out sleep between 30 minutes and 1 hour")
-            time.sleep(randint(1800,3600))
+            print("Account got log out sleep between 15 minutes and 1 hour")
+            if no_sleep:
+                time.sleep(60)
+                return False
+            
+            time.sleep(randint(900,3600))
             return False
     except:
-        print("Account got log out sleep between 30 minutes and 1 hour")
-        time.sleep(randint(1800,3600))
+        print("Account got log out sleep between 15 minutes and 1 hour")
+        if no_sleep:
+            time.sleep(60)
+            return False
+        
+        time.sleep(randint(900,3600))
         return False
+
+def save_coockie(selenium_session,nb):
+    pickle.dump(selenium_session.driver.get_cookies(), open(rf"cookies_folder\cookies{nb}.pkl", "wb"))
+
+def print_pkl_info(nb):
+    try:
+        file_path = rf"cookies_folder\cookies{nb}.pkl"
+        with open(file_path, 'rb') as file:
+            try:
+                data = pickle.load(file)
+            except:
+                return ""
+        return (data)
+    except Exception as e:
+        return ("")
 
 def forever_loop():
     while True:
@@ -808,16 +867,90 @@ def forever_loop():
             time.sleep(600)
         time.sleep(randint(86400,172800))
 
-def try_login_again(S,u,p):
-    login(S,u,p,True)
-    accept_coockie(S)
-    time.sleep(S.wait_time)    
-    accept_notification(S)
-    time.sleep(S.wait_time)
-    accept_coockie(S)
-    time.sleep(S.wait_time)
 
-def main_one():
+def delete_all_cookies_files():
+    folder = 'cookies_folder'
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            pass
+def try_login_again(S,u,p,i):
+    try:
+        try:
+            ck = print_pkl_info(i)
+        except:
+            ck = ""
+        if len(str(ck)) > 20:
+            S.driver.implicitly_wait(15)
+            S.driver.get("https://x.com/i/flow/login")
+            
+            time.sleep(3)
+            S.driver.refresh()
+            time.sleep(5)
+
+            cookies = pickle.load(open(rf"cookies_folder\cookies{i}.pkl","rb"))
+
+            for cookie in cookies:
+                S.driver.add_cookie(cookie)
+            time.sleep(0.2)
+            time.sleep(S.wait_time)    
+            accept_coockie(S)
+            time.sleep(S.wait_time)  
+            if is_account_log_out(S,True) == False:
+                a = 10/0  
+                reset_file(f"coockies{i}.pkl")
+            
+            S.driver.get(S.test_tweet)
+            time.sleep(3)
+            return True
+        else:
+            a = 10 / 0
+
+    except:        
+        reset_file(rf"cookies{i}.pkl")
+        if get_and_save_cookie(u,p,i) == False:
+            return False
+        else:
+            time.sleep(10)
+
+        time.sleep(3)
+        
+        time.sleep(3)
+        if check_login_good(S) == False:
+            return False
+        accept_coockie(S)
+        time.sleep(S.wait_time)    
+        accept_notification(S)
+        time.sleep(S.wait_time)
+        accept_coockie(S)
+        time.sleep(S.wait_time)
+        
+        for w in range(10):
+            if check_if_good_account_login(S,u) == False:
+                time.sleep(2)
+                S = Scraper()
+                if login(S,u,p) == False:
+                    return False
+                time.sleep(3)
+                if check_login_good(S) == False:
+                    return False
+                accept_coockie(S)
+                time.sleep(S.wait_time)    
+                accept_notification(S)
+                time.sleep(S.wait_time)
+                accept_coockie(S)
+                time.sleep(S.wait_time)
+                return True
+            else:
+                return True
+        return True
+
+def main_one(username,password,diff_login,acc_index):
     print("Inside main one")
     giveaway_done = 0
     with open("configuration.yml", "r",encoding="utf-8") as file:
@@ -827,11 +960,18 @@ def main_one():
     print("Searching for Giveaway")
     username_info = data["account_username"]
     password_info = data["account_password"]
+    username_info = [username]
+    password_info = [password]
     sentence_to_tweet = data["setence_to_tweet"]
     random_rt_and_tweet = data["random_retweet_and_tweet"]
     random_tweet_nb = data["random_tweet_nb"]
     random_retweet_nb = data["random_retweet_nb"]
     crash_or_no = data["crash_or_no"]
+    if crash_or_no == False:
+        crash_or_no = False
+        if diff_login == True:
+            crash_or_no = True
+    
     random_action = data["random_action"]
     human = data["human"]
     idxx = 0
@@ -846,7 +986,26 @@ def main_one():
     tweets_text,tweets_url,tweets_full_comment,tweets_account_to_follow,tweets_need_to_comment_or_not = [] , [] , [] , [] , []
     t_comment_or_not , t_full_comment, t_follows = [] , [] , []
     alph_follow = []
+    retry_like , retry_follow = [] , []
+
+    list_of_current_account = str(print_file_info("list_of_current_account.txt").split("\n")[0:len(print_file_info("list_of_current_account.txt").split("\n")) - 1]).lower()
+    list_of_current_account_yml = str(data["account_username"]).lower()
+    if list_of_current_account != list_of_current_account_yml:
+        print("Deletings all the cookies")
+        delete_all_cookies_files()
+        reset_file("list_of_current_account.txt")
+        reset_file(rf"cookies_folder\cookies{0}.pkl")
+        for acc in data["account_username"]:
+            write_into_file("list_of_current_account.txt",acc+"\n")
     for i in range(len(username_info)):
+
+        if get_and_save_cookie(username_info[i],password_info[i],acc_index) == False:
+            print(f"Cookie save went wrong on {username_info[i]}")
+            continue
+        else:
+            print(f"Cookie save went good on {username_info[i]}")
+            time.sleep(10)
+        
         account_num+=1
         print("Connecting to " + str(username_info[i]))
         time.sleep(1)
@@ -854,43 +1013,83 @@ def main_one():
         
         current_user = username_info[i]
         current_pass = password_info[i]
-        if login(S,username_info[i],password_info[i]) == False:
-            account_num = 0
-            continue
-        time.sleep(3)
-        if check_login_good(S) == False:
-            print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
-            print("Skipping the account")
-            account_num = 0
-            continue
-        accept_coockie(S)
-        time.sleep(S.wait_time)    
-        accept_notification(S)
-        time.sleep(S.wait_time)
-        accept_coockie(S)
-        time.sleep(S.wait_time)
-        
-        for w in range(10):
-            if check_if_good_account_login(S,username_info[i]) == False:
-                time.sleep(2)
-                S = Scraper()
-                if login(S,username_info[i],password_info[i]) == False:
-                    account_num = 0
-                    continue
+
+
+        try:
+            try:
+                ck = print_pkl_info(i)
+            except:
+                ck = ""
+            if len(str(ck)) > 20:
+                S.driver.implicitly_wait(15)
+                S.driver.get("https://x.com/i/flow/login")
+                
                 time.sleep(3)
-                if check_login_good(S) == False:
-                    print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
-                    print("Skipping the account")
-                    account_num = 0
-                    continue
-                accept_coockie(S)
+                S.driver.refresh()
+                time.sleep(5)
+
+                cookies = pickle.load(open(rf"cookies_folder\cookies{acc_index}.pkl","rb"))
+
+                for cookie in cookies:
+                    S.driver.add_cookie(cookie)
+                time.sleep(0.2)
+                try:
+                    print("Already Connected to " + username_info[i] + " nice")
+                except:
+                    pass
                 time.sleep(S.wait_time)    
-                accept_notification(S)
-                time.sleep(S.wait_time)
                 accept_coockie(S)
-                time.sleep(S.wait_time)
+                time.sleep(S.wait_time)  
+                if is_account_log_out(S,True) == False:
+                    a = 10/0  
+                    reset_file(rf"cookies{i}.pkl")
+                
+                S.driver.get(S.test_tweet)
+                time.sleep(3)
             else:
-                break
+                a = 10 / 0
+
+        except:
+            reset_file(rf"cookies{acc_index}.pkl")
+            if get_and_save_cookie(username_info[i],password_info[i],acc_index) == False:
+                continue
+            else:
+                time.sleep(10)
+
+            time.sleep(3)
+            if check_login_good(S) == False:
+                print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
+                print("Skipping the account")
+                account_num = 0
+                continue
+            accept_coockie(S)
+            time.sleep(S.wait_time)    
+            accept_notification(S)
+            time.sleep(S.wait_time)
+            accept_coockie(S)
+            time.sleep(S.wait_time)
+            
+            for w in range(10):
+                if check_if_good_account_login(S,username_info[i]) == False:
+                    time.sleep(2)
+                    S = Scraper()
+                    if login(S,username_info[i],password_info[i]) == False:
+                        account_num = 0
+                        continue
+                    time.sleep(3)
+                    if check_login_good(S) == False:
+                        print(f"The account is locked or password of {username_info[i]} is wrong change it on the configuration.yml file")
+                        print("Skipping the account")
+                        account_num = 0
+                        continue
+                    accept_coockie(S)
+                    time.sleep(S.wait_time)    
+                    accept_notification(S)
+                    time.sleep(S.wait_time)
+                    accept_coockie(S)
+                    time.sleep(S.wait_time)
+                else:
+                    break
                     
         giveaway_g = 0
         follow_nbr = 0
@@ -981,6 +1180,7 @@ def main_one():
                             if like == True:            
                                 reetweet_a_tweet(S,rt_url[i])
                             time.sleep(randint(MINTIME,MAXTIME))
+                            
                     except:
                         print("random rt error")
                 continue
@@ -1014,7 +1214,7 @@ def main_one():
             for i in range(alph_list):
                 if i % 6 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,current_user,current_pass)
+                        try_login_again(S,current_user,current_pass,acc_index)
                         
                 follow_nbr +=1
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
@@ -1027,7 +1227,7 @@ def main_one():
             for t in tweet_from_url:
                 if giveaway_done % 5 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,current_user,current_pass)
+                        try_login_again(S,current_user,current_pass,acc_index)
 
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
@@ -1046,17 +1246,25 @@ def main_one():
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
+                    if like == None:
+                        retry_like.append(t)
                     time.sleep(2)
                 if giveaway_g % 10 == 0 and giveaway_g > 1 and human == True:
                     time.sleep(5400)
                 print(idxx)
                 idxx = idxx + 1
             
+            list_of_tweet_url = print_file_info("url.txt").lower().split("\n")
+            reset_file("url.txt")
+            for url in list_of_tweet_url:
+                if url not in retry_like:
+                    write_into_file("url.txt",url+"\n")
+            
             for account_to_follow in tttt_follow:
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
                 if follow_nbr % 5 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,current_user,current_pass)
+                        try_login_again(S,current_user,current_pass,acc_index)
                 if account_to_follow.lower() not in alph_follow:
                     follow_an_account(S,account_to_follow,2)
                     follow_nbr +=1            
@@ -1151,7 +1359,7 @@ def main_one():
                 follow_nbr +=1
                 if i % 6 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,current_user,current_pass)
+                        try_login_again(S,current_user,current_pass,acc_index)
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + tttt_follow[i])
                 follow_an_account(S,tttt_follow[i],2)
                 alph_follow.append(tttt_follow[i].lower())
@@ -1165,7 +1373,7 @@ def main_one():
                 time.sleep(S.wait_time)
                 if giveaway_done % 5 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,current_user,current_pass)
+                        try_login_again(S,current_user,current_pass,acc_index)
                 
                 if like == True:
                     giveaway_done  += 1
@@ -1181,17 +1389,26 @@ def main_one():
                 else:
                     giveaway_done  += 1
                     print("You have already like the tweet")
+                    if like == None:
+                        retry_like.append(t)
+                    
                     time.sleep(2)
                 if giveaway_g % 10 == 0 and giveaway_g > 1 and human == True:
                     time.sleep(5400)
                 print(idxx)
                 idxx = idxx + 1
             
+            list_of_tweet_url = print_file_info("url.txt").lower().split("\n")
+            reset_file("url.txt")
+            for url in list_of_tweet_url:
+                if url not in retry_like:
+                    write_into_file("url.txt",url+"\n")
+            
             for account_to_follow in tttt_follow:
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
                 if follow_nbr % 5 == 0:
                     if is_account_log_out(S) == False:
-                        try_login_again(S,current_user,current_pass)
+                        try_login_again(S,current_user,current_pass,acc_index)
                 
                 if account_to_follow.lower() not in alph_follow:
                     follow_an_account(S,account_to_follow,2)
@@ -1221,5 +1438,5 @@ def main_one():
         idxx = 0
         follow_nbr = 0
         giveaway_done = 0
-        time.sleep(180)
+        time.sleep(60)
     print("End of the program")
