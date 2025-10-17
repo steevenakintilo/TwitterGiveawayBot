@@ -29,6 +29,7 @@ If the bot failed to launch after several try set the headless to false on the c
 
 ## Features
 - The bot can work in any language
+- The bot use cookie so it doesn't login everytime
 - Unlilke the other bots you can find on github this one don't use api which means that any twitter account you have can be used with this bot
 - The bot work with 3 txt files: account.txt url.txt and recent_url.txt , account.txt file list all the account you have followed since using the bot, url.txt file list all the giweaway (their links/urls) you have done sice using the bot and recent_url.txt file list all the giweaway (their links/urls) you have done on the last time you used the bot
 - Like Retweet and Comment a tweet link to a giveaway
