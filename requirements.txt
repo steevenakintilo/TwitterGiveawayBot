@@ -2,3 +2,5 @@ emoji==2.2.0
 feedparser==6.0.10
 PyYAML==6.0
 selenium==4.16.0
+PyAutoGUI==0.9.54
+setuptools==80.9.0
