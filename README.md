@@ -3,6 +3,10 @@
 
 Bot greatly inspired by this one: https://github.com/j4rj4r/BotTwitter
 
+This project is no longer maintained. You can find the latest version here:
+
+https://github.com/steevenakintilo/TwitterGiveawayBotV2/tree/main
+
 ## Requirements
 To make the code work you will need to have Python and Pip installed in your computer
 
