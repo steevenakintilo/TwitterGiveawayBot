@@ -3,7 +3,7 @@
 
 Bot greatly inspired by this one: https://github.com/j4rj4r/BotTwitter
 
-This project is no longer maintained. You can find the latest version here:
+⚠️This project is no longer maintained. You can find the latest version here:
 
 https://github.com/steevenakintilo/TwitterGiveawayBotV2/tree/main
 
